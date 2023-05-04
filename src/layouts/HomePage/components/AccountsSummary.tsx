@@ -2,18 +2,19 @@ import {AcctSummaryListItem} from "./AcctSummaryListItem";
 
 export const AccountsSummary: React.FC<{ name: string }> = (props) => {
     return (
-        <>
-            <h5>Accounts summary for <b>{props.name}</b></h5>
-            <div className='container'>
-                <ul className='list-group' >
+        <div className='card-body text-light'>
+            <h5 className='card-title'>Summary by Account</h5>
+            <div>
+                <ul className='list-group mt-4' >
                     <AcctSummaryListItem acctName={"Bank of America"} amt={"110.33"} />
                     <AcctSummaryListItem acctName={"Citi"} amt={"45.00"} />
                 </ul>
-                <div className='list-item d-flex justify-content-between text-start'>
-                    <h5><b>Total:</b></h5>
-                    <p>$353.46</p>
+                <hr />
+                <div className='d-flex justify-content-between'>
+                    <h5 className='card-text me-5'><b>Total:</b></h5>
+                    <p className='card-text'>$353.46</p>
                 </div>
             </div>
-        </>
+        </div>
     );
 }

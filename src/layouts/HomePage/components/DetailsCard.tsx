@@ -3,7 +3,7 @@ import {SpentListItem} from "./SpentListItem";
 
 export const DetailsCard: React.FC<{name: string}> = (props) => {
     return(
-        <div className='card bg-info text-light w-75' id='detailsCard'>
+        <div className='card bg-info text-light shadow' id='detailsCard'>
             <div className='card-body'>
                 <h5 className='card-title'>Details</h5>
                 <ul className='list-group'>

@@ -2,7 +2,7 @@ import {AcctSummaryListItem} from "./AcctSummaryListItem";
 
 export const CreditBalanceSummaryCard: React.FC<{ name: string }> = (props) => {
     return (
-        <div className='card bg-light text-muted shadow mt-md-3' id='accountsSummaryContainer'>
+        <div className='card bg-light text-muted shadow mt-md-3' id='credit-balance-summary-card'>
             <div className='card-body'>
                 <h5 className='card-title'>Credit Balance Summary</h5>
                 <div>

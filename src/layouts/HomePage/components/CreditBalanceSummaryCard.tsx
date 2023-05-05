@@ -1,10 +1,10 @@
 import {AcctSummaryListItem} from "./AcctSummaryListItem";
 
-export const AccountsSummaryCard: React.FC<{ name: string }> = (props) => {
+export const CreditBalanceSummaryCard: React.FC<{ name: string }> = (props) => {
     return (
-        <div className='card bg-info mt-1' id='accountsSummaryContainer'>
-            <div className='card-body text-light'>
-                <h5 className='card-title'>Summary by Account</h5>
+        <div className='card bg-light text-muted shadow mt-md-3' id='accountsSummaryContainer'>
+            <div className='card-body'>
+                <h5 className='card-title'>Credit Balance Summary</h5>
                 <div>
                     <ul className='list-group mt-4'>
                         <AcctSummaryListItem acctName={"Bank of America"} amt={"110.33"}/>

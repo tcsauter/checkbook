@@ -11,7 +11,12 @@ export const HomePage: React.FC<{ name: string }> = (props) => {
             {/*desktop*/}
             <div className='d-none d-md-flex justify-content-evenly'>
                 <div className='me-3'>
-                    <RemainCard initialAmount={remainCardInitAmt ? remainCardInitAmt : 550} setInitAmt={setRemainCardInitAmt}/>
+                    <RemainCard
+                        input={{
+                            initialAmount: remainCardInitAmt ? remainCardInitAmt : 550,
+                            setInitAmt: setRemainCardInitAmt
+                        }}
+                    />
                     <CreditBalanceSummaryCard name={"Travis Sauter-Hunsberger"}/>
                 </div>
                 <div className='w-75'>
@@ -21,7 +26,12 @@ export const HomePage: React.FC<{ name: string }> = (props) => {
 
             {/*mobile*/}
             <div className='d-md-none'>
-                <RemainCard initialAmount={remainCardInitAmt ? remainCardInitAmt : 550} setInitAmt={setRemainCardInitAmt}/>
+                <RemainCard
+                    input={{
+                        initialAmount: remainCardInitAmt ? remainCardInitAmt : 550,
+                        setInitAmt: setRemainCardInitAmt
+                    }}
+                />
                 <CreditBalanceSummaryCard name={"Travis Sauter-Hunsberger"}/>
                 <DetailsCard name={""}/>
             </div>

@@ -1,6 +1,11 @@
 import React, {useState} from "react";
 
-export const RemainCard: React.FC<{ initialAmount: number, setInitAmt: React.Dispatch<React.SetStateAction<number>> }> = (props) => {
+export interface RemainCardProps {
+    initialAmount: number;
+    setInitAmt: React.Dispatch<React.SetStateAction<number>>;
+}
+
+export const RemainCard: React.FC<{ input: RemainCardProps }> = (props) => {
     const [initAmtEntryValue, setInitAmtEntryValue] = useState<string>('')
     const [showEnterRemainAmt, setShowEnterRemainAmt] = useState(false);
     const [showHintText, setShowHintText] = useState(false);
@@ -13,7 +18,7 @@ export const RemainCard: React.FC<{ initialAmount: number, setInitAmt: React.Dis
                 setShowEnterRemainAmt(false);
                 setShowHintText(false);
 
-                props.setInitAmt(entry);
+                props.input.setInitAmt(entry);
                 setInitAmtEntryValue('');
             }else{
                 setShowHintText(true);
@@ -31,7 +36,7 @@ export const RemainCard: React.FC<{ initialAmount: number, setInitAmt: React.Dis
                    id='remain-amt-elem'
                    onClick={event => setShowEnterRemainAmt(true)}
                 >
-                    {props.initialAmount.toLocaleString('en-US', {
+                    {props.input.initialAmount.toLocaleString('en-US', {
                         style: "currency",
                         currency: "USD"
                     })}

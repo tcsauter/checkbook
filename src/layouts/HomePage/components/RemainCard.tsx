@@ -1,65 +1,68 @@
 import React, {useState} from "react";
+import {type} from "os";
 
 export const RemainCard: React.FC<{ initialAmount: number }> = (props) => {
     const [initAmt, setInitAmt] = useState(props.initialAmount);
+    const [initAmtEntryValue, setInitAmtEntryValue] = useState<string>('')
+    const [showEnterRemainAmt, setShowEnterRemainAmt] = useState(false);
+    const [showHintText, setShowHintText] = useState(false);
 
-    function theSwitcheroo() {
-        const remainInitAmtLabel = document.getElementById('remain-init-amt-label');
-        const remainAmtElem = document.getElementById('remain-amt-elem');
-        const initAmtEntry = document.getElementById('init-amt-entry');
-        const initAmtInput: HTMLInputElement = document.getElementById('init-amt-input') as HTMLInputElement;
+    function takeInitAmtInput(event: React.KeyboardEvent<HTMLInputElement>): void {
+        if(event.key === 'Enter') {
+            const entry = Number(initAmtEntryValue);
 
-        // @ts-ignore
-        remainInitAmtLabel.innerText = 'Enter Starting Amount'
-        remainAmtElem?.setAttribute('class', 'd-none mt-2');
-        initAmtEntry?.setAttribute('class', 'input-group mb-3');
-        // initAmtInput.
+            if(!isNaN(entry)) {
+                setShowEnterRemainAmt(false);
+                setShowHintText(false);
+
+                setInitAmt(entry);
+                setInitAmtEntryValue('');
+            }else{
+                setShowHintText(true);
+            }
+        }
     }
 
     return (
         <div className='card bg-light text-muted shadow' id='remain-container'>
             <div className='card-body'>
-                <h5 className='card-title' id='remain-init-amt-label'>Remaining Amount</h5>
-                <p className='card-text mt-2' id='remain-amt-elem' onClick={theSwitcheroo}>
+                <h5 className='card-title' id='remain-init-amt-label'>
+                    {showEnterRemainAmt ? 'Enter Starting Amount' : 'Remaining Amount'}
+                </h5>
+                <p className={showEnterRemainAmt ? 'd-none card-text mt-2' : 'card-text mt-2'}
+                   id='remain-amt-elem'
+                   onClick={(event) => {
+                       setShowEnterRemainAmt(true);
+
+                       const initAmtEntry = document.getElementById('init-amt-entry');
+                       initAmtEntry?.focus();
+                   }}
+                >
                     {initAmt.toLocaleString('en-US', {
                         style: "currency",
                         currency: "USD"
                     })}
                 </p>
-                <div className="d-none input-group mb-3" id='init-amt-entry'>
+                <div className={showEnterRemainAmt ? 'input-group mb-3' : 'd-none input-group mb-3'}
+                     id='init-amt-entry'
+                >
                     <span className="input-group-text" id="basic-addon1">$</span>
                     <div className="form-floating">
                         <input type="text"
                                className="form-control"
                                id="init-amt-input"
                                placeholder="Initial Ammount Input"
-                               onKeyUp={(event) => {
-                                   if(event.key === 'Enter') {
-                                       const remainInitAmtLabel = document.getElementById('remain-init-amt-label');
-                                       const remainAmtElem = document.getElementById('remain-amt-elem');
-                                       const initAmtEntry = document.getElementById('init-amt-entry');
-                                       const initAmtInput: HTMLInputElement = document.getElementById('init-amt-input') as HTMLInputElement;
-
-                                       const entry = Number(initAmtInput.value);
-
-                                       if(!isNaN(entry)) {
-                                           // @ts-ignore
-                                           remainInitAmtLabel.innerText = 'Remaining Amount'
-                                           remainAmtElem?.setAttribute('class', 'card-text mt-2');
-                                           initAmtEntry?.setAttribute('class', 'd-none mb-3');
-
-                                           setInitAmt(Number(initAmtInput.value));
-                                           initAmtInput.value = '';
-                                       }else{
-                                           const hintText = document.getElementById('hint-text');
-                                           hintText?.setAttribute('class', 'text-danger')
-                                       }
-                                   }
-                               }}
+                               value={initAmtEntryValue}
+                               onKeyUp={event => takeInitAmtInput(event)}
+                               onChange={event => setInitAmtEntryValue((event.target as HTMLInputElement).value)}
                         />
                     </div>
                 </div>
-                <small className='d-none' id='hint-text'>Enter a numeric value.</small>
+                <small className={showHintText ? 'text-danger' : 'd-none text-danger'}
+                       id='hint-text'
+                >
+                    Enter a numeric value.
+                </small>
             </div>
         </div>
     );

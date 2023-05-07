@@ -2,8 +2,8 @@ import React from "react";
 
 export const Navbar: React.FC = () => {
     return(
-        <div>
-
-        </div>
+        <nav className={'navbar navbar-expand-md bg-light'}>
+            <p>This is a navbar</p>
+        </nav>
     );
 }

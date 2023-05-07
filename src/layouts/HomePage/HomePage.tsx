@@ -2,12 +2,15 @@ import React, {useState} from "react";
 import {CreditBalanceSummaryCard} from "./components/CreditBalanceSummaryCard";
 import {RemainCard} from "./components/RemainCard";
 import {DetailsCard} from "./components/DetailsCard";
+import {Navbar} from "../NavbarAndFooter/Navbar";
 
 export const HomePage: React.FC<{ name: string }> = (props) => {
     const [remainCardInitAmt, setRemainCardInitAmt] = useState(0);
 
     return (
         <div className='container mt-3'>
+            <Navbar />
+
             {/*desktop*/}
             <div className='d-none d-md-flex justify-content-evenly'>
                 <div className='me-3'>

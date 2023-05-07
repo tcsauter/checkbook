@@ -1,8 +1,6 @@
 import React, {useState} from "react";
-import {type} from "os";
 
-export const RemainCard: React.FC<{ initialAmount: number }> = (props) => {
-    const [initAmt, setInitAmt] = useState(props.initialAmount);
+export const RemainCard: React.FC<{ initialAmount: number, setInitAmt: React.Dispatch<React.SetStateAction<number>> }> = (props) => {
     const [initAmtEntryValue, setInitAmtEntryValue] = useState<string>('')
     const [showEnterRemainAmt, setShowEnterRemainAmt] = useState(false);
     const [showHintText, setShowHintText] = useState(false);
@@ -15,7 +13,7 @@ export const RemainCard: React.FC<{ initialAmount: number }> = (props) => {
                 setShowEnterRemainAmt(false);
                 setShowHintText(false);
 
-                setInitAmt(entry);
+                props.setInitAmt(entry);
                 setInitAmtEntryValue('');
             }else{
                 setShowHintText(true);
@@ -31,14 +29,9 @@ export const RemainCard: React.FC<{ initialAmount: number }> = (props) => {
                 </h5>
                 <p className={showEnterRemainAmt ? 'd-none card-text mt-2' : 'card-text mt-2'}
                    id='remain-amt-elem'
-                   onClick={(event) => {
-                       setShowEnterRemainAmt(true);
-
-                       const initAmtEntry = document.getElementById('init-amt-entry');
-                       initAmtEntry?.focus();
-                   }}
+                   onClick={event => setShowEnterRemainAmt(true)}
                 >
-                    {initAmt.toLocaleString('en-US', {
+                    {props.initialAmount.toLocaleString('en-US', {
                         style: "currency",
                         currency: "USD"
                     })}
@@ -55,6 +48,7 @@ export const RemainCard: React.FC<{ initialAmount: number }> = (props) => {
                                value={initAmtEntryValue}
                                onKeyUp={event => takeInitAmtInput(event)}
                                onChange={event => setInitAmtEntryValue((event.target as HTMLInputElement).value)}
+
                         />
                     </div>
                 </div>

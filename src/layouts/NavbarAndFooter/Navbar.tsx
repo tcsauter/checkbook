@@ -4,7 +4,7 @@ export const Navbar: React.FC = () => {
     return (
         <nav className={'navbar navbar-expand shadow navbar-dark bg-black'}>
             <div className='container-fluid'>
-                <h3 className='navbar-brand'>NoArtist</h3>
+                <h3 className='navbar-brand'>ChekBüq</h3>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">

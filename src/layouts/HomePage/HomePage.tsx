@@ -9,8 +9,6 @@ export const HomePage: React.FC<{ name: string }> = (props) => {
 
     return (
         <div className='container mt-3'>
-            <Navbar />
-
             {/*desktop*/}
             <div className='d-none d-md-flex justify-content-evenly'>
                 <div className='me-3'>

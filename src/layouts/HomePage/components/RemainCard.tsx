@@ -49,7 +49,7 @@ export const RemainCard: React.FC<{ input: RemainCardProps }> = (props) => {
                         <input type="text"
                                className="form-control"
                                id="init-amt-input"
-                               placeholder="Initial Ammount Input"
+                               placeholder="Initial Amount Input"
                                value={initAmtEntryValue}
                                onKeyUp={event => takeInitAmtInput(event)}
                                onChange={event => setInitAmtEntryValue((event.target as HTMLInputElement).value)}

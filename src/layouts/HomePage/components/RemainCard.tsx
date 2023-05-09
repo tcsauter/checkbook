@@ -1,9 +1,5 @@
 import React, {useState} from "react";
-
-export interface RemainCardProps {
-    initialAmount: number;
-    setInitAmt: React.Dispatch<React.SetStateAction<number>>;
-}
+import { RemainCardProps } from "../../../models/props";
 
 export const RemainCard: React.FC<{ input: RemainCardProps }> = (props) => {
     const [initAmtEntryValue, setInitAmtEntryValue] = useState<string>('')

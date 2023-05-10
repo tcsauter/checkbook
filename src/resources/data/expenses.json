@@ -1,0 +1,22 @@
+{
+  "expenses": [
+    {
+      "id": 1,
+      "amount": 45,
+      "accountId": 1,
+      "date": "05052023"
+    },
+    {
+      "id": 2,
+      "amount": 146.35,
+      "accountId": 1,
+      "date": "05052023"
+    },
+    {
+      "id": 3,
+      "amount": 10.17,
+      "accountId": 2,
+      "date": "05142023"
+    }
+  ]
+}

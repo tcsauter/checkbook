@@ -1,16 +1,11 @@
 import React, {useState} from "react";
 
-interface SpentListItemProps {
+export const ExpenseListItem: React.FC<{
     amount: number,
-    date: {
-        month: number,
-        day: number,
-        year: number;
-    },
-    account: string;
-}
-
-export const SpentListItem: React.FC<{ input: SpentListItemProps }> = (props) => {
+    acctName: string | undefined,
+    date: string,
+    updateExpense: (id: number, field: string, value: string) => void
+}> = (props) => {
     const [showAmtInput, setShowAmtInput] = useState(false);
     const [amtInputValue, setAmtInputValue] = useState('');
 
@@ -38,7 +33,7 @@ export const SpentListItem: React.FC<{ input: SpentListItemProps }> = (props) =>
         >
             <div>
                 <h5 className='me-5'>
-                    {props.input.amount.toLocaleString("en-US", {
+                    {props.amount.toLocaleString("en-US", {
                         style: "currency",
                         currency: "USD"
                     })}
@@ -59,9 +54,13 @@ export const SpentListItem: React.FC<{ input: SpentListItemProps }> = (props) =>
                     </div>
                 </div>
 
-                <small>{props.input.date.month}/{props.input.date.day}/{props.input.date.year}</small>
+                <small>{
+                    new Date(props.date).toLocaleString("en-US", {
+                        dateStyle: "medium"
+                    })
+                }</small>
             </div>
-            <p>{props.input.account}</p>
+            <p>{props.acctName}</p>
         </div>
     );
 }

@@ -1,26 +1,24 @@
-{
-  "accounts": [
-    {
-      "id": 1,
-      "name": "Citi Double Cash",
-      "type": "Credit",
-      "lastFour": 8593
-    },
-    {
-      "id": 2,
-      "name": "Bank of America Credit",
-      "type": "Credit"
-    },
-    {
-      "id": 3,
-      "name": "Vystar Credit",
-      "type": "Credit"
-    },
-    {
-      "id": 4,
-      "name": "Bank of America Checking",
-      "type": "Cash",
-      "lastFour": 8304
-    }
-  ]
-}
+[
+  {
+    "id": 1,
+    "name": "Citi Double Cash",
+    "type": "Credit",
+    "lastFour": 8593
+  },
+  {
+    "id": 2,
+    "name": "Bank of America Credit",
+    "type": "Credit"
+  },
+  {
+    "id": 3,
+    "name": "Vystar Credit",
+    "type": "Credit"
+  },
+  {
+    "id": 4,
+    "name": "Bank of America Checking",
+    "type": "Cash",
+    "lastFour": 8304
+  }
+]

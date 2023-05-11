@@ -1,18 +1,16 @@
-{
-  "payPeriods": [
-    {
-      "id": 1,
-      "startDate": "05052023",
-      "endDate": "05182023",
-      "softStart": "05042023",
-      "softEnd": "05162023"
-    },
-    {
-      "id": 2,
-      "startDate": "05192023",
-      "endDate": "06012023",
-      "softStart": "05182023",
-      "softEnd": "05312023"
-    }
-  ]
-}
+[
+  {
+    "id": 1,
+    "startDate": "05052023",
+    "endDate": "05182023",
+    "softStart": "05042023",
+    "softEnd": "05162023"
+  },
+  {
+    "id": 2,
+    "startDate": "05192023",
+    "endDate": "06012023",
+    "softStart": "05182023",
+    "softEnd": "05312023"
+  }
+]

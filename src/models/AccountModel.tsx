@@ -16,4 +16,11 @@ class AccountModel {
     }
 }
 
+// interface AccountModel {
+//     id: number,
+//     name: string,
+//     type: string,
+//     lastFour?: number;
+// }
+
 export default AccountModel;

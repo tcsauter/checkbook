@@ -17,7 +17,7 @@ function App() {
 
     function updateExpense(id: number, field: string, value: string): void {
         const expense = expenses.find(element => element.id === id);
-
+        //todo: make sure expenses array gets updated
         if (expense) {
             switch (field) {
                 case "amount":

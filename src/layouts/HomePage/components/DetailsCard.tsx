@@ -33,10 +33,9 @@ export const DetailsCard: React.FC<{
                     {/*}}/>*/}
 
                     {props.expenseArray.map((value: ExpenseModel) => {
-                        return (<ExpenseListItem amount={value.amount}
-                                                 acctName={props.getAccountNameById(value.accountId)}
-                                                 date={value.date}
+                        return (<ExpenseListItem expense={value}
                                                  updateExpense={props.updateExpense}
+                                                 getAcctNameById={props.getAccountNameById}
                                                  key={value.id}
                         />);
                     })}

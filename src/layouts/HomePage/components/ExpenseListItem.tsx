@@ -1,24 +1,25 @@
 import React, {useState} from "react";
+import ExpenseModel from "../../../models/ExpenseModel";
 
 export const ExpenseListItem: React.FC<{
-    amount: number,
-    acctName: string | undefined,
-    date: string,
-    updateExpense: (id: number, field: string, value: string) => void
+    expense: ExpenseModel,
+    updateExpense: (id: number, field: string, value: string) => void,
+    getAcctNameById: (id: number) => string | undefined
 }> = (props) => {
     const [showAmtInput, setShowAmtInput] = useState(false);
+    const [showAmtWarning, setShowAmtWarning] = useState(false);
     const [amtInputValue, setAmtInputValue] = useState('');
 
     function processAmtInput(event: React.KeyboardEvent<HTMLInputElement>) {
-        if(event.key === "Enter"){
-            const inputValue: number = Number(amtInputValue);
-
-            if(isNaN(inputValue)) {
-
-            }else{
+        if (event.key === "Enter") {
+            if (isNaN(Number(amtInputValue))) {
+                setShowAmtWarning(true);
+            } else {
                 setShowAmtInput(false);
+                setShowAmtWarning(false);
 
-                //todo: Think more deeply about the flow of data and how individual transactions can be updated safely
+                props.updateExpense(props.expense.id, "amount", amtInputValue);
+                setAmtInputValue('');
             }
         }
     }
@@ -32,8 +33,8 @@ export const ExpenseListItem: React.FC<{
                         border-bottom'
         >
             <div>
-                <h5 className='me-5'>
-                    {props.amount.toLocaleString("en-US", {
+                <h5 className={showAmtInput ? 'd-none me-5' : 'me-5'} onClick={event => setShowAmtInput(true)}>
+                    {props.expense.amount.toLocaleString("en-US", {
                         style: "currency",
                         currency: "USD"
                     })}
@@ -49,18 +50,24 @@ export const ExpenseListItem: React.FC<{
                                placeholder="Amount Input"
                                value={amtInputValue}
                                onKeyUp={event => processAmtInput(event)}
-                               onChange={event => setAmtInputValue((event.target as HTMLInputElement).value)}
+                               onChange={event => {
+                                   setAmtInputValue((event.target as HTMLInputElement).value)
+                               }}
                         />
                     </div>
                 </div>
+                <div>
+                    <small className={showAmtWarning ? 'text-danger' : 'd-none text-danger'}>Enter a numeric
+                        amount.</small>
+                </div>
 
                 <small>{
-                    new Date(props.date).toLocaleString("en-US", {
+                    new Date(props.expense.date).toLocaleString("en-US", {
                         dateStyle: "medium"
                     })
                 }</small>
             </div>
-            <p>{props.acctName}</p>
+            <p>{props.getAcctNameById(props.expense.accountId)}</p>
         </div>
     );
 }

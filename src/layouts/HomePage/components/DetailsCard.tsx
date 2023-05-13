@@ -5,7 +5,7 @@ import ExpenseModel from "../../../models/ExpenseModel";
 export const DetailsCard: React.FC<{
     expenseArray: ExpenseModel[],
     getAccountNameById: (id: number) => string | undefined,
-    updateExpense: (id: number, field: string, value: string) => void
+    updateExpense: React.Dispatch<React.SetStateAction<ExpenseModel[]>>
 }> = (props) => {
 
     return (

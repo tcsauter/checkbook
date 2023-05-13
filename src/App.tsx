@@ -15,32 +15,10 @@ function App() {
         return accounts.find(element => element.id === id)?.name;
     }
 
-    function updateExpense(id: number, field: string, value: string): void {
-        const localExpenses = expenses;
-        const expenseIndex = expenses.findIndex(element => element.id === id);
-        const expense = expenses.at(expenseIndex);
-        //todo: make sure expenses array gets updated
-        if (expense) {
-            switch (field) {
-                case "amount":
-                    expense.amount = Number(value);
-                    break;
-                case "account":
-                    expense.accountId = Number(value);
-                    break;
-                case "date":
-                    expense.date = value;
-                    break;
-            }
-            localExpenses.splice(expenseIndex, 1, expense);
-            setExpenses(localExpenses);
-        }
-    }
-
     return (
         <div className="App">
             <Navbar/>
-            <HomePage expenseArray={expenses} updateExpense={updateExpense} getAccountNameById={getAccountNameById} />
+            <HomePage expenseArray={expenses} updateExpense={setExpenses} getAccountNameById={getAccountNameById} />
         </div>
     );
 }

@@ -4,7 +4,11 @@ import {RemainCard} from "./components/RemainCard";
 import {DetailsCard} from "./components/DetailsCard";
 import ExpenseModel from "../../models/ExpenseModel";
 
-export const HomePage: React.FC<{ expenseArray: ExpenseModel[], updateExpense: (id: number, field: string, value: string) => void, getAccountNameById: (id: number) => string | undefined }> = (props) => {
+export const HomePage: React.FC<{
+    expenseArray: ExpenseModel[],
+    updateExpense: React.Dispatch<React.SetStateAction<ExpenseModel[]>>,
+    getAccountNameById: (id: number) => string | undefined
+}> = (props) => {
     const [remainCardInitAmt, setRemainCardInitAmt] = useState(0);
 
     console.log("homepage is rendered");

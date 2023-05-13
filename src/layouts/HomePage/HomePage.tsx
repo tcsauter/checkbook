@@ -10,7 +10,7 @@ export const HomePage: React.FC<{ expenseArray: ExpenseModel[], updateExpense: (
     console.log("homepage is rendered");
 
     return (
-        <div className='container bg-dark vh-100 bg-opacity-75'>
+        <div className='container bg-black vh-100 bg-opacity-75'>
             {/*desktop*/}
             <div className='d-none d-md-flex justify-content-evenly'>
                 <div className='me-3 mt-3'>

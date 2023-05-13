@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 import {HomePage} from "./layouts/HomePage/HomePage";
 import {Navbar} from "./layouts/NavbarAndFooter/Navbar";
@@ -16,7 +16,9 @@ function App() {
     }
 
     function updateExpense(id: number, field: string, value: string): void {
-        const expense = expenses.find(element => element.id === id);
+        const localExpenses = expenses;
+        const expenseIndex = expenses.findIndex(element => element.id === id);
+        const expense = expenses.at(expenseIndex);
         //todo: make sure expenses array gets updated
         if (expense) {
             switch (field) {
@@ -30,6 +32,8 @@ function App() {
                     expense.date = value;
                     break;
             }
+            localExpenses.splice(expenseIndex, 1, expense);
+            setExpenses(localExpenses);
         }
     }
 

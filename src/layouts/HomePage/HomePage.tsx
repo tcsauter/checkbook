@@ -7,11 +7,13 @@ import ExpenseModel from "../../models/ExpenseModel";
 export const HomePage: React.FC<{ expenseArray: ExpenseModel[], updateExpense: (id: number, field: string, value: string) => void, getAccountNameById: (id: number) => string | undefined }> = (props) => {
     const [remainCardInitAmt, setRemainCardInitAmt] = useState(0);
 
+    console.log("homepage is rendered");
+
     return (
-        <div className='container mt-3'>
+        <div className='container bg-dark vh-100 bg-opacity-75'>
             {/*desktop*/}
             <div className='d-none d-md-flex justify-content-evenly'>
-                <div className='me-3'>
+                <div className='me-3 mt-3'>
                     <RemainCard
                         input={{
                             initialAmount: remainCardInitAmt ? remainCardInitAmt : 550,
@@ -20,7 +22,7 @@ export const HomePage: React.FC<{ expenseArray: ExpenseModel[], updateExpense: (
                     />
                     <CreditBalanceSummaryCard name={"Travis Sauter-Hunsberger"}/>
                 </div>
-                <div className='w-75'>
+                <div className='w-75 mt-3'>
                     <DetailsCard expenseArray={props.expenseArray} getAccountNameById={props.getAccountNameById} updateExpense={props.updateExpense} />
                 </div>
             </div>

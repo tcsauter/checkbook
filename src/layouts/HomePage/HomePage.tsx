@@ -11,8 +11,6 @@ export const HomePage: React.FC<{
 }> = (props) => {
     const [remainCardInitAmt, setRemainCardInitAmt] = useState(0);
 
-    console.log("homepage is rendered");
-
     return (
         <div className='container bg-black vh-100 bg-opacity-75'>
             {/*desktop*/}

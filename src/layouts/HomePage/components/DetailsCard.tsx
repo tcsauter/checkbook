@@ -8,6 +8,16 @@ export const DetailsCard: React.FC<{
     updateExpense: React.Dispatch<React.SetStateAction<ExpenseModel[]>>
 }> = (props) => {
 
+    function updateExpenseArray(newExpense: ExpenseModel) {
+        const newExpenseArray = Array.from(props.expenseArray);
+        newExpenseArray.splice(
+            newExpenseArray.findIndex(value => value.id === newExpense.id),
+            1,
+            newExpense
+        );
+        props.updateExpense(newExpenseArray);
+    }
+
     return (
         <div className='card bg-light text-muted shadow' id='details-card'>
             <div className='card-body'>
@@ -34,7 +44,7 @@ export const DetailsCard: React.FC<{
 
                     {props.expenseArray.map((value: ExpenseModel) => {
                         return (<ExpenseListItem expense={value}
-                                                 updateExpense={props.updateExpense}
+                                                 updateExpense={updateExpenseArray}
                                                  getAcctNameById={props.getAccountNameById}
                                                  key={value.id}
                         />);

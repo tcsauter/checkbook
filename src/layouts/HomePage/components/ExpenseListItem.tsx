@@ -3,7 +3,7 @@ import ExpenseModel from "../../../models/ExpenseModel";
 
 export const ExpenseListItem: React.FC<{
     expense: ExpenseModel,
-    updateExpense: React.Dispatch<React.SetStateAction<ExpenseModel[]>>,
+    updateExpense: (newExpense: ExpenseModel) => void,
     getAcctNameById: (id: number) => string | undefined
 }> = (props) => {
     const [showAmtInput, setShowAmtInput] = useState(false);
@@ -12,7 +12,6 @@ export const ExpenseListItem: React.FC<{
 
     function processAmtInput(event: React.KeyboardEvent<HTMLInputElement>) {
         if (event.key === "Enter") {
-            console.log("presssed enter")
             const amtInput = Number(amtInputValue);
 
             if (isNaN(Number(amtInput))) {
@@ -22,10 +21,7 @@ export const ExpenseListItem: React.FC<{
                 setShowAmtWarning(false);
 
                 props.expense.amount = amtInput;
-                props.updateExpense((prevState) => {
-                    prevState.splice(0, 1, props.expense);
-                    return prevState;
-                });
+                props.updateExpense(props.expense);
                 setAmtInputValue('');
             }
         }

@@ -14,7 +14,10 @@ export const ExpenseListItem: React.FC<{
         if (event.key === "Enter") {
             const amtInput = Number(amtInputValue);
 
-            if (isNaN(Number(amtInput))) {
+            if(amtInputValue === ''){
+                setShowAmtInput(false);
+                setShowAmtWarning(false);
+            }else if(isNaN(Number(amtInput))) {
                 setShowAmtWarning(true);
             } else {
                 setShowAmtInput(false);

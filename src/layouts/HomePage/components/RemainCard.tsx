@@ -32,7 +32,7 @@ export const RemainCard: React.FC<{ input: RemainCardProps }> = (props) => {
                    id='remain-amt-elem'
                    onClick={event => setShowEnterRemainAmt(true)}
                 >
-                    {props.input.initialAmount.toLocaleString('en-US', {
+                    {(props.input.initialAmount - props.input.totalSpent).toLocaleString('en-US', {
                         style: "currency",
                         currency: "USD"
                     })}

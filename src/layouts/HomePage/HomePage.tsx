@@ -11,6 +11,12 @@ export const HomePage: React.FC<{
 }> = (props) => {
     const [remainCardInitAmt, setRemainCardInitAmt] = useState(0);
 
+    function calculateSpent(): number {
+        let totalAmount: number = 0;
+        props.expenseArray.map(value => totalAmount += value.amount);
+        return totalAmount;
+    }
+
     return (
         <div className='container bg-black vh-100 bg-opacity-75'>
             {/*desktop*/}
@@ -19,6 +25,7 @@ export const HomePage: React.FC<{
                     <RemainCard
                         input={{
                             initialAmount: remainCardInitAmt ? remainCardInitAmt : 550,
+                            totalSpent: calculateSpent(),
                             setInitAmt: setRemainCardInitAmt
                         }}
                     />
@@ -34,6 +41,7 @@ export const HomePage: React.FC<{
                 <RemainCard
                     input={{
                         initialAmount: remainCardInitAmt ? remainCardInitAmt : 550,
+                        totalSpent: calculateSpent(),
                         setInitAmt: setRemainCardInitAmt
                     }}
                 />

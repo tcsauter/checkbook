@@ -45,7 +45,7 @@ export const ExpenseListItem: React.FC<{
                         currency: "USD"
                     })}
                 </h5>
-                <div className={showAmtInput ? 'input-group' : 'd-none input-group mb-3'}
+                <div className={showAmtInput ? 'input-group mb-3' : 'd-none input-group mb-3'}
                      id='amt-entry'
                 >
                     <span className="input-group-text" id="basic-addon1">$</span>

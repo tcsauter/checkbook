@@ -14,10 +14,10 @@ export const ExpenseListItem: React.FC<{
         if (event.key === "Enter") {
             const amtInput = Number(amtInputValue);
 
-            if(amtInputValue === ''){
+            if (amtInputValue === '') {
                 setShowAmtInput(false);
                 setShowAmtWarning(false);
-            }else if(isNaN(Number(amtInput))) {
+            } else if (isNaN(Number(amtInput))) {
                 setShowAmtWarning(true);
             } else {
                 setShowAmtInput(false);
@@ -67,11 +67,12 @@ export const ExpenseListItem: React.FC<{
                         amount.</small>
                 </div>
 
-                <small>{
-                    new Date(props.expense.date).toLocaleString("en-US", {
-                        dateStyle: "medium"
-                    })
-                }</small>
+                <small>
+                    {new Date(props.expense.date).toLocaleDateString('en-US', {
+                        timeZone: "UTC",
+                        dateStyle: "full"
+                    })}
+                </small>
             </div>
             <p>{props.getAcctNameById(props.expense.accountId)}</p>
         </div>

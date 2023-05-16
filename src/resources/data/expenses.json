@@ -8,19 +8,19 @@
   {
     "id": 2,
     "amount": 146.35,
-    "accountId": 1,
+    "accountId": 4,
     "date": "2023-05-05T12:00:00"
   },
   {
     "id": 3,
     "amount": 10.17,
-    "accountId": 2,
+    "accountId": 1,
     "date": "2023-05-14T12:00:00"
   },
   {
     "id": 4,
     "amount": 33.58,
-    "accountId": 8,
+    "accountId": 3,
     "date": "2023-05-19T12:00:00"
   }
 ]

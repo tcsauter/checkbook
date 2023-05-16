@@ -3,11 +3,13 @@ import {CreditBalanceSummaryCard} from "./components/CreditBalanceSummaryCard";
 import {RemainCard} from "./components/RemainCard";
 import {DetailsCard} from "./components/DetailsCard";
 import ExpenseModel from "../../models/ExpenseModel";
+import {CreditBalanceSummaryCardProps} from "../../models/props";
 
 export const HomePage: React.FC<{
     expenseArray: ExpenseModel[],
     updateExpense: React.Dispatch<React.SetStateAction<ExpenseModel[]>>,
-    getAccountNameById: (id: number) => string | undefined
+    getAccountNameById: (id: number) => string | undefined,
+    creditAccountSummaryArray: CreditBalanceSummaryCardProps[]
 }> = (props) => {
     const [remainCardInitAmt, setRemainCardInitAmt] = useState(0);
 
@@ -29,7 +31,7 @@ export const HomePage: React.FC<{
                             setInitAmt: setRemainCardInitAmt
                         }}
                     />
-                    <CreditBalanceSummaryCard name={"Travis Sauter-Hunsberger"}/>
+                    <CreditBalanceSummaryCard creditAccountSummaryArray={props.creditAccountSummaryArray}/>
                 </div>
                 <div className='w-75 mt-3'>
                     <DetailsCard expenseArray={props.expenseArray} getAccountNameById={props.getAccountNameById} updateExpense={props.updateExpense} />
@@ -45,7 +47,7 @@ export const HomePage: React.FC<{
                         setInitAmt: setRemainCardInitAmt
                     }}
                 />
-                <CreditBalanceSummaryCard name={"Travis Sauter-Hunsberger"}/>
+                <CreditBalanceSummaryCard creditAccountSummaryArray={props.creditAccountSummaryArray}/>
                 <DetailsCard expenseArray={props.expenseArray} getAccountNameById={props.getAccountNameById} updateExpense={props.updateExpense} />
             </div>
         </div>

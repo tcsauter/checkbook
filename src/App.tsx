@@ -17,13 +17,14 @@ function App() {
 
     function calculateTotalSpentByAcct(): object[] {
         let creditBalanceSummaryArray: object[] = [];
-        accounts.map((account) => {
-            const expensesCopy: ExpenseModel[] = expenses.slice();
-            let totalAmt: number = 0;
-            expensesCopy.filter((expense) => expense.accountId === account.id)
-                .map((expense) => totalAmt += expense.amount);
-            creditBalanceSummaryArray.push({accountName: account.name, amount: totalAmt});
-        });
+        accounts.filter(account => account.type === "Credit")
+            .map((account) => {
+                const expensesCopy: ExpenseModel[] = expenses.slice();
+                let totalAmt: number = 0;
+                expensesCopy.filter((expense) => expense.accountId === account.id)
+                    .map((expense) => totalAmt += expense.amount);
+                creditBalanceSummaryArray.push({accountName: account.name, amount: totalAmt});
+            });
         return creditBalanceSummaryArray;
     }
 

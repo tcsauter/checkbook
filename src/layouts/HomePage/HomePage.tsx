@@ -4,6 +4,7 @@ import {RemainCard} from "./components/RemainCard";
 import {DetailsCard} from "./components/DetailsCard";
 import ExpenseModel from "../../models/ExpenseModel";
 import {CreditBalanceSummaryCardProps} from "../../models/props";
+import {AddNewExpenseCard} from "./components/AddNewExpenseCard";
 
 export const HomePage: React.FC<{
     expenseArray: ExpenseModel[],
@@ -21,6 +22,9 @@ export const HomePage: React.FC<{
 
     return (
         <div className='container bg-black vh-100 bg-opacity-75'>
+
+            <AddNewExpenseCard />
+
             {/*desktop*/}
             <div className='d-none d-md-flex justify-content-evenly'>
                 <div className='me-3 mt-3'>
@@ -34,7 +38,8 @@ export const HomePage: React.FC<{
                     <CreditBalanceSummaryCard creditAccountSummaryArray={props.creditAccountSummaryArray}/>
                 </div>
                 <div className='w-75 mt-3'>
-                    <DetailsCard expenseArray={props.expenseArray} getAccountNameById={props.getAccountNameById} updateExpense={props.updateExpense} />
+                    <DetailsCard expenseArray={props.expenseArray} getAccountNameById={props.getAccountNameById}
+                                 updateExpense={props.updateExpense}/>
                 </div>
             </div>
 
@@ -48,7 +53,8 @@ export const HomePage: React.FC<{
                     }}
                 />
                 <CreditBalanceSummaryCard creditAccountSummaryArray={props.creditAccountSummaryArray}/>
-                <DetailsCard expenseArray={props.expenseArray} getAccountNameById={props.getAccountNameById} updateExpense={props.updateExpense} />
+                <DetailsCard expenseArray={props.expenseArray} getAccountNameById={props.getAccountNameById}
+                             updateExpense={props.updateExpense}/>
             </div>
         </div>
     );

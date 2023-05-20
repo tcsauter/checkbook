@@ -16,7 +16,9 @@ export const CreditBalanceSummaryCard: React.FC<{ creditAccountSummaryArray: Cre
                 <div>
                     <ul className='list-group mt-4'>
                         {props.creditAccountSummaryArray.map(summaryItem => {
-                            return <AcctSummaryListItem acctName={summaryItem.accountName} amt={summaryItem.amount} />
+                            return <AcctSummaryListItem acctName={summaryItem.accountName} amt={summaryItem.amount}
+                                                        key={Math.random()}
+                            />
                         })}
                     </ul>
                     <hr/>

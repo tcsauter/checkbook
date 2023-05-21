@@ -85,13 +85,11 @@ export const AddNewExpenseCard: React.FC<{
                        className='btn bg-black text-bg-primary col-11 col-lg-1 mt-3 mt-lg-0 me-lg-2'
                        value="Add"
                        onClick={event => addExpense(event)}
-                       onTouchEnd={event => addExpense(event)}
                 />
                 <input type="button"
                        className='btn bg-black text-bg-primary col-11 col-lg-1 mt-1 mt-lg-0'
                        value="Cancel"
                        onClick={event => clearFields(event)}
-                       onTouchEnd={event => clearFields(event)}
                 />
             </form>
             <small className={showFormIncompleteMsg ? 'text-danger' : 'd-none text-danger'}>Please complete all fields to submit.</small>

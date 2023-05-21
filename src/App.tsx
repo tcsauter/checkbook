@@ -31,6 +31,7 @@ function App() {
                                   return ({accountName: account.name, amount: totalAmt});
                               })
                       }
+                      accounts={accounts}
             />
         </div>
     );

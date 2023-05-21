@@ -5,12 +5,14 @@ import {DetailsCard} from "./components/DetailsCard";
 import ExpenseModel from "../../models/ExpenseModel";
 import {CreditBalanceSummaryCardProps} from "../../models/props";
 import {AddNewExpenseCard} from "./components/AddNewExpenseCard";
+import AccountModel from "../../models/AccountModel";
 
 export const HomePage: React.FC<{
     expenseArray: ExpenseModel[],
     updateExpense: React.Dispatch<React.SetStateAction<ExpenseModel[]>>,
     getAccountNameById: (id: number) => string | undefined,
-    creditAccountSummaryArray: CreditBalanceSummaryCardProps[]
+    creditAccountSummaryArray: CreditBalanceSummaryCardProps[],
+    accounts: AccountModel[]
 }> = (props) => {
     const [remainCardInitAmt, setRemainCardInitAmt] = useState(0);
 
@@ -20,10 +22,21 @@ export const HomePage: React.FC<{
         return totalAmount;
     }
 
+    function addNewExpense(newExpense:ExpenseModel) {
+        //set id of new expense
+        newExpense.id = props.expenseArray[props.expenseArray.length - 1].id + 1;
+
+        const newArray = props.expenseArray.slice();
+        newArray.push(newExpense);
+        props.updateExpense(newArray);
+    }
+
     return (
         <div className='container bg-black vh-100 bg-opacity-75'>
 
-            <AddNewExpenseCard />
+            <AddNewExpenseCard accounts={props.accounts}
+                               updateExpenses={addNewExpense}
+            />
 
             {/*desktop*/}
             <div className='d-none d-md-flex justify-content-evenly'>

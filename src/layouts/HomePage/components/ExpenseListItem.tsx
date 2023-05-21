@@ -4,7 +4,7 @@ import ExpenseModel from "../../../models/ExpenseModel";
 export const ExpenseListItem: React.FC<{
     expense: ExpenseModel,
     updateExpense: (newExpense: ExpenseModel) => void,
-    getAcctNameById: (id: number) => string | undefined
+    acctName: string | undefined
 }> = (props) => {
     const [showAmtInput, setShowAmtInput] = useState(false);
     const [showAmtWarning, setShowAmtWarning] = useState(false);
@@ -74,7 +74,7 @@ export const ExpenseListItem: React.FC<{
                     })}
                 </small>
             </div>
-            <p>{props.getAcctNameById(props.expense.accountId)}</p>
+            <p>{props.acctName}</p>
         </div>
     );
 }

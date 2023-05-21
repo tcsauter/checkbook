@@ -18,7 +18,7 @@ function App() {
     return (
         <div className="App">
             <Navbar/>
-            <HomePage expenseArray={expenses}
+            <HomePage expensesArray={expenses}
                       updateExpense={setExpenses}
                       getAccountNameById={getAccountNameById}
                       creditAccountSummaryArray={
@@ -31,7 +31,7 @@ function App() {
                                   return ({accountName: account.name, amount: totalAmt});
                               })
                       }
-                      accounts={accounts}
+                      accountsArray={accounts}
             />
         </div>
     );

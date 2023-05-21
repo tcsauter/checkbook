@@ -8,25 +8,25 @@ import {AddNewExpenseCard} from "./components/AddNewExpenseCard";
 import AccountModel from "../../models/AccountModel";
 
 export const HomePage: React.FC<{
-    expenseArray: ExpenseModel[],
+    expensesArray: ExpenseModel[],
     updateExpense: React.Dispatch<React.SetStateAction<ExpenseModel[]>>,
     getAccountNameById: (id: number) => string | undefined,
     creditAccountSummaryArray: CreditBalanceSummaryCardProps[],
-    accounts: AccountModel[]
+    accountsArray: AccountModel[]
 }> = (props) => {
     const [remainCardInitAmt, setRemainCardInitAmt] = useState(0);
 
     function calculateSpent(): number {
         let totalAmount: number = 0;
-        props.expenseArray.map(value => totalAmount += value.amount);
+        props.expensesArray.map(value => totalAmount += value.amount);
         return totalAmount;
     }
 
     function addNewExpense(newExpense:ExpenseModel) {
         //set id of new expense
-        newExpense.id = props.expenseArray[props.expenseArray.length - 1].id + 1;
+        newExpense.id = props.expensesArray[props.expensesArray.length - 1].id + 1;
 
-        const newArray = props.expenseArray.slice();
+        const newArray = props.expensesArray.slice();
         newArray.push(newExpense);
         props.updateExpense(newArray);
     }
@@ -34,7 +34,7 @@ export const HomePage: React.FC<{
     return (
         <div className='container bg-black vh-100 bg-opacity-75'>
 
-            <AddNewExpenseCard accounts={props.accounts}
+            <AddNewExpenseCard accounts={props.accountsArray}
                                updateExpenses={addNewExpense}
             />
 
@@ -51,8 +51,8 @@ export const HomePage: React.FC<{
                     <CreditBalanceSummaryCard creditAccountSummaryArray={props.creditAccountSummaryArray}/>
                 </div>
                 <div className='w-75 mt-3'>
-                    <DetailsCard expenseArray={props.expenseArray} getAccountNameById={props.getAccountNameById}
-                                 updateExpense={props.updateExpense}/>
+                    <DetailsCard expenseArray={props.expensesArray} getAccountNameById={props.getAccountNameById}
+                                 updateExpense={props.updateExpense} accountsArray={props.accountsArray}/>
                 </div>
             </div>
 
@@ -66,8 +66,8 @@ export const HomePage: React.FC<{
                     }}
                 />
                 <CreditBalanceSummaryCard creditAccountSummaryArray={props.creditAccountSummaryArray}/>
-                <DetailsCard expenseArray={props.expenseArray} getAccountNameById={props.getAccountNameById}
-                             updateExpense={props.updateExpense}/>
+                <DetailsCard expenseArray={props.expensesArray} getAccountNameById={props.getAccountNameById}
+                             updateExpense={props.updateExpense} accountsArray={props.accountsArray}/>
             </div>
         </div>
     );

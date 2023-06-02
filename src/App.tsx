@@ -11,7 +11,7 @@ function App() {
     const [accounts, setAccounts] = useState<AccountModel[]>(_accounts as AccountModel[]);
     const [expenses, setExpenses] = useState<ExpenseModel[]>(_expenses as ExpenseModel[]);
 
-    function getAccountNameById(id: number): string | undefined {
+    function getAccountNameById(id: string): string | undefined {
         return accounts.find(element => element.id === id)?.name;
     }
 

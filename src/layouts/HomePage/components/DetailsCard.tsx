@@ -6,7 +6,7 @@ import AccountModel from "../../../models/AccountModel";
 export const DetailsCard: React.FC<{
     expenseArray: ExpenseModel[],
     accountsArray: AccountModel[],
-    getAccountNameById: (id: number) => string | undefined,
+    getAccountNameById: (id: string) => string | undefined,
     updateExpense: React.Dispatch<React.SetStateAction<ExpenseModel[]>>
 }> = (props) => {
     const [acctFilter, setAcctFilter] = useState('');

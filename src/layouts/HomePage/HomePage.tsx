@@ -10,7 +10,7 @@ import AccountModel from "../../models/AccountModel";
 export const HomePage: React.FC<{
     expensesArray: ExpenseModel[],
     updateExpense: React.Dispatch<React.SetStateAction<ExpenseModel[]>>,
-    getAccountNameById: (id: number) => string | undefined,
+    getAccountNameById: (id: string) => string | undefined,
     creditAccountSummaryArray: CreditBalanceSummaryCardProps[],
     accountsArray: AccountModel[]
 }> = (props) => {
@@ -24,6 +24,7 @@ export const HomePage: React.FC<{
 
     function addNewExpense(newExpense:ExpenseModel) {
         //set id of new expense
+        //todo: create id from timestamp
         newExpense.id = props.expensesArray[props.expensesArray.length - 1].id + 1;
 
         const newArray = props.expensesArray.slice();

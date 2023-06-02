@@ -28,7 +28,7 @@ export const AddNewExpenseCard: React.FC<{
 
         if(canAcceptForm){
             props.updateExpenses({
-                id: 0,
+                id: Date.now().toString(), //this creates a string representation of the current moment, which should ensure a unique id
                 amount: Number(inputAmt),
                 accountId: props.accounts[searchResult].id,
                 date: inputDate

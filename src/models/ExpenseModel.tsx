@@ -1,13 +1,13 @@
 class ExpenseModel {
-    id: number;
+    id: string;
     amount: number;
-    accountId: number;
+    accountId: string;
     date: string;
 
     constructor(
-        id: number,
+        id: string,
         amount: number,
-        accountId: number,
+        accountId: string,
         date: string
     ) {
         this.id = id;

@@ -1,13 +1,13 @@
 class AccountModel {
-    id: number;
+    id: string;
     name: string;
     type: "Credit" | "Cash";
-    lastFour?: number;
+    lastFour?: string;
 
-    constructor (id: number,
+    constructor (id: string,
                  name: string,
                  type: "Credit" | "Cash",
-                 lastFour?: number
+                 lastFour?: string
     ) {
         this.id = id;
         this.name = name;

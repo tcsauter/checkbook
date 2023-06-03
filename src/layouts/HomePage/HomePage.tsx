@@ -29,7 +29,6 @@ export const HomePage: React.FC<{
 
     useEffect(() => {
         const getExpenses = async () => {
-            console.log("fetching expenses")
             const expenses: ExpenseModel[] = []
             await fetch("http://192.168.1.135:8080/get/expenses")
                 .then(async response => {
@@ -62,13 +61,37 @@ export const HomePage: React.FC<{
         return totalAmount;
     }
 
-    function addNewExpense(newExpense: ExpenseModel) {
-        //set id of new expense
-        //todo: create id from timestamp
-        newExpense.id = expenseArray[expenseArray.length - 1].id + 1;
+    async function addNewExpense(newExpense: ExpenseModel) {
+        const newArray: ExpenseModel[] = [];
+        await fetch("http://192.168.1.135:8080/add/expense", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                "_id": newExpense.id,
+                "amount": newExpense.amount,
+                "accountId": newExpense.accountId,
+                "date": newExpense.date
+            })
+        })
+            .then(async response => {
+                if (!response.ok) {
+                    console.log(response.statusText);
+                }
 
-        const newArray = expenseArray.slice();
-        newArray.push(newExpense);
+                const responseJson = await response.json().then(value => value);
+
+                for (const key in responseJson) {
+                    newArray.push({
+                        id: responseJson[key]._id,
+                        amount: responseJson[key].amount,
+                        accountId: responseJson[key].accountId,
+                        date: responseJson[key].date
+                    });
+                }
+            })
+
         setExpenseArray(newArray);
     }
 

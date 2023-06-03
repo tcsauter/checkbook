@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {CreditBalanceSummaryCard} from "./components/CreditBalanceSummaryCard";
 import {RemainCard} from "./components/RemainCard";
 import {DetailsCard} from "./components/DetailsCard";
@@ -8,28 +8,68 @@ import {AddNewExpenseCard} from "./components/AddNewExpenseCard";
 import AccountModel from "../../models/AccountModel";
 
 export const HomePage: React.FC<{
-    expensesArray: ExpenseModel[],
-    updateExpense: React.Dispatch<React.SetStateAction<ExpenseModel[]>>,
     getAccountNameById: (id: string) => string | undefined,
-    creditAccountSummaryArray: CreditBalanceSummaryCardProps[],
     accountsArray: AccountModel[]
 }> = (props) => {
+    const [expenseArray, setExpenseArray] = useState<ExpenseModel[]>([]);
+    const [creditAccountSummaryArray, setCreditAccountSummaryArray] = useState<CreditBalanceSummaryCardProps[]>([]);
     const [remainCardInitAmt, setRemainCardInitAmt] = useState(0);
+
+    useEffect(() => {
+        setCreditAccountSummaryArray(props.accountsArray.filter(account => account.type === "Credit")
+            .map((account) => {
+                const expensesCopy: ExpenseModel[] = expenseArray.slice();
+                let totalAmt: number = 0;
+                expensesCopy.filter((expense) => expense.accountId === account.id)
+                    .map((expense) => totalAmt += expense.amount);
+                return ({accountName: account.name, amount: totalAmt});
+            }))
+    }, [props.accountsArray, expenseArray])
+
+
+    useEffect(() => {
+        const getExpenses = async () => {
+            console.log("fetching expenses")
+            const expenses: ExpenseModel[] = []
+            await fetch("http://192.168.1.135:8080/get/expenses")
+                .then(async response => {
+                    if (!response.ok) {
+                        console.log(response.statusText);
+                    }
+
+                    const responseJson = await response.json().then(value => value);
+
+                    for (const key in responseJson) {
+                        expenses.push({
+                            id: responseJson[key]._id,
+                            amount: responseJson[key].amount,
+                            accountId: responseJson[key].accountId,
+                            date: responseJson[key].date
+                        });
+                    }
+                })
+                .catch(reason => console.log(reason))
+
+            return expenses;
+        }
+
+        getExpenses().then(value => setExpenseArray(value)).catch(reason => console.log(reason));
+    }, [])
 
     function calculateSpent(): number {
         let totalAmount: number = 0;
-        props.expensesArray.map(value => totalAmount += value.amount);
+        expenseArray.map(value => totalAmount += value.amount);
         return totalAmount;
     }
 
-    function addNewExpense(newExpense:ExpenseModel) {
+    function addNewExpense(newExpense: ExpenseModel) {
         //set id of new expense
         //todo: create id from timestamp
-        newExpense.id = props.expensesArray[props.expensesArray.length - 1].id + 1;
+        newExpense.id = expenseArray[expenseArray.length - 1].id + 1;
 
-        const newArray = props.expensesArray.slice();
+        const newArray = expenseArray.slice();
         newArray.push(newExpense);
-        props.updateExpense(newArray);
+        setExpenseArray(newArray);
     }
 
     return (
@@ -49,11 +89,11 @@ export const HomePage: React.FC<{
                             setInitAmt: setRemainCardInitAmt
                         }}
                     />
-                    <CreditBalanceSummaryCard creditAccountSummaryArray={props.creditAccountSummaryArray}/>
+                    <CreditBalanceSummaryCard creditAccountSummaryArray={creditAccountSummaryArray}/>
                 </div>
                 <div className='w-75 mt-3'>
-                    <DetailsCard expenseArray={props.expensesArray} getAccountNameById={props.getAccountNameById}
-                                 updateExpense={props.updateExpense} accountsArray={props.accountsArray}/>
+                    <DetailsCard expenseArray={expenseArray} getAccountNameById={props.getAccountNameById}
+                                 updateExpense={setExpenseArray} accountsArray={props.accountsArray}/>
                 </div>
             </div>
 
@@ -66,9 +106,9 @@ export const HomePage: React.FC<{
                         setInitAmt: setRemainCardInitAmt
                     }}
                 />
-                <CreditBalanceSummaryCard creditAccountSummaryArray={props.creditAccountSummaryArray}/>
-                <DetailsCard expenseArray={props.expensesArray} getAccountNameById={props.getAccountNameById}
-                             updateExpense={props.updateExpense} accountsArray={props.accountsArray}/>
+                <CreditBalanceSummaryCard creditAccountSummaryArray={creditAccountSummaryArray}/>
+                <DetailsCard expenseArray={expenseArray} getAccountNameById={props.getAccountNameById}
+                             updateExpense={setExpenseArray} accountsArray={props.accountsArray}/>
             </div>
         </div>
     );

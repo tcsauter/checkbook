@@ -95,6 +95,63 @@ export const HomePage: React.FC<{
         setExpenseArray(newArray);
     }
 
+    async function updateExpense(expense: ExpenseModel) {
+        const newArray: ExpenseModel[] = [];
+        await fetch(`http://192.168.1.135:8080/update/expense/${expense.id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                "_id": expense.id,
+                "accountId": expense.accountId,
+                "amount": expense.amount,
+                "date": expense.date
+            })
+        }).then(async response => {
+            if(!response.ok){
+                console.log(response.statusText);
+            }
+
+            const responseJson = await response.json().then(value => value);
+
+            for(const key in responseJson){
+                newArray.push({
+                    id: responseJson[key]._id,
+                    accountId: responseJson[key].accountId,
+                    amount: responseJson[key].amount,
+                    date: responseJson[key].date
+                })
+            }
+        })
+
+        setExpenseArray(newArray);
+    }
+
+    async function deleteExpense(expenseId: string) {
+        const newArray: ExpenseModel[] = [];
+        await fetch(`http://192.168.1.135:8080/delete/expense/${expenseId}`, {
+            method: "DELETE"
+        }).then(async response => {
+            if(!response.ok){
+                console.log(response.statusText);
+            }
+
+            const responseJson = await response.json().then(value => value);
+
+            for(const key in responseJson) {
+                newArray.push({
+                    id: responseJson[key]._id,
+                    accountId: responseJson[key].accountId,
+                    amount: responseJson[key].amount,
+                    date: responseJson[key].date
+                })
+            }
+        })
+
+        setExpenseArray(newArray);
+    }
+
     return (
         <div className='container bg-black vh-100 bg-opacity-75'>
 
@@ -116,7 +173,8 @@ export const HomePage: React.FC<{
                 </div>
                 <div className='w-75 mt-3'>
                     <DetailsCard expenseArray={expenseArray} getAccountNameById={props.getAccountNameById}
-                                 updateExpense={setExpenseArray} accountsArray={props.accountsArray}/>
+                                 updateExpense={updateExpense} accountsArray={props.accountsArray}
+                                 deleteExpense={deleteExpense}/>
                 </div>
             </div>
 
@@ -131,7 +189,8 @@ export const HomePage: React.FC<{
                 />
                 <CreditBalanceSummaryCard creditAccountSummaryArray={creditAccountSummaryArray}/>
                 <DetailsCard expenseArray={expenseArray} getAccountNameById={props.getAccountNameById}
-                             updateExpense={setExpenseArray} accountsArray={props.accountsArray}/>
+                             updateExpense={updateExpense} accountsArray={props.accountsArray}
+                             deleteExpense={deleteExpense}/>
             </div>
         </div>
     );

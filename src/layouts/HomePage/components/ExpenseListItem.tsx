@@ -3,11 +3,13 @@ import ExpenseModel from "../../../models/ExpenseModel";
 
 export const ExpenseListItem: React.FC<{
     expense: ExpenseModel,
-    updateExpense: (newExpense: ExpenseModel) => void,
+    updateExpense: (newExpense: ExpenseModel) => Promise<void>,
+    deleteExpense: (expenseId: string) => Promise<void>,
     acctName: string | undefined
 }> = (props) => {
     const [showAmtInput, setShowAmtInput] = useState(false);
     const [showAmtWarning, setShowAmtWarning] = useState(false);
+    const [showDelete, setShowDelete] = useState(false);
     const [amtInputValue, setAmtInputValue] = useState('');
 
     function processAmtInput(event: React.KeyboardEvent<HTMLInputElement>) {
@@ -37,9 +39,10 @@ export const ExpenseListItem: React.FC<{
                         text-start
                         border-0
                         border-bottom'
+             onClick={() => setShowDelete(!showDelete)}
         >
             <div>
-                <h5 className={showAmtInput ? 'd-none me-5' : 'me-5'} onClick={event => setShowAmtInput(true)}>
+                <h5 className={showAmtInput ? 'd-none me-5' : 'me-5'} onClick={() => setShowAmtInput(true)}>
                     {props.expense.amount.toLocaleString("en-US", {
                         style: "currency",
                         currency: "USD"
@@ -74,7 +77,14 @@ export const ExpenseListItem: React.FC<{
                     })}
                 </small>
             </div>
-            <p>{props.acctName}</p>
+            <div className='d-inline text-end'>
+                <p className='mb-0'>{props.acctName}</p>
+                <input type='button'
+                       className={showDelete ? 'btn btn-danger mb-2 mt-1' : 'd-none'}
+                       value='delete'
+                       onClick={() => props.deleteExpense(props.expense.id)}
+                />
+            </div>
         </div>
     );
 }

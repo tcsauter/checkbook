@@ -6,7 +6,7 @@ export const RemainCard: React.FC<{ input: RemainCardProps }> = (props) => {
     const [showEnterRemainAmt, setShowEnterRemainAmt] = useState(false);
     const [showHintText, setShowHintText] = useState(false);
 
-    function takeInitAmtInput(event: React.MouseEvent<HTMLInputElement, MouseEvent>): void {
+    function takeInitAmtInput(): void {
         const entry = Number(initAmtEntryValue);
 
         if(initAmtEntryValue === ''){
@@ -55,7 +55,7 @@ export const RemainCard: React.FC<{ input: RemainCardProps }> = (props) => {
                     <input type="button"
                            value="Update"
                            className="btn btn-dark"
-                           onClick={event => takeInitAmtInput(event)}/>
+                           onClick={takeInitAmtInput}/>
                 </div>
                 <small className={showHintText ? 'text-danger' : 'd-none text-danger'}
                        id='hint-text'

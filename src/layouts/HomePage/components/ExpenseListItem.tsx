@@ -12,18 +12,21 @@ export const ExpenseListItem: React.FC<{
     const [showDelete, setShowDelete] = useState(false);
     const [amtInputValue, setAmtInputValue] = useState('');
 
-    function processAmtInput(event: React.KeyboardEvent<HTMLInputElement>) {
+    function processAmtInput(event: React.KeyboardEvent<HTMLInputElement>): void {
         if (event.key === "Enter") {
             const amtInput = Number(amtInputValue);
 
             if (amtInputValue === '') {
                 setShowAmtInput(false);
                 setShowAmtWarning(false);
-            } else if (isNaN(Number(amtInput))) {
+                setShowDelete(false);
+            } else if (isNaN(amtInput)) {
                 setShowAmtWarning(true);
+                setShowDelete(false);
             } else {
                 setShowAmtInput(false);
                 setShowAmtWarning(false);
+                setShowDelete(false);
 
                 props.expense.amount = amtInput;
                 props.updateExpense(props.expense);
@@ -80,8 +83,8 @@ export const ExpenseListItem: React.FC<{
             <div className='d-inline text-end'>
                 <p className='mb-0'>{props.acctName}</p>
                 <input type='button'
-                       className={showDelete ? 'btn btn-danger mb-2 mt-1' : 'd-none'}
-                       value='delete'
+                       className={showDelete && !showAmtInput ? 'btn btn-danger mb-2 mt-1' : 'd-none'}
+                       value='Delete'
                        onClick={() => props.deleteExpense(props.expense.id)}
                 />
             </div>

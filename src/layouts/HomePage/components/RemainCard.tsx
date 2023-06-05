@@ -1,24 +1,25 @@
 import React, {useState} from "react";
-import { RemainCardProps } from "../../../models/props";
+import {RemainCardProps} from "../../../models/props";
 
 export const RemainCard: React.FC<{ input: RemainCardProps }> = (props) => {
     const [initAmtEntryValue, setInitAmtEntryValue] = useState<string>('')
     const [showEnterRemainAmt, setShowEnterRemainAmt] = useState(false);
     const [showHintText, setShowHintText] = useState(false);
 
-    function takeInitAmtInput(event: React.KeyboardEvent<HTMLInputElement>): void {
-        if(event.key === 'Enter') {
-            const entry = Number(initAmtEntryValue);
+    function takeInitAmtInput(event: React.MouseEvent<HTMLInputElement, MouseEvent>): void {
+        const entry = Number(initAmtEntryValue);
 
-            if(!isNaN(entry)) {
-                setShowEnterRemainAmt(false);
-                setShowHintText(false);
+        if(initAmtEntryValue === ''){
+            setShowEnterRemainAmt(false);
+            setShowHintText(false);
+        }else if(isNaN(entry)){
+            setShowHintText(true);
+        }else{
+            setShowEnterRemainAmt(false);
+            setShowHintText(false);
 
-                props.input.setInitAmt(entry);
-                setInitAmtEntryValue('');
-            }else{
-                setShowHintText(true);
-            }
+            props.input.setInitAmt(entry);
+            setInitAmtEntryValue('');
         }
     }
 
@@ -30,7 +31,7 @@ export const RemainCard: React.FC<{ input: RemainCardProps }> = (props) => {
                 </h5>
                 <p className={showEnterRemainAmt ? 'd-none card-text mt-2' : 'card-text mt-2'}
                    id='remain-amt-elem'
-                   onClick={event => setShowEnterRemainAmt(true)}
+                   onClick={() => setShowEnterRemainAmt(true)}
                 >
                     {(props.input.initialAmount - props.input.totalSpent).toLocaleString('en-US', {
                         style: "currency",
@@ -47,11 +48,14 @@ export const RemainCard: React.FC<{ input: RemainCardProps }> = (props) => {
                                id="init-amt-input"
                                placeholder="Initial Amount Input"
                                value={initAmtEntryValue}
-                               onKeyUp={event => takeInitAmtInput(event)}
                                onChange={event => setInitAmtEntryValue((event.target as HTMLInputElement).value)}
 
                         />
                     </div>
+                    <input type="button"
+                           value="Update"
+                           className="btn btn-dark"
+                           onClick={event => takeInitAmtInput(event)}/>
                 </div>
                 <small className={showHintText ? 'text-danger' : 'd-none text-danger'}
                        id='hint-text'

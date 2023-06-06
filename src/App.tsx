@@ -4,13 +4,15 @@ import {HomePage} from "./layouts/HomePage/HomePage";
 import {Navbar} from "./layouts/NavbarAndFooter/Navbar";
 import AccountModel from "./models/AccountModel";
 
+const baseUri = "http://localhost:8080"
+
 function App() {
     const [accounts, setAccounts] = useState<AccountModel[]>([]);
 
     useEffect(() => {
         async function getAccounts() {
             const accounts: AccountModel[] = [];
-            await fetch("http://192.168.1.135:8080/get/accounts")
+            await fetch(baseUri + "/get/accounts")
                 .then(async response => {
                     if(!response.ok){
                         console.log(response.statusText);

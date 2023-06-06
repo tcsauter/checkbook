@@ -7,6 +7,8 @@ import {CreditBalanceSummaryCardProps} from "../../models/props";
 import {AddNewExpenseCard} from "./components/AddNewExpenseCard";
 import AccountModel from "../../models/AccountModel";
 
+const baseUri = "http://localhost:8080";
+
 export const HomePage: React.FC<{
     getAccountNameById: (id: string) => string | undefined,
     accountsArray: AccountModel[]
@@ -30,7 +32,7 @@ export const HomePage: React.FC<{
     useEffect(() => {
         const getExpenses = async () => {
             const expenses: ExpenseModel[] = []
-            await fetch("http://192.168.1.135:8080/get/expenses")
+            await fetch(baseUri + "/get/expenses")
                 .then(async response => {
                     if (!response.ok) {
                         console.log(response.statusText);
@@ -63,7 +65,7 @@ export const HomePage: React.FC<{
 
     async function addNewExpense(newExpense: ExpenseModel) {
         const newArray: ExpenseModel[] = [];
-        await fetch("http://192.168.1.135:8080/add/expense", {
+        await fetch(baseUri + "/add/expense", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -97,7 +99,7 @@ export const HomePage: React.FC<{
 
     async function updateExpense(expense: ExpenseModel) {
         const newArray: ExpenseModel[] = [];
-        await fetch(`http://192.168.1.135:8080/update/expense/${expense.id}`, {
+        await fetch(baseUri + `/update/expense/${expense.id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -130,7 +132,7 @@ export const HomePage: React.FC<{
 
     async function deleteExpense(expenseId: string) {
         const newArray: ExpenseModel[] = [];
-        await fetch(`http://192.168.1.135:8080/delete/expense/${expenseId}`, {
+        await fetch(baseUri + `/delete/expense/${expenseId}`, {
             method: "DELETE"
         }).then(async response => {
             if(!response.ok){

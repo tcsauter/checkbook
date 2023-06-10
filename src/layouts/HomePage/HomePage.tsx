@@ -154,6 +154,23 @@ export const HomePage: React.FC<{
         setExpenseArray(newArray);
     }
 
+    async function clearExpenses(){
+        await fetch(baseUri + "/clear/expenses", {
+            method: "DELETE"
+        })
+            .then(async response => {
+                if(!response.ok){
+                    console.log(response.statusText);
+                }
+
+                const responseJson: boolean = await response.json();
+
+                if(responseJson){
+                    setExpenseArray([]);
+                }
+            })
+    }
+
     return (
         <div className='container bg-black vh-100 bg-opacity-75'>
 
@@ -176,7 +193,7 @@ export const HomePage: React.FC<{
                 <div className='w-75 mt-3'>
                     <DetailsCard expenseArray={expenseArray} getAccountNameById={props.getAccountNameById}
                                  updateExpense={updateExpense} accountsArray={props.accountsArray}
-                                 deleteExpense={deleteExpense}/>
+                                 deleteExpense={deleteExpense} clearExpenses={clearExpenses}/>
                 </div>
             </div>
 
@@ -192,7 +209,7 @@ export const HomePage: React.FC<{
                 <CreditBalanceSummaryCard creditAccountSummaryArray={creditAccountSummaryArray}/>
                 <DetailsCard expenseArray={expenseArray} getAccountNameById={props.getAccountNameById}
                              updateExpense={updateExpense} accountsArray={props.accountsArray}
-                             deleteExpense={deleteExpense}/>
+                             deleteExpense={deleteExpense} clearExpenses={clearExpenses}/>
             </div>
         </div>
     );

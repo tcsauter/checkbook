@@ -3,35 +3,16 @@ import {ExpenseListItem} from "./ExpenseListItem";
 import ExpenseModel from "../../../models/ExpenseModel";
 import AccountModel from "../../../models/AccountModel";
 
-const baseUri = "http://localhost:8080";
-
 export const DetailsCard: React.FC<{
     expenseArray: ExpenseModel[],
     accountsArray: AccountModel[],
     getAccountNameById: (id: string) => string | undefined,
     updateExpense: (expense: ExpenseModel) => Promise<void>,
     deleteExpense: (expenseId: string) => Promise<void>
+    clearExpenses: () => void;
 }> = (props) => {
     const [acctFilter, setAcctFilter] = useState('');
     const [clearBtnClickedOnce, setClearBtnClickedOnce] = useState(false);
-
-    async function clearExpenses(){
-        //todo: move this to HomePage and pass down to DetailsCard
-        setClearBtnClickedOnce(false);
-
-        await fetch(baseUri + "/clear/expenses")
-            .then(async response => {
-                if(!response.ok){
-                    console.log(response.statusText);
-                }
-
-                const responseJson: boolean = await response.json();
-
-                if(responseJson){
-
-                }
-            })
-    }
 
     return (
         <div className='card bg-light text-muted shadow' id='details-card'>
@@ -78,7 +59,8 @@ export const DetailsCard: React.FC<{
                        className={clearBtnClickedOnce ? "btn btn-danger mt-3" : "btn btn-outline-warning mt-3"}
                        onClick={() => {
                            if(clearBtnClickedOnce) {
-                               clearExpenses();
+                               props.clearExpenses();
+                               setClearBtnClickedOnce(false);
                            }else{
                                setClearBtnClickedOnce(true);
                            }

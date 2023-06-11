@@ -4,7 +4,6 @@ import AccountModel from "../../../models/AccountModel";
 
 function setInitalDateValue() {
     const date = new Date();
-    console.log("got date?")
     return date.getFullYear().toString() + "-" +
         (date.getMonth() + 1).toString().padStart(2, "0") + "-" +
         date.getDate().toString().padStart(2, "0");
@@ -24,7 +23,7 @@ export const AddNewExpenseCard: React.FC<{
         setInputDate(setInitalDateValue);
     }, [])
 
-    function addExpense(event: React.MouseEvent<HTMLInputElement, MouseEvent> | React.TouchEvent<HTMLInputElement>) {
+    function addExpense() {
         const searchResult = props.accounts.map(acct => acct.name).findIndex(value => value === inputAcct);
         const canAcceptForm: boolean = searchResult > -1 &&
             inputAmt !== '' &&
@@ -52,7 +51,7 @@ export const AddNewExpenseCard: React.FC<{
         }
     }
 
-    function clearFields(event: React.MouseEvent<HTMLInputElement, MouseEvent> | React.TouchEvent<HTMLInputElement>) {
+    function clearFields() {
         setInputAmt('');
         setInputAcct('');
         setInputDate(setInitalDateValue());
@@ -88,12 +87,12 @@ export const AddNewExpenseCard: React.FC<{
                 <input type="button"
                        className='btn bg-black text-bg-primary col-11 col-lg-1 mt-3 mt-lg-0 me-lg-2'
                        value="Add"
-                       onClick={event => addExpense(event)}
+                       onClick={() => addExpense()}
                 />
                 <input type="button"
                        className='btn bg-black text-bg-primary col-11 col-lg-1 mt-1 mt-lg-0'
                        value="Cancel"
-                       onClick={event => clearFields(event)}
+                       onClick={() => clearFields()}
                 />
             </form>
             <small className={showFormIncompleteMsg ? 'text-danger' : 'd-none text-danger'}>Please complete all fields to submit.</small>

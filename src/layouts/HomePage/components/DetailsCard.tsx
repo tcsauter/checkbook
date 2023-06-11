@@ -31,22 +31,22 @@ export const DetailsCard: React.FC<{
                         {acctFilter ? acctFilter : "Filter by Account"}
                     </button>
                     <ul className="dropdown-menu">
-                        <li key={-1}
+                        <li key="dc-1"
                             onClick={() => setAcctFilter("All Credit Accounts")}
                         >
                             <a className="dropdown-item" href="#">All Credit Accounts</a>
                         </li>
-                        <li key={-2}
+                        <li key={"dc-2"}
                             onClick={() => setAcctFilter("All Cash Accounts")}
                         >
                             <a className="dropdown-item" href="#">All Cash Accounts</a>
                         </li>
-                        <li key="hr-1">
+                        <li key="dchr-1">
                             <hr className="dropdown-divider ms-3 me-5"/>
                         </li>
                         {props.accountsArray.map(account => {
                             return (
-                                <li key={account.id}
+                                <li key={"dc" + account.id}
                                     onClick={() => setAcctFilter(account.name)}
                                 >
                                     <a className="dropdown-item" href="#">{account.name}</a>
@@ -56,10 +56,10 @@ export const DetailsCard: React.FC<{
                         {
                             acctFilter ?
                                 <>
-                                    <li key="hr-2">
+                                    <li key="dchr-2">
                                         <hr className="dropdown-divider ms-3 me-5"/>
                                     </li>
-                                    <li key="clear"
+                                    <li key="dcclear"
                                         onClick={() => setAcctFilter("")}
                                     >
                                         <a className="dropdown-item" href="#">Clear Filter</a>

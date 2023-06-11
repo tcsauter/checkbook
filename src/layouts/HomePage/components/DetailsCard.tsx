@@ -28,7 +28,7 @@ export const DetailsCard: React.FC<{
                 <div className='p-3 row justify-content-center dropdown'>
                     <button className='btn btn-outline-secondary dropdown-toggle' type='button'
                             data-bs-toggle="dropdown">
-                        {acctFilter ? acctFilter : "Select Account"}
+                        {acctFilter ? acctFilter : "Filter by Account"}
                     </button>
                     <ul className="dropdown-menu">
                         <li key={-1}

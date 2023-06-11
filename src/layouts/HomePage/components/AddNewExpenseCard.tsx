@@ -1,6 +1,14 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import ExpenseModel from "../../../models/ExpenseModel";
 import AccountModel from "../../../models/AccountModel";
+
+function setInitalDateValue() {
+    const date = new Date();
+    console.log("got date?")
+    return date.getFullYear().toString() + "-" +
+        (date.getMonth() + 1).toString().padStart(2, "0") + "-" +
+        date.getDate().toString().padStart(2, "0");
+}
 
 export const AddNewExpenseCard: React.FC<{
     accounts: AccountModel[],
@@ -9,16 +17,12 @@ export const AddNewExpenseCard: React.FC<{
     const [inputAmt, setInputAmt] = useState('');
     const [inputAcct, setInputAcct] = useState('');
     const [showInputAcctMsg, setShowInputAcctMsg] = useState(false);
-    const [inputDate, setInputDate] = useState(setInitalDateValue());
+    const [inputDate, setInputDate] = useState('');
     const [showFormIncompleteMsg, setShowFormIncompleteMsg] = useState(false);
 
-
-    function setInitalDateValue() {
-        const date = new Date();
-        return date.getFullYear().toString() + "-" +
-               date.getMonth().toString().padStart(2, "0") + "-" +
-               date.getDay().toString().padStart(2, "0");
-    }
+    useEffect(() => {
+        setInputDate(setInitalDateValue);
+    }, [])
 
     function addExpense(event: React.MouseEvent<HTMLInputElement, MouseEvent> | React.TouchEvent<HTMLInputElement>) {
         const searchResult = props.accounts.map(acct => acct.name).findIndex(value => value === inputAcct);

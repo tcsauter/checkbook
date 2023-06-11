@@ -7,7 +7,7 @@ import {CreditBalanceSummaryCardProps} from "../../models/props";
 import {AddNewExpenseCard} from "./components/AddNewExpenseCard";
 import AccountModel from "../../models/AccountModel";
 
-const baseUri = "http://localhost:8080";
+const baseUri = "http://192.168.1.135:8080";
 
 export const HomePage: React.FC<{
     getAccountNameById: (id: string) => string | undefined,

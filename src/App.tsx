@@ -4,7 +4,7 @@ import {HomePage} from "./layouts/HomePage/HomePage";
 import {Navbar} from "./layouts/NavbarAndFooter/Navbar";
 import AccountModel from "./models/AccountModel";
 
-const baseUri = "http://localhost:8080"
+const baseUri = "http://192.168.1.135:8080"
 
 function App() {
     const [accounts, setAccounts] = useState<AccountModel[]>([]);

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import ExpenseModel from "../../../models/ExpenseModel";
 import AccountModel from "../../../models/AccountModel";
 
-function setInitalDateValue() {
+function setInitialDateValue() {
     const date = new Date();
     return date.getFullYear().toString() + "-" +
         (date.getMonth() + 1).toString().padStart(2, "0") + "-" +
@@ -20,7 +20,7 @@ export const AddNewExpenseCard: React.FC<{
     const [showFormIncompleteMsg, setShowFormIncompleteMsg] = useState(false);
 
     useEffect(() => {
-        setInputDate(setInitalDateValue);
+        setInputDate(setInitialDateValue);
     }, [])
 
     function addExpense() {
@@ -39,7 +39,7 @@ export const AddNewExpenseCard: React.FC<{
 
             setShowInputAcctMsg(false);
             setShowFormIncompleteMsg(false);
-            setInputDate(setInitalDateValue());
+            setInputDate(setInitialDateValue());
             setInputAmt('');
             setInputAcct('');
         }else{
@@ -54,7 +54,7 @@ export const AddNewExpenseCard: React.FC<{
     function clearFields() {
         setInputAmt('');
         setInputAcct('');
-        setInputDate(setInitalDateValue());
+        setInputDate(setInitialDateValue());
         setShowInputAcctMsg(false);
         setShowFormIncompleteMsg(false);
     }

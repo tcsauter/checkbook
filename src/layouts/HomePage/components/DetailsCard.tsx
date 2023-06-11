@@ -1,5 +1,6 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {ExpenseListItem} from "./ExpenseListItem";
+import {Dropdown} from "bootstrap";
 import ExpenseModel from "../../../models/ExpenseModel";
 import AccountModel from "../../../models/AccountModel";
 
@@ -13,20 +14,61 @@ export const DetailsCard: React.FC<{
 }> = (props) => {
     const [acctFilter, setAcctFilter] = useState('');
     const [clearBtnClickedOnce, setClearBtnClickedOnce] = useState(false);
+    const [dropdownList, setDropdownList] = useState<Dropdown[]>([]);
+
+    useEffect(() => {
+        const dropdownElementList = document.querySelectorAll('.dropdown-toggle')
+        setDropdownList([...dropdownElementList].map(dropdownToggleEl => new Dropdown(dropdownToggleEl)));
+    }, [])
 
     return (
         <div className='card bg-light text-muted shadow' id='details-card'>
             <div className='card-body'>
                 <h5 className='card-title'>Details</h5>
-                <div className='p-3 row justify-content-center'>
-                    <input className='form-control' list='detailsAccounts' placeholder='Filter by Account'
-                           onInput={event => setAcctFilter(event.currentTarget.value)}
-                    />
-                    <datalist id='detailsAccounts'>
-                        <option value='All Credit Accounts'/>
-                        <option value='All Cash Accounts'/>
-                        {props.accountsArray.map(account => <option value={account.name} key={account.name}/>)}
-                    </datalist>
+                <div className='p-3 row justify-content-center dropdown'>
+                    <button className='btn btn-outline-secondary dropdown-toggle' type='button'
+                            data-bs-toggle="dropdown">
+                        {acctFilter ? acctFilter : "Select Account"}
+                    </button>
+                    <ul className="dropdown-menu">
+                        <li key={-1}
+                            onClick={() => setAcctFilter("All Credit Accounts")}
+                        >
+                            <a className="dropdown-item" href="#">All Credit Accounts</a>
+                        </li>
+                        <li key={-2}
+                            onClick={() => setAcctFilter("All Cash Accounts")}
+                        >
+                            <a className="dropdown-item" href="#">All Cash Accounts</a>
+                        </li>
+                        <li key="hr-1">
+                            <hr className="dropdown-divider ms-3 me-5"/>
+                        </li>
+                        {props.accountsArray.map(account => {
+                            return (
+                                <li key={account.id}
+                                    onClick={() => setAcctFilter(account.name)}
+                                >
+                                    <a className="dropdown-item" href="#">{account.name}</a>
+                                </li>
+                            );
+                        })}
+                        {
+                            acctFilter ?
+                                <>
+                                    <li key="hr-2">
+                                        <hr className="dropdown-divider ms-3 me-5"/>
+                                    </li>
+                                    <li key="clear"
+                                        onClick={() => setAcctFilter("")}
+                                    >
+                                        <a className="dropdown-item" href="#">Clear Filter</a>
+                                    </li>
+                                </>
+                                :
+                                <></>
+                        }
+                    </ul>
                 </div>
                 <ul className='list-group'>
                     {props.expenseArray.filter((expense: ExpenseModel) => {
@@ -58,10 +100,10 @@ export const DetailsCard: React.FC<{
                        value={clearBtnClickedOnce ? "Confirm Clear" : "Clear Expenses"}
                        className={clearBtnClickedOnce ? "btn btn-danger mt-3" : "btn btn-outline-warning mt-3"}
                        onClick={() => {
-                           if(clearBtnClickedOnce) {
+                           if (clearBtnClickedOnce) {
                                props.clearExpenses();
                                setClearBtnClickedOnce(false);
-                           }else{
+                           } else {
                                setClearBtnClickedOnce(true);
                            }
                        }}

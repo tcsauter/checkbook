@@ -15,7 +15,6 @@ export const AddNewExpenseCard: React.FC<{
 }> = (props) => {
     const [inputAmt, setInputAmt] = useState('');
     const [inputAcct, setInputAcct] = useState('');
-    const [showInputAcctMsg, setShowInputAcctMsg] = useState(false);
     const [inputDate, setInputDate] = useState('');
     const [showFormIncompleteMsg, setShowFormIncompleteMsg] = useState(false);
 
@@ -29,7 +28,7 @@ export const AddNewExpenseCard: React.FC<{
             inputAmt !== '' &&
             inputDate !== '' && new Date(inputDate).toString() !== 'Invalid Date'
 
-        if(canAcceptForm){
+        if (canAcceptForm) {
             props.updateExpenses({
                 id: Date.now().toString(), //this creates a string representation of the current moment, which should ensure a unique id
                 amount: Number(inputAmt),
@@ -37,17 +36,12 @@ export const AddNewExpenseCard: React.FC<{
                 date: inputDate
             });
 
-            setShowInputAcctMsg(false);
             setShowFormIncompleteMsg(false);
             setInputDate(setInitialDateValue());
             setInputAmt('');
             setInputAcct('');
-        }else{
-            if(searchResult === -1) {
-                setShowInputAcctMsg(true);
-            }else {
-                setShowFormIncompleteMsg(true);
-            }
+        } else {
+            setShowFormIncompleteMsg(true);
         }
     }
 
@@ -55,11 +49,10 @@ export const AddNewExpenseCard: React.FC<{
         setInputAmt('');
         setInputAcct('');
         setInputDate(setInitialDateValue());
-        setShowInputAcctMsg(false);
         setShowFormIncompleteMsg(false);
     }
 
-    return(
+    return (
         <div className="card bg-light text-muted shadow">
             <h5 className="card-title mt-3">Add New Expense</h5>
             <form className="p-3 row justify-content-center">
@@ -75,7 +68,7 @@ export const AddNewExpenseCard: React.FC<{
                             data-bs-toggle="dropdown">{inputAcct ? inputAcct : "Account"}</button>
                     <ul className="dropdown-menu">
                         {props.accounts.map(account => {
-                            return(
+                            return (
                                 <li key={"ane" + account.id}
                                     onClick={() => setInputAcct(account.name)}>
                                     <a className="dropdown-item" href="#">{account.name}</a>
@@ -84,19 +77,6 @@ export const AddNewExpenseCard: React.FC<{
                         })}
                     </ul>
                 </div>
-
-                {/*<div className="col-lg-auto card-text">*/}
-                {/*    <input className="form-control" list="datalistAccounts" id="newExpenseAcctInput" placeholder="Account" required*/}
-                {/*           value={inputAcct}*/}
-                {/*           onInput={event => setInputAcct(event.currentTarget.value)}*/}
-                {/*    />*/}
-                {/*    <datalist id="datalistAccounts">*/}
-                {/*        {props.accounts.map(acct => <option value={acct.name} key={acct.name} />)}*/}
-                {/*    </datalist>*/}
-                {/*    <small className={showInputAcctMsg ? 'text-danger' : "d-none text-danger"}>Account entered is not in list</small>*/}
-                {/*</div>*/}
-
-
 
                 <div className='col-lg-auto card-text'>
                     <input className="form-control" type="date" id="newExpenseDateInput" value={inputDate} required
@@ -114,7 +94,8 @@ export const AddNewExpenseCard: React.FC<{
                        onClick={() => clearFields()}
                 />
             </form>
-            <small className={showFormIncompleteMsg ? 'text-danger' : 'd-none text-danger'}>Please complete all fields to submit.</small>
+            <small className={showFormIncompleteMsg ? 'text-danger' : 'd-none text-danger'}>Please complete all fields
+                to submit.</small>
         </div>
     )
 }

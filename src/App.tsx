@@ -3,11 +3,14 @@ import './App.css';
 import {HomePage} from "./layouts/HomePage/HomePage";
 import {Navbar} from "./layouts/NavbarAndFooter/Navbar";
 import AccountModel from "./models/AccountModel";
+import _budgetPeriods from "./resources/data/budget-periods.json";
+import BudgetPeriodModel from "./models/BudgetPeriodModel";
 
 const baseUri = "http://192.168.1.135:8080"
 
 function App() {
     const [accounts, setAccounts] = useState<AccountModel[]>([]);
+    const [budgetPeriods, setBudgetPeriods] = useState<BudgetPeriodModel[]>(_budgetPeriods as BudgetPeriodModel[]);
 
     useEffect(() => {
         async function getAccounts() {

@@ -3,8 +3,9 @@ import './App.css';
 import {HomePage} from "./layouts/HomePage/HomePage";
 import {Navbar} from "./layouts/NavbarAndFooter/Navbar";
 import AccountModel from "./models/AccountModel";
-import _budgetPeriods from "./resources/data/budget-periods.json";
 import BudgetPeriodModel from "./models/BudgetPeriodModel";
+
+import _budgetPeriods from "./resources/data/budget-periods.json";
 
 const baseUri = "http://192.168.1.135:8080"
 

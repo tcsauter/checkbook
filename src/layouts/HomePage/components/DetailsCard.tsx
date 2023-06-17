@@ -1,6 +1,5 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {ExpenseListItem} from "./ExpenseListItem";
-import {Dropdown} from "bootstrap";
 import ExpenseModel from "../../../models/ExpenseModel";
 import AccountModel from "../../../models/AccountModel";
 
@@ -14,12 +13,6 @@ export const DetailsCard: React.FC<{
 }> = (props) => {
     const [acctFilter, setAcctFilter] = useState('');
     const [clearBtnClickedOnce, setClearBtnClickedOnce] = useState(false);
-    const [dropdownList, setDropdownList] = useState<Dropdown[]>([]);
-
-    useEffect(() => {
-        const dropdownElementList = document.querySelectorAll('.dropdown-toggle')
-        setDropdownList([...dropdownElementList].map(dropdownToggleEl => new Dropdown(dropdownToggleEl)));
-    }, [])
 
     return (
         <div className='card bg-light text-muted shadow' id='details-card'>

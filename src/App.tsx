@@ -47,7 +47,7 @@ function App() {
 
     return (
         <div className="App">
-            <Navbar/>
+            <Navbar budgetPeriodsArray={budgetPeriods}/>
             <HomePage getAccountNameById={getAccountNameById}
                       accountsArray={accounts}
             />

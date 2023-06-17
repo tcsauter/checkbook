@@ -1,6 +1,9 @@
-import React from "react";
+import React, {useState} from "react";
+import BudgetPeriodModel from "../../models/BudgetPeriodModel";
 
-export const Navbar: React.FC = () => {
+export const Navbar: React.FC<{ budgetPeriodsArray: BudgetPeriodModel[] }> = (props) => {
+    const [budgetPeriodString, setBudgetPeriodString] = useState("")
+
     return (
         <nav className={'navbar navbar-expand navbar-dark bg-black'}>
             <div className='container-fluid'>
@@ -15,11 +18,35 @@ export const Navbar: React.FC = () => {
                         <a className='nav-link active' aria-current='page' href='#'>Home</a>
                         <a className='nav-link' href='#'>Bills</a>
                     </div>
-                    <div>
-                        <button className="btn btn-outline-secondary dropdown-toggle" type="button"
-                                data-bs-toggle="dropdown">Budget Period</button>
-                        <ul className="dropdown-menu">
+                    <div className="dropstart navbar-nav">
+                        <a className="nav-link active dropdown-toggle" role="button"
+                           data-bs-toggle="dropdown">
+                            {budgetPeriodString ? budgetPeriodString : "Budget Period"}
+                        </a>
+                        <ul className="dropdown-menu dropdown-menu-dark">
+                            {props.budgetPeriodsArray.map(period => {
+                                return (
+                                    <li key={"nbdd" + period.id}
+                                        onClick={() => setBudgetPeriodString(period.budgetStart + " to " + period.budgetEnd)}
+                                    >
+                                        <a className="dropdown-item nav-link" href="#">{period.budgetStart + " to " + period.budgetEnd}</a>
+                                    </li>
+                                )
+                            })}
 
+                            {budgetPeriodString ?
+                            <>
+                                <li key="nbddhr-1">
+                                    <hr className="dropdown-divider border-dark ms-3 me-3" />
+                                </li>
+                                <li key="nbddclear"
+                                    onClick={() => setBudgetPeriodString("")}
+                                >
+                                    <a className="dropdown-item nav-link">Clear</a>
+                                </li>
+                            </>
+                            :
+                            <></>}
                         </ul>
                     </div>
                 </div>
@@ -27,5 +54,5 @@ export const Navbar: React.FC = () => {
         </nav>
 
 
-);
+    );
 }

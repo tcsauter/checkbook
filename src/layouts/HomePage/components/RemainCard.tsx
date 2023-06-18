@@ -24,7 +24,7 @@ export const RemainCard: React.FC<{ input: RemainCardProps }> = (props) => {
     }
 
     return (
-        <div className='card bg-light text-muted shadow' id='remain-container'>
+        <div className='card bg-light text-muted shadow mb-md-3' id='remain-container'>
             <div className='card-body'>
                 <h5 className='card-title' id='remain-init-amt-label'>
                     {showEnterRemainAmt ? 'Enter Starting Amount' : 'Remaining Amount'}

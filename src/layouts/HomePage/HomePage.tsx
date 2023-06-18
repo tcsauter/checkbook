@@ -34,7 +34,7 @@ export const HomePage: React.FC<{
     useEffect(() => {
         setDateParamString(
             props.budgetPeriod ?
-            "?startDate=" + props.budgetPeriod.budgetStart + "&endDate=" + props.budgetPeriod.budgetEnd : ""
+                "?startDate=" + props.budgetPeriod.budgetStart + "&endDate=" + props.budgetPeriod.budgetEnd : ""
         )
     }, [props.budgetPeriod])
 
@@ -121,13 +121,13 @@ export const HomePage: React.FC<{
                 "date": expense.date
             })
         }).then(async response => {
-            if(!response.ok){
+            if (!response.ok) {
                 console.log(response.statusText);
             }
 
             const responseJson = await response.json().then(value => value);
 
-            for(const key in responseJson){
+            for (const key in responseJson) {
                 newArray.push({
                     id: responseJson[key]._id,
                     accountId: responseJson[key].accountId,
@@ -145,13 +145,13 @@ export const HomePage: React.FC<{
         await fetch(baseUri + `/delete/expense/${expenseId}` + dateParamString, {
             method: "DELETE"
         }).then(async response => {
-            if(!response.ok){
+            if (!response.ok) {
                 console.log(response.statusText);
             }
 
             const responseJson = await response.json().then(value => value);
 
-            for(const key in responseJson) {
+            for (const key in responseJson) {
                 newArray.push({
                     id: responseJson[key]._id,
                     accountId: responseJson[key].accountId,
@@ -164,18 +164,18 @@ export const HomePage: React.FC<{
         setExpenseArray(newArray);
     }
 
-    async function clearExpenses(){
+    async function clearExpenses() {
         await fetch(baseUri + "/clear/expenses" + dateParamString, {
             method: "DELETE"
         })
             .then(async response => {
-                if(!response.ok){
+                if (!response.ok) {
                     console.log(response.statusText);
                 }
 
                 const responseJson: boolean = await response.json();
 
-                if(responseJson){
+                if (responseJson) {
                     setExpenseArray([]);
                 }
             })
@@ -191,13 +191,17 @@ export const HomePage: React.FC<{
             {/*desktop*/}
             <div className='d-none d-md-flex justify-content-evenly'>
                 <div className='me-3 mt-3'>
-                    <RemainCard
-                        input={{
-                            initialAmount: remainCardInitAmt ? remainCardInitAmt : 550,
-                            totalSpent: calculateSpent(),
-                            setInitAmt: setRemainCardInitAmt
-                        }}
-                    />
+                    {props.budgetPeriod ?
+                        <RemainCard
+                            input={{
+                                initialAmount: props.budgetPeriod.startingAmt,
+                                totalSpent: calculateSpent(),
+                                setInitAmt: setRemainCardInitAmt
+                            }}
+                        />
+                        :
+                        <></>
+                    }
                     <CreditBalanceSummaryCard creditAccountSummaryArray={creditAccountSummaryArray}/>
                 </div>
                 <div className='w-75 mt-3'>
@@ -209,13 +213,17 @@ export const HomePage: React.FC<{
 
             {/*mobile*/}
             <div className='d-md-none'>
-                <RemainCard
-                    input={{
-                        initialAmount: remainCardInitAmt ? remainCardInitAmt : 550,
-                        totalSpent: calculateSpent(),
-                        setInitAmt: setRemainCardInitAmt
-                    }}
-                />
+                {props.budgetPeriod ?
+                    <RemainCard
+                        input={{
+                            initialAmount: props.budgetPeriod.startingAmt,
+                            totalSpent: calculateSpent(),
+                            setInitAmt: setRemainCardInitAmt
+                        }}
+                    />
+                    :
+                    <></>
+                }
                 <CreditBalanceSummaryCard creditAccountSummaryArray={creditAccountSummaryArray}/>
                 <DetailsCard expenseArray={expenseArray} getAccountNameById={props.getAccountNameById}
                              updateExpense={updateExpense} accountsArray={props.accountsArray}

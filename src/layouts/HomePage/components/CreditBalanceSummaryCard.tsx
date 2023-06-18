@@ -10,7 +10,7 @@ export const CreditBalanceSummaryCard: React.FC<{ creditAccountSummaryArray: Cre
     }
 
     return (
-        <div className='card bg-light text-muted shadow mt-md-3' id='credit-balance-summary-card'>
+        <div className='card bg-light text-muted shadow' id='credit-balance-summary-card'>
             <div className='card-body'>
                 <h5 className='card-title'>Credit Balance Summary</h5>
                 <div>

@@ -12,6 +12,7 @@ const baseUri = "http://192.168.1.135:8080"
 function App() {
     const [accounts, setAccounts] = useState<AccountModel[]>([]);
     const [budgetPeriods, setBudgetPeriods] = useState<BudgetPeriodModel[]>(_budgetPeriods as BudgetPeriodModel[]);
+    const [budgetPeriod, setBudgetPeriod] = useState<BudgetPeriodModel | undefined>(undefined);
 
     useEffect(() => {
         async function getAccounts() {
@@ -41,15 +42,20 @@ function App() {
         getAccounts().then(response => setAccounts(response)).catch(reason => console.log(reason));
     }, [])
 
+    useEffect(() => {
+        console.log(budgetPeriod ? budgetPeriod.payDate : "budget period cleared");
+    }, [budgetPeriod]);
+
     function getAccountNameById(id: string): string | undefined {
         return accounts.find(element => element.id === id)?.name;
     }
 
     return (
         <div className="App">
-            <Navbar budgetPeriodsArray={budgetPeriods}/>
+            <Navbar budgetPeriodsArray={budgetPeriods} setBudgetPeriod={setBudgetPeriod}/>
             <HomePage getAccountNameById={getAccountNameById}
                       accountsArray={accounts}
+                      budgetPeriod={budgetPeriod}
             />
         </div>
     );

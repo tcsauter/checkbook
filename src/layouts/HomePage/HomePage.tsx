@@ -6,12 +6,14 @@ import ExpenseModel from "../../models/ExpenseModel";
 import {CreditBalanceSummaryCardProps} from "../../models/props";
 import {AddNewExpenseCard} from "./components/AddNewExpenseCard";
 import AccountModel from "../../models/AccountModel";
+import BudgetPeriodModel from "../../models/BudgetPeriodModel";
 
-const baseUri = "http://192.168.1.135:8080";
+const baseUri = "http://localhost:8080";
 
 export const HomePage: React.FC<{
     getAccountNameById: (id: string) => string | undefined,
-    accountsArray: AccountModel[]
+    accountsArray: AccountModel[],
+    budgetPeriod?: BudgetPeriodModel
 }> = (props) => {
     const [expenseArray, setExpenseArray] = useState<ExpenseModel[]>([]);
     const [creditAccountSummaryArray, setCreditAccountSummaryArray] = useState<CreditBalanceSummaryCardProps[]>([]);

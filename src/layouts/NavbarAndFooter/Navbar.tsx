@@ -1,7 +1,10 @@
 import React, {useState} from "react";
 import BudgetPeriodModel from "../../models/BudgetPeriodModel";
 
-export const Navbar: React.FC<{ budgetPeriodsArray: BudgetPeriodModel[] }> = (props) => {
+export const Navbar: React.FC<{
+    budgetPeriodsArray: BudgetPeriodModel[],
+    setBudgetPeriod: React.Dispatch<React.SetStateAction<BudgetPeriodModel | undefined>>
+}> = (props) => {
     const [budgetPeriodString, setBudgetPeriodString] = useState("")
 
     return (
@@ -27,7 +30,10 @@ export const Navbar: React.FC<{ budgetPeriodsArray: BudgetPeriodModel[] }> = (pr
                             {props.budgetPeriodsArray.map(period => {
                                 return (
                                     <li key={"nbdd" + period.id}
-                                        onClick={() => setBudgetPeriodString(period.budgetStart + " to " + period.budgetEnd)}
+                                        onClick={() => {
+                                            setBudgetPeriodString(period.budgetStart + " to " + period.budgetEnd);
+                                            props.setBudgetPeriod(period);
+                                        }}
                                     >
                                         <a className="dropdown-item nav-link" href="#">{period.budgetStart + " to " + period.budgetEnd}</a>
                                     </li>
@@ -40,7 +46,10 @@ export const Navbar: React.FC<{ budgetPeriodsArray: BudgetPeriodModel[] }> = (pr
                                     <hr className="dropdown-divider border-dark ms-3 me-3" />
                                 </li>
                                 <li key="nbddclear"
-                                    onClick={() => setBudgetPeriodString("")}
+                                    onClick={() => {
+                                        setBudgetPeriodString("");
+                                        props.setBudgetPeriod(undefined);
+                                    }}
                                 >
                                     <a className="dropdown-item nav-link">Clear</a>
                                 </li>

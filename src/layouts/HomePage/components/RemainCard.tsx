@@ -7,6 +7,8 @@ export const RemainCard: React.FC<{ input: RemainCardProps }> = (props) => {
     const [showHintText, setShowHintText] = useState(false);
 
     function takeInitAmtInput(): void {
+        //todo: Figure out how to update the budget period in a file
+
         const entry = Number(initAmtEntryValue);
 
         if(initAmtEntryValue === ''){
@@ -18,7 +20,7 @@ export const RemainCard: React.FC<{ input: RemainCardProps }> = (props) => {
             setShowEnterRemainAmt(false);
             setShowHintText(false);
 
-            props.input.setInitAmt(entry);
+            // props.input.setInitAmt(entry);
             setInitAmtEntryValue('');
         }
     }
@@ -33,7 +35,7 @@ export const RemainCard: React.FC<{ input: RemainCardProps }> = (props) => {
                    id='remain-amt-elem'
                    onClick={() => setShowEnterRemainAmt(true)}
                 >
-                    {(props.input.initialAmount - props.input.totalSpent).toLocaleString('en-US', {
+                    {(props.input.budgetPeriod.startingAmt - props.input.totalSpent).toLocaleString('en-US', {
                         style: "currency",
                         currency: "USD"
                     })}

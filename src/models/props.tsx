@@ -1,7 +1,8 @@
+import BudgetPeriodModel from "./BudgetPeriodModel";
+
 export interface RemainCardProps {
-    initialAmount: number;
+    budgetPeriod: BudgetPeriodModel,
     totalSpent: number;
-    setInitAmt: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export interface CreditBalanceSummaryCardProps {

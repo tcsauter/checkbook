@@ -17,7 +17,6 @@ export const HomePage: React.FC<{
 }> = (props) => {
     const [expenseArray, setExpenseArray] = useState<ExpenseModel[]>([]);
     const [creditAccountSummaryArray, setCreditAccountSummaryArray] = useState<CreditBalanceSummaryCardProps[]>([]);
-    const [remainCardInitAmt, setRemainCardInitAmt] = useState(0);
     const [dateParamString, setDateParamString] = useState("");
 
     useEffect(() => {
@@ -194,9 +193,8 @@ export const HomePage: React.FC<{
                     {props.budgetPeriod ?
                         <RemainCard
                             input={{
-                                initialAmount: props.budgetPeriod.startingAmt,
-                                totalSpent: calculateSpent(),
-                                setInitAmt: setRemainCardInitAmt
+                                budgetPeriod: props.budgetPeriod,
+                                totalSpent: calculateSpent()
                             }}
                         />
                         :
@@ -216,9 +214,8 @@ export const HomePage: React.FC<{
                 {props.budgetPeriod ?
                     <RemainCard
                         input={{
-                            initialAmount: props.budgetPeriod.startingAmt,
-                            totalSpent: calculateSpent(),
-                            setInitAmt: setRemainCardInitAmt
+                            budgetPeriod: props.budgetPeriod,
+                            totalSpent: calculateSpent()
                         }}
                     />
                     :

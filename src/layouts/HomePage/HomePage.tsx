@@ -18,6 +18,7 @@ export const HomePage: React.FC<{
     const [expenseArray, setExpenseArray] = useState<ExpenseModel[]>([]);
     const [creditAccountSummaryArray, setCreditAccountSummaryArray] = useState<CreditBalanceSummaryCardProps[]>([]);
     const [remainCardInitAmt, setRemainCardInitAmt] = useState(0);
+    const [dateParamString, setDateParamString] = useState("");
 
     useEffect(() => {
         setCreditAccountSummaryArray(props.accountsArray.filter(account => account.type === "Credit")
@@ -30,11 +31,18 @@ export const HomePage: React.FC<{
             }))
     }, [props.accountsArray, expenseArray])
 
+    useEffect(() => {
+        setDateParamString(
+            props.budgetPeriod ?
+            "?startDate=" + props.budgetPeriod.budgetStart + "&endDate=" + props.budgetPeriod.budgetEnd : ""
+        )
+    }, [props.budgetPeriod])
+
 
     useEffect(() => {
         const getExpenses = async () => {
             const expenses: ExpenseModel[] = []
-            await fetch(baseUri + "/get/expenses")
+            await fetch(baseUri + "/get/expenses" + dateParamString)
                 .then(async response => {
                     if (!response.ok) {
                         console.log(response.statusText);
@@ -57,7 +65,7 @@ export const HomePage: React.FC<{
         }
 
         getExpenses().then(value => setExpenseArray(value)).catch(reason => console.log(reason));
-    }, [])
+    }, [dateParamString])
 
     function calculateSpent(): number {
         let totalAmount: number = 0;
@@ -67,7 +75,7 @@ export const HomePage: React.FC<{
 
     async function addNewExpense(newExpense: ExpenseModel) {
         const newArray: ExpenseModel[] = [];
-        await fetch(baseUri + "/add/expense", {
+        await fetch(baseUri + "/add/expense" + dateParamString, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -101,7 +109,7 @@ export const HomePage: React.FC<{
 
     async function updateExpense(expense: ExpenseModel) {
         const newArray: ExpenseModel[] = [];
-        await fetch(baseUri + `/update/expense/${expense.id}`, {
+        await fetch(baseUri + `/update/expense/${expense.id}` + dateParamString, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -134,7 +142,7 @@ export const HomePage: React.FC<{
 
     async function deleteExpense(expenseId: string) {
         const newArray: ExpenseModel[] = [];
-        await fetch(baseUri + `/delete/expense/${expenseId}`, {
+        await fetch(baseUri + `/delete/expense/${expenseId}` + dateParamString, {
             method: "DELETE"
         }).then(async response => {
             if(!response.ok){
@@ -157,7 +165,7 @@ export const HomePage: React.FC<{
     }
 
     async function clearExpenses(){
-        await fetch(baseUri + "/clear/expenses", {
+        await fetch(baseUri + "/clear/expenses" + dateParamString, {
             method: "DELETE"
         })
             .then(async response => {

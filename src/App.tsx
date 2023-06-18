@@ -42,10 +42,6 @@ function App() {
         getAccounts().then(response => setAccounts(response)).catch(reason => console.log(reason));
     }, [])
 
-    useEffect(() => {
-        console.log(budgetPeriod ? budgetPeriod.payDate : "budget period cleared");
-    }, [budgetPeriod]);
-
     function getAccountNameById(id: string): string | undefined {
         return accounts.find(element => element.id === id)?.name;
     }

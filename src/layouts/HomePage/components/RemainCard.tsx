@@ -7,11 +7,9 @@ export const RemainCard: React.FC<{ input: RemainCardProps }> = (props) => {
     const [showHintText, setShowHintText] = useState(false);
 
     function takeInitAmtInput(): void {
-        //todo: Figure out how to update the budget period in a file
-
         const entry = Number(initAmtEntryValue);
 
-        if(initAmtEntryValue === ''){
+        if(initAmtEntryValue === '' || initAmtEntryValue === props.input.budgetPeriod.startingAmt.toLocaleString("en-US")){
             setShowEnterRemainAmt(false);
             setShowHintText(false);
         }else if(isNaN(entry)){
@@ -20,7 +18,8 @@ export const RemainCard: React.FC<{ input: RemainCardProps }> = (props) => {
             setShowEnterRemainAmt(false);
             setShowHintText(false);
 
-            // props.input.setInitAmt(entry);
+            props.input.budgetPeriod.startingAmt = entry;
+            props.input.updateBudgetPeriod(props.input.budgetPeriod);
             setInitAmtEntryValue('');
         }
     }
@@ -33,7 +32,10 @@ export const RemainCard: React.FC<{ input: RemainCardProps }> = (props) => {
                 </h5>
                 <p className={showEnterRemainAmt ? 'd-none card-text mt-2' : 'card-text mt-2'}
                    id='remain-amt-elem'
-                   onClick={() => setShowEnterRemainAmt(true)}
+                   onClick={() => {
+                       setShowEnterRemainAmt(true);
+                       setInitAmtEntryValue(props.input.budgetPeriod.startingAmt.toLocaleString("en-US"));
+                   }}
                 >
                     {(props.input.budgetPeriod.startingAmt - props.input.totalSpent).toLocaleString('en-US', {
                         style: "currency",

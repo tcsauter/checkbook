@@ -18,13 +18,13 @@ function App() {
             const accounts: AccountModel[] = [];
             await fetch(baseUri + "/get/accounts")
                 .then(async response => {
-                    if(!response.ok){
+                    if (!response.ok) {
                         console.log(response.statusText);
                     }
 
                     const responseJson = await response.json();
 
-                    for(const key in responseJson){
+                    for (const key in responseJson) {
                         accounts.push({
                             id: responseJson[key]._id,
                             name: responseJson[key].name,
@@ -42,13 +42,13 @@ function App() {
             const budgetPeriods: BudgetPeriodModel[] = [];
             await fetch(baseUri + "/get/budgetperiods")
                 .then(async response => {
-                    if(!response.ok){
+                    if (!response.ok) {
                         console.log(response.statusText);
                     }
 
                     const responseJson = await response.json();
 
-                    for(const key in responseJson) {
+                    for (const key in responseJson) {
                         budgetPeriods.push({
                             id: responseJson[key]._id,
                             payDate: responseJson[key].payDate,
@@ -68,8 +68,8 @@ function App() {
     }, [])
 
     useEffect(() => {
-        if(budgetPeriods){
-            setBudgetPeriod(budgetPeriods[budgetPeriods.length-1])
+        if (budgetPeriods) {
+            setBudgetPeriod(budgetPeriods[budgetPeriods.length - 1])
         }
     }, [budgetPeriods])
 
@@ -77,12 +77,51 @@ function App() {
         return accounts.find(element => element.id === id)?.name;
     }
 
+    async function updateBudgetPeriod(bp: BudgetPeriodModel) {
+        const budgetPeriods: BudgetPeriodModel[] = []
+        await fetch(`${baseUri}/update/budgetperiod/${bp.id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                _id: bp.id,
+                payDate: bp.payDate,
+                budgetStart: bp.budgetStart,
+                budgetEnd: bp.budgetEnd,
+                startingAmt: bp.startingAmt
+            })
+        })
+            .then(async response => {
+                if (!response.ok) {
+                    console.log(response.statusText);
+                }
+
+                const responseJson = await response.json();
+
+                for (const key in responseJson) {
+                    budgetPeriods.push({
+                        id: responseJson[key]._id,
+                        payDate: responseJson[key].payDate,
+                        budgetStart: responseJson[key].budgetStart,
+                        budgetEnd: responseJson[key].budgetEnd,
+                        startingAmt: responseJson[key].startingAmt
+                    });
+                }
+            })
+            .catch(reason => console.log(reason));
+
+        setBudgetPeriods(budgetPeriods);
+    }
+
     return (
         <div className="App">
-            <Navbar budgetPeriodsArray={budgetPeriods} setBudgetPeriod={setBudgetPeriod} currBudgetPeriod={budgetPeriod}/>
+            <Navbar budgetPeriodsArray={budgetPeriods} setBudgetPeriod={setBudgetPeriod}
+                    currBudgetPeriod={budgetPeriod}/>
             <HomePage getAccountNameById={getAccountNameById}
                       accountsArray={accounts}
                       budgetPeriod={budgetPeriod}
+                      updateBudgetPeriod={updateBudgetPeriod}
             />
         </div>
     );

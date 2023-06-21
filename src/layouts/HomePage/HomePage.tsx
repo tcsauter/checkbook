@@ -13,7 +13,8 @@ const baseUri = "http://localhost:8080";
 export const HomePage: React.FC<{
     getAccountNameById: (id: string) => string | undefined,
     accountsArray: AccountModel[],
-    budgetPeriod?: BudgetPeriodModel
+    budgetPeriod?: BudgetPeriodModel,
+    updateBudgetPeriod: (bp: BudgetPeriodModel) => Promise<void>
 }> = (props) => {
     const [expenseArray, setExpenseArray] = useState<ExpenseModel[]>([]);
     const [creditAccountSummaryArray, setCreditAccountSummaryArray] = useState<CreditBalanceSummaryCardProps[]>([]);
@@ -194,6 +195,7 @@ export const HomePage: React.FC<{
                         <RemainCard
                             input={{
                                 budgetPeriod: props.budgetPeriod,
+                                updateBudgetPeriod: props.updateBudgetPeriod,
                                 totalSpent: calculateSpent()
                             }}
                         />
@@ -215,6 +217,7 @@ export const HomePage: React.FC<{
                     <RemainCard
                         input={{
                             budgetPeriod: props.budgetPeriod,
+                            updateBudgetPeriod: props.updateBudgetPeriod,
                             totalSpent: calculateSpent()
                         }}
                     />

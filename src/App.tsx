@@ -67,12 +67,6 @@ function App() {
         getBudgetPeriods().then(response => setBudgetPeriods(response)).catch(reason => console.log(reason));
     }, [])
 
-    useEffect(() => {
-        if (budgetPeriods) {
-            setBudgetPeriod(budgetPeriods[budgetPeriods.length - 1])
-        }
-    }, [budgetPeriods])
-
     function getAccountNameById(id: string): string | undefined {
         return accounts.find(element => element.id === id)?.name;
     }

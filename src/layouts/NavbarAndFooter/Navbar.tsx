@@ -1,11 +1,34 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import BudgetPeriodModel from "../../models/BudgetPeriodModel";
 
 export const Navbar: React.FC<{
-    budgetPeriodsArray: BudgetPeriodModel[],
-    setBudgetPeriod: React.Dispatch<React.SetStateAction<BudgetPeriodModel | undefined>>
+    budgetPeriodsArray?: BudgetPeriodModel[],
+    setBudgetPeriod: React.Dispatch<React.SetStateAction<BudgetPeriodModel | undefined>>,
+    currBudgetPeriod?: BudgetPeriodModel
 }> = (props) => {
-    const [budgetPeriodString, setBudgetPeriodString] = useState("")
+    const [budgetPeriodString, setBudgetPeriodString] = useState("");
+
+    useEffect(() => {
+        setBudgetPeriodString(props.currBudgetPeriod ? budgetPeriodStringify(props.currBudgetPeriod) : "");
+    }, [props.currBudgetPeriod])
+
+    function budgetPeriodStringify(bp: BudgetPeriodModel){
+        return(
+            new Date(bp.budgetStart).toLocaleDateString("en-US", {
+                timeZone: "UTC",
+                year: undefined,
+                month: "short",
+                day: "numeric"
+            }) +
+                " to " +
+            new Date(bp.budgetEnd).toLocaleDateString("en-US", {
+                timeZone: "UTC",
+                year: "numeric",
+                month: "short",
+                day: "numeric"
+            })
+        );
+    }
 
     return (
         <nav className={'navbar navbar-expand navbar-dark bg-black'}>
@@ -27,35 +50,40 @@ export const Navbar: React.FC<{
                             {budgetPeriodString ? budgetPeriodString : "Budget Period"}
                         </a>
                         <ul className="dropdown-menu dropdown-menu-dark">
-                            {props.budgetPeriodsArray.map(period => {
-                                return (
-                                    <li key={"nbdd" + period.id}
-                                        onClick={() => {
-                                            setBudgetPeriodString(period.budgetStart + " to " + period.budgetEnd);
-                                            props.setBudgetPeriod(period);
-                                        }}
-                                    >
-                                        <a className="dropdown-item nav-link" href="#">{period.budgetStart + " to " + period.budgetEnd}</a>
-                                    </li>
-                                )
-                            })}
+                            {
+                                props.budgetPeriodsArray ?
+                                    props.budgetPeriodsArray.map(period => {
+                                            return (
+                                                <li key={"nbdd" + period.id}
+                                                    onClick={() => {
+                                                        props.setBudgetPeriod(period);
+                                                    }}
+                                                >
+                                                    <a className="dropdown-item nav-link"
+                                                       href="#">{budgetPeriodStringify(period)}</a>
+                                                </li>
+                                            )
+                                        }
+                                    )
+                                    :
+                                    <></>
+                            }
 
                             {budgetPeriodString ?
-                            <>
-                                <li key="nbddhr-1">
-                                    <hr className="dropdown-divider border-dark ms-3 me-3" />
-                                </li>
-                                <li key="nbddclear"
-                                    onClick={() => {
-                                        setBudgetPeriodString("");
-                                        props.setBudgetPeriod(undefined);
-                                    }}
-                                >
-                                    <a className="dropdown-item nav-link">Clear</a>
-                                </li>
-                            </>
-                            :
-                            <></>}
+                                <>
+                                    <li key="nbddhr-1">
+                                        <hr className="dropdown-divider border-dark ms-3 me-3"/>
+                                    </li>
+                                    <li key="nbddclear"
+                                        onClick={() => {
+                                            props.setBudgetPeriod(undefined);
+                                        }}
+                                    >
+                                        <a className="dropdown-item nav-link">Clear</a>
+                                    </li>
+                                </>
+                                :
+                                <></>}
                         </ul>
                     </div>
                 </div>

@@ -5,13 +5,12 @@ import {Navbar} from "./layouts/NavbarAndFooter/Navbar";
 import AccountModel from "./models/AccountModel";
 import BudgetPeriodModel from "./models/BudgetPeriodModel";
 
-import _budgetPeriods from "./resources/data/budget-periods.json";
 
 const baseUri = "http://192.168.1.135:8080"
 
 function App() {
     const [accounts, setAccounts] = useState<AccountModel[]>([]);
-    const [budgetPeriods, setBudgetPeriods] = useState<BudgetPeriodModel[]>(_budgetPeriods as BudgetPeriodModel[]);
+    const [budgetPeriods, setBudgetPeriods] = useState<BudgetPeriodModel[] | undefined>(undefined);
     const [budgetPeriod, setBudgetPeriod] = useState<BudgetPeriodModel | undefined>(undefined);
 
     useEffect(() => {
@@ -39,8 +38,40 @@ function App() {
             return accounts;
         }
 
+        async function getBudgetPeriods() {
+            const budgetPeriods: BudgetPeriodModel[] = [];
+            await fetch(baseUri + "/get/budgetperiods")
+                .then(async response => {
+                    if(!response.ok){
+                        console.log(response.statusText);
+                    }
+
+                    const responseJson = await response.json();
+
+                    for(const key in responseJson) {
+                        budgetPeriods.push({
+                            id: responseJson[key]._id,
+                            payDate: responseJson[key].payDate,
+                            budgetStart: responseJson[key].budgetStart,
+                            budgetEnd: responseJson[key].budgetEnd,
+                            startingAmt: responseJson[key].startingAmt
+                        })
+                    }
+                })
+                .catch(reason => console.log(reason))
+
+            return budgetPeriods;
+        }
+
         getAccounts().then(response => setAccounts(response)).catch(reason => console.log(reason));
+        getBudgetPeriods().then(response => setBudgetPeriods(response)).catch(reason => console.log(reason));
     }, [])
+
+    useEffect(() => {
+        if(budgetPeriods){
+            setBudgetPeriod(budgetPeriods[budgetPeriods.length-1])
+        }
+    }, [budgetPeriods])
 
     function getAccountNameById(id: string): string | undefined {
         return accounts.find(element => element.id === id)?.name;
@@ -48,7 +79,7 @@ function App() {
 
     return (
         <div className="App">
-            <Navbar budgetPeriodsArray={budgetPeriods} setBudgetPeriod={setBudgetPeriod}/>
+            <Navbar budgetPeriodsArray={budgetPeriods} setBudgetPeriod={setBudgetPeriod} currBudgetPeriod={budgetPeriod}/>
             <HomePage getAccountNameById={getAccountNameById}
                       accountsArray={accounts}
                       budgetPeriod={budgetPeriod}

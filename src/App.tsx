@@ -5,8 +5,7 @@ import {Navbar} from "./layouts/NavbarAndFooter/Navbar";
 import AccountModel from "./models/AccountModel";
 import BudgetPeriodModel from "./models/BudgetPeriodModel";
 
-
-const baseUri = "http://192.168.1.135:8080"
+const baseUri = "http://localhost:8080"
 
 function App() {
     const [accounts, setAccounts] = useState<AccountModel[]>([]);

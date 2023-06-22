@@ -72,14 +72,14 @@ export const Navbar: React.FC<{
                             {budgetPeriodString ?
                                 <>
                                     <li key="nbddhr-1">
-                                        <hr className="dropdown-divider border-dark ms-3 me-3"/>
+                                        <hr className="dropdown-divider ms-3 me-3"/>
                                     </li>
                                     <li key="nbddclear"
                                         onClick={() => {
                                             props.setBudgetPeriod(undefined);
                                         }}
                                     >
-                                        <a className="dropdown-item nav-link">Clear</a>
+                                        <a className="dropdown-item nav-link text-black">Clear</a>
                                     </li>
                                 </>
                                 :

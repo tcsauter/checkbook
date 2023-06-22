@@ -45,11 +45,11 @@ export const Navbar: React.FC<{
                         <a className='nav-link' href='#'>Bills</a>
                     </div>
                     <div className="dropstart navbar-nav">
-                        <a className="nav-link active dropdown-toggle" role="button"
+                        <a className="nav-link active dropdown-toggle btn btn-link btn-outline-light text-black" role="button"
                            data-bs-toggle="dropdown">
                             {budgetPeriodString ? budgetPeriodString : "Budget Period"}
                         </a>
-                        <ul className="dropdown-menu dropdown-menu-dark">
+                        <ul className="dropdown-menu">
                             {
                                 props.budgetPeriodsArray ?
                                     props.budgetPeriodsArray.map(period => {
@@ -59,7 +59,7 @@ export const Navbar: React.FC<{
                                                         props.setBudgetPeriod(period);
                                                     }}
                                                 >
-                                                    <a className="dropdown-item nav-link"
+                                                    <a className="dropdown-item nav-link text-black"
                                                        href="#">{budgetPeriodStringify(period)}</a>
                                                 </li>
                                             )

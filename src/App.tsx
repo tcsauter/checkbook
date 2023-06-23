@@ -5,8 +5,7 @@ import {Navbar} from "./layouts/NavbarAndFooter/Navbar";
 import AccountModel from "./models/AccountModel";
 import BudgetPeriodModel from "./models/BudgetPeriodModel";
 import {getBudgetPeriods, updateBudgetPeriod} from "./utils/budgetPeriodUtil";
-
-const baseUri = "http://localhost:8080"
+import {getAccounts} from "./utils/accountUtil";
 
 function App() {
     const [accounts, setAccounts] = useState<AccountModel[]>([]);
@@ -14,30 +13,6 @@ function App() {
     const [budgetPeriod, setBudgetPeriod] = useState<BudgetPeriodModel | undefined>(undefined);
 
     useEffect(() => {
-        async function getAccounts() {
-            const accounts: AccountModel[] = [];
-            await fetch(baseUri + "/get/accounts")
-                .then(async response => {
-                    if (!response.ok) {
-                        console.log(response.statusText);
-                    }
-
-                    const responseJson = await response.json();
-
-                    for (const key in responseJson) {
-                        accounts.push({
-                            id: responseJson[key]._id,
-                            name: responseJson[key].name,
-                            type: responseJson[key].type,
-                            lastFour: responseJson[key].lastFour
-                        })
-                    }
-                })
-                .catch(reason => console.log(reason))
-
-            return accounts;
-        }
-
         getAccounts().then(response => setAccounts(response)).catch(reason => console.log(reason));
         getBudgetPeriods().then(response => setBudgetPeriods(response)).catch(reason => console.log(reason));
     }, [])

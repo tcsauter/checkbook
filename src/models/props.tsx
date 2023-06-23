@@ -2,7 +2,7 @@ import BudgetPeriodModel from "./BudgetPeriodModel";
 
 export interface RemainCardProps {
     budgetPeriod: BudgetPeriodModel;
-    updateBudgetPeriod: (bp: BudgetPeriodModel) => Promise<void>;
+    updateBudgetPeriod: (bp: BudgetPeriodModel) => Promise<BudgetPeriodModel[]>;
     totalSpent: number;
 }
 

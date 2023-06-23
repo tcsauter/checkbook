@@ -14,7 +14,7 @@ export const HomePage: React.FC<{
     getAccountNameById: (id: string) => string | undefined,
     accountsArray: AccountModel[],
     budgetPeriod?: BudgetPeriodModel,
-    updateBudgetPeriod: (bp: BudgetPeriodModel) => Promise<void>
+    updateBudgetPeriod: (bp: BudgetPeriodModel) => Promise<BudgetPeriodModel[]>
 }> = (props) => {
     const [expenseArray, setExpenseArray] = useState<ExpenseModel[]>([]);
     const [creditAccountSummaryArray, setCreditAccountSummaryArray] = useState<CreditBalanceSummaryCardProps[]>([]);

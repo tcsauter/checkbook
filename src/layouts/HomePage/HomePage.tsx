@@ -43,12 +43,12 @@ export const HomePage: React.FC<{
     useEffect(() => {
         setExpensesLoading(true);
         getExpenses(dateParamString)
-            .then(value => {
-                setExpenseArray(value);
+            .then(expenses => {
+                setExpenseArray(expenses);
                 setExpensesLoading(false);
             }).catch(reason => {
-                setExpensesError(true);
-                setExpensesErrorString(reason.toString())
+            setExpensesError(true);
+            setExpensesErrorString(reason.toString())
         });
     }, [dateParamString])
 
@@ -58,26 +58,60 @@ export const HomePage: React.FC<{
         return totalAmount;
     }
 
-    async function addExpense(expense: ExpenseModel) {
-        setExpenseArray(await addNewExpense(expense, dateParamString));
+    function addExpense(expense: ExpenseModel) {
+        setExpensesLoading(true);
+        addNewExpense(expense, dateParamString)
+            .then(expenses => {
+                setExpenseArray(expenses);
+                setExpensesLoading(false);
+            }).catch(reason => {
+            setExpensesError(true);
+            setExpensesErrorString(reason.toString());
+        });
     }
 
     async function updateExpense(expense: ExpenseModel) {
-        setExpenseArray(await expenseUpdate(expense, dateParamString));
+        setExpensesLoading(true);
+        expenseUpdate(expense, dateParamString)
+            .then(expenses => {
+                setExpenseArray(expenses);
+                setExpensesLoading(false);
+            }).catch(reason => {
+            setExpensesError(true);
+            setExpensesErrorString(reason.toString());
+        });
     }
 
     async function deleteExpense(expenseId: string) {
-        setExpenseArray(await expenseDelete(expenseId, dateParamString));
+        setExpensesLoading(true);
+        expenseDelete(expenseId, dateParamString)
+            .then(expenses => {
+                setExpenseArray(expenses);
+                setExpensesLoading(false);
+            }).catch(reason => {
+            setExpensesError(true);
+            setExpensesErrorString(reason.toString());
+        });
     }
 
     async function clearExpenses() {
-        if (await expensesClear()) {
-            setExpenseArray([]);
-        }
+        setExpensesLoading(true);
+        expensesClear()
+            .then(success => {
+                if (success) {
+                    setExpenseArray([]);
+                    setExpensesLoading(false);
+                } else {
+                    setExpensesLoading(false);
+                }
+            }).catch(reason => {
+                setExpensesError(true);
+                setExpensesErrorString(reason.toString());
+        })
     }
 
-    if(expensesError){
-        return(
+    if (expensesError) {
+        return (
             <div className="card">
                 <h1 className="card-header">!Error!</h1>
                 <p className="card-body">{expensesErrorString}</p>

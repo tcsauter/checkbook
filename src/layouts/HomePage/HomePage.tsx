@@ -16,6 +16,9 @@ export const HomePage: React.FC<{
     updateBudgetPeriod: (bp: BudgetPeriodModel) => Promise<BudgetPeriodModel[]>
 }> = (props) => {
     const [expenseArray, setExpenseArray] = useState<ExpenseModel[]>([]);
+    const [expensesLoading, setExpensesLoading] = useState(false);
+    const [expensesError, setExpensesError] = useState(false);
+    const [expensesErrorString, setExpensesErrorString] = useState("");
     const [creditAccountSummaryArray, setCreditAccountSummaryArray] = useState<CreditBalanceSummaryCardProps[]>([]);
     const [dateParamString, setDateParamString] = useState("");
 
@@ -38,7 +41,15 @@ export const HomePage: React.FC<{
     }, [props.budgetPeriod])
 
     useEffect(() => {
-        getExpenses(dateParamString).then(value => setExpenseArray(value)).catch(reason => console.log(reason));
+        setExpensesLoading(true);
+        getExpenses(dateParamString)
+            .then(value => {
+                setExpenseArray(value);
+                setExpensesLoading(false);
+            }).catch(reason => {
+                setExpensesError(true);
+                setExpensesErrorString(reason.toString())
+        });
     }, [dateParamString])
 
     function calculateSpent(): number {
@@ -60,9 +71,18 @@ export const HomePage: React.FC<{
     }
 
     async function clearExpenses() {
-        if(await expensesClear()) {
+        if (await expensesClear()) {
             setExpenseArray([]);
         }
+    }
+
+    if(expensesError){
+        return(
+            <div className="card">
+                <h1 className="card-header">!Error!</h1>
+                <p className="card-body">{expensesErrorString}</p>
+            </div>
+        )
     }
 
     return (
@@ -80,18 +100,23 @@ export const HomePage: React.FC<{
                             input={{
                                 budgetPeriod: props.budgetPeriod,
                                 updateBudgetPeriod: props.updateBudgetPeriod,
-                                totalSpent: calculateSpent()
+                                totalSpent: calculateSpent(),
+                                stillLoading: expensesLoading
                             }}
                         />
                         :
                         <></>
                     }
-                    <CreditBalanceSummaryCard creditAccountSummaryArray={creditAccountSummaryArray}/>
+                    <CreditBalanceSummaryCard
+                        creditAccountSummaryArray={creditAccountSummaryArray}
+                        stillLoading={expensesLoading}
+                    />
                 </div>
                 <div className='w-75 mt-3'>
                     <DetailsCard expenseArray={expenseArray} getAccountNameById={props.getAccountNameById}
                                  updateExpense={updateExpense} accountsArray={props.accountsArray}
-                                 deleteExpense={deleteExpense} clearExpenses={clearExpenses}/>
+                                 deleteExpense={deleteExpense} clearExpenses={clearExpenses}
+                                 stillLoading={expensesLoading}/>
                 </div>
             </div>
 
@@ -102,16 +127,21 @@ export const HomePage: React.FC<{
                         input={{
                             budgetPeriod: props.budgetPeriod,
                             updateBudgetPeriod: props.updateBudgetPeriod,
-                            totalSpent: calculateSpent()
+                            totalSpent: calculateSpent(),
+                            stillLoading: expensesLoading
                         }}
                     />
                     :
                     <></>
                 }
-                <CreditBalanceSummaryCard creditAccountSummaryArray={creditAccountSummaryArray}/>
+                <CreditBalanceSummaryCard
+                    creditAccountSummaryArray={creditAccountSummaryArray}
+                    stillLoading={expensesLoading}
+                />
                 <DetailsCard expenseArray={expenseArray} getAccountNameById={props.getAccountNameById}
                              updateExpense={updateExpense} accountsArray={props.accountsArray}
-                             deleteExpense={deleteExpense} clearExpenses={clearExpenses}/>
+                             deleteExpense={deleteExpense} clearExpenses={clearExpenses}
+                             stillLoading={expensesLoading}/>
             </div>
         </div>
     );

@@ -9,12 +9,12 @@ export const RemainCard: React.FC<{ input: RemainCardProps }> = (props) => {
     function takeInitAmtInput(): void {
         const entry = Number(initAmtEntryValue);
 
-        if(initAmtEntryValue === '' || initAmtEntryValue === props.input.budgetPeriod.startingAmt.toLocaleString("en-US")){
+        if (initAmtEntryValue === '' || initAmtEntryValue === props.input.budgetPeriod.startingAmt.toLocaleString("en-US")) {
             setShowEnterRemainAmt(false);
             setShowHintText(false);
-        }else if(isNaN(entry)){
+        } else if (isNaN(entry)) {
             setShowHintText(true);
-        }else{
+        } else {
             setShowEnterRemainAmt(false);
             setShowHintText(false);
 
@@ -30,18 +30,26 @@ export const RemainCard: React.FC<{ input: RemainCardProps }> = (props) => {
                 <h5 className='card-title' id='remain-init-amt-label'>
                     {showEnterRemainAmt ? 'Enter Starting Amount' : 'Remaining Amount'}
                 </h5>
-                <p className={showEnterRemainAmt ? 'd-none card-text mt-2' : 'card-text mt-2'}
-                   id='remain-amt-elem'
-                   onClick={() => {
-                       setShowEnterRemainAmt(true);
-                       setInitAmtEntryValue(props.input.budgetPeriod.startingAmt.toLocaleString("en-US"));
-                   }}
-                >
-                    {(props.input.budgetPeriod.startingAmt - props.input.totalSpent).toLocaleString('en-US', {
-                        style: "currency",
-                        currency: "USD"
-                    })}
-                </p>
+                {props.input.stillLoading ?
+                    <>
+                        <p>Loading...</p>
+                    </>
+                    :
+                    <>
+                        <p className={showEnterRemainAmt ? 'd-none card-text mt-2' : 'card-text mt-2'}
+                           id='remain-amt-elem'
+                           onClick={() => {
+                               setShowEnterRemainAmt(true);
+                               setInitAmtEntryValue(props.input.budgetPeriod.startingAmt.toLocaleString("en-US"));
+                           }}
+                        >
+                            {(props.input.budgetPeriod.startingAmt - props.input.totalSpent).toLocaleString('en-US', {
+                                style: "currency",
+                                currency: "USD"
+                            })}
+                        </p>
+                    </>
+                }
                 <div className={showEnterRemainAmt ? 'input-group mb-3' : 'd-none input-group mb-3'}
                      id='init-amt-entry'
                 >

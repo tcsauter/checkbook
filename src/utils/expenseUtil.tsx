@@ -26,7 +26,6 @@ export const getExpenses = async (dateParams: string) => {
                 });
             }
         })
-        .catch(reason => console.log(reason))
 
     return expenses;
 }
@@ -61,7 +60,6 @@ export async function addNewExpense(newExpense: ExpenseModel, dateParams: string
                 });
             }
         })
-        .catch(reason => console.log(reason));
 
     return newArray;
 }

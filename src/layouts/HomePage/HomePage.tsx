@@ -13,7 +13,8 @@ export const HomePage: React.FC<{
     getAccountNameById: (id: string) => string | undefined,
     accountsArray: AccountModel[],
     budgetPeriod?: BudgetPeriodModel,
-    updateBudgetPeriod: (bp: BudgetPeriodModel) => Promise<BudgetPeriodModel[]>
+    updateBudgetPeriod: (bp: BudgetPeriodModel) => Promise<BudgetPeriodModel[]>,
+    accountsLoading: boolean;
 }> = (props) => {
     const [expenseArray, setExpenseArray] = useState<ExpenseModel[]>([]);
     const [expensesLoading, setExpensesLoading] = useState(false);
@@ -124,6 +125,7 @@ export const HomePage: React.FC<{
 
             <AddNewExpenseCard accounts={props.accountsArray}
                                updateExpenses={addExpense}
+                               accountsLoading={props.accountsLoading}
             />
 
             {/*desktop*/}
@@ -143,14 +145,14 @@ export const HomePage: React.FC<{
                     }
                     <CreditBalanceSummaryCard
                         creditAccountSummaryArray={creditAccountSummaryArray}
-                        stillLoading={expensesLoading}
+                        stillLoading={expensesLoading || props.accountsLoading}
                     />
                 </div>
                 <div className='w-75 mt-3'>
                     <DetailsCard expenseArray={expenseArray} getAccountNameById={props.getAccountNameById}
                                  updateExpense={updateExpense} accountsArray={props.accountsArray}
                                  deleteExpense={deleteExpense} clearExpenses={clearExpenses}
-                                 stillLoading={expensesLoading}/>
+                                 stillLoading={expensesLoading || props.accountsLoading}/>
                 </div>
             </div>
 
@@ -170,12 +172,12 @@ export const HomePage: React.FC<{
                 }
                 <CreditBalanceSummaryCard
                     creditAccountSummaryArray={creditAccountSummaryArray}
-                    stillLoading={expensesLoading}
+                    stillLoading={expensesLoading || props.accountsLoading}
                 />
                 <DetailsCard expenseArray={expenseArray} getAccountNameById={props.getAccountNameById}
                              updateExpense={updateExpense} accountsArray={props.accountsArray}
                              deleteExpense={deleteExpense} clearExpenses={clearExpenses}
-                             stillLoading={expensesLoading}/>
+                             stillLoading={expensesLoading || props.accountsLoading}/>
             </div>
         </div>
     );

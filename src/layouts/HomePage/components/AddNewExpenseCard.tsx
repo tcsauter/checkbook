@@ -11,7 +11,8 @@ function setInitialDateValue() {
 
 export const AddNewExpenseCard: React.FC<{
     accounts: AccountModel[],
-    updateExpenses: (expense: ExpenseModel) => void
+    updateExpenses: (expense: ExpenseModel) => void,
+    accountsLoading: boolean
 }> = (props) => {
     const [inputAmt, setInputAmt] = useState('');
     const [inputAcct, setInputAcct] = useState('');
@@ -65,7 +66,7 @@ export const AddNewExpenseCard: React.FC<{
 
                 <div className="col-lg-3 card-text dropdown">
                     <button className="form-control btn btn-outline-secondary dropdown-toggle text-start" type="button"
-                            data-bs-toggle="dropdown">{inputAcct ? inputAcct : "Account"}</button>
+                            data-bs-toggle="dropdown">{inputAcct ? inputAcct : props.accountsLoading ? "Loading..." : "Account"}</button>
                     <ul className="dropdown-menu">
                         {props.accounts.map(account => {
                             return (

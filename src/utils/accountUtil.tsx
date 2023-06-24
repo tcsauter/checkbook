@@ -22,7 +22,6 @@ export async function getAccounts() {
                 })
             }
         })
-        .catch(reason => console.log(reason))
 
     return accounts;
 }

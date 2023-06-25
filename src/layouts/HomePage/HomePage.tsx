@@ -14,14 +14,20 @@ export const HomePage: React.FC<{
     accountsArray: AccountModel[],
     budgetPeriod?: BudgetPeriodModel,
     updateBudgetPeriod: (bp: BudgetPeriodModel) => Promise<BudgetPeriodModel[]>,
-    accountsLoading: boolean;
+    accountsLoading: boolean,
+    budgetPeriodsLoading: boolean
 }> = (props) => {
     const [expenseArray, setExpenseArray] = useState<ExpenseModel[]>([]);
-    const [expensesLoading, setExpensesLoading] = useState(false);
+    const [expensesLoading, setExpensesLoading] = useState(true);
     const [expensesError, setExpensesError] = useState(false);
     const [expensesErrorString, setExpensesErrorString] = useState("");
     const [creditAccountSummaryArray, setCreditAccountSummaryArray] = useState<CreditBalanceSummaryCardProps[]>([]);
     const [dateParamString, setDateParamString] = useState("");
+    const [pageLoading, setPageLoading] = useState(false);
+
+    useEffect(() => {
+        setPageLoading(props.accountsLoading || props.budgetPeriodsLoading || expensesLoading);
+    }, [props.accountsLoading, props.budgetPeriodsLoading, expensesLoading])
 
     useEffect(() => {
         setCreditAccountSummaryArray(props.accountsArray.filter(account => account.type === "Credit")
@@ -145,14 +151,14 @@ export const HomePage: React.FC<{
                     }
                     <CreditBalanceSummaryCard
                         creditAccountSummaryArray={creditAccountSummaryArray}
-                        stillLoading={expensesLoading || props.accountsLoading}
+                        stillLoading={pageLoading}
                     />
                 </div>
                 <div className='w-75 mt-3'>
                     <DetailsCard expenseArray={expenseArray} getAccountNameById={props.getAccountNameById}
                                  updateExpense={updateExpense} accountsArray={props.accountsArray}
                                  deleteExpense={deleteExpense} clearExpenses={clearExpenses}
-                                 stillLoading={expensesLoading || props.accountsLoading}/>
+                                 stillLoading={pageLoading}/>
                 </div>
             </div>
 
@@ -172,12 +178,12 @@ export const HomePage: React.FC<{
                 }
                 <CreditBalanceSummaryCard
                     creditAccountSummaryArray={creditAccountSummaryArray}
-                    stillLoading={expensesLoading || props.accountsLoading}
+                    stillLoading={pageLoading}
                 />
                 <DetailsCard expenseArray={expenseArray} getAccountNameById={props.getAccountNameById}
                              updateExpense={updateExpense} accountsArray={props.accountsArray}
                              deleteExpense={deleteExpense} clearExpenses={clearExpenses}
-                             stillLoading={expensesLoading || props.accountsLoading}/>
+                             stillLoading={pageLoading}/>
             </div>
         </div>
     );

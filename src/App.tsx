@@ -9,15 +9,17 @@ import {getAccounts} from "./utils/accountUtil";
 
 function App() {
     const [accounts, setAccounts] = useState<AccountModel[]>([]);
-    const [accountsLoading, setAccountsLoading] = useState(false);
+    const [accountsLoading, setAccountsLoading] = useState(true);
     const [accountsError, setAccountsError] = useState(false);
     const [accountsErrorString, setAccountsErrorString] = useState("");
     const [budgetPeriods, setBudgetPeriods] = useState<BudgetPeriodModel[] | undefined>(undefined);
+    const [budgetPeriodsLoading, setBudgetPeriodsLoading] = useState(true);
     const [budgetPeriodsError, setBudgetPeriodsError] = useState(false);
     const [budgetPeriod, setBudgetPeriod] = useState<BudgetPeriodModel | undefined>(undefined);
 
     useEffect(() => {
         setAccountsLoading(true);
+        setBudgetPeriodsLoading(true);
         getAccounts()
             .then(accounts => {
                 setAccounts(accounts);
@@ -29,12 +31,28 @@ function App() {
             });
 
         getBudgetPeriods()
-            .then(budgetPeriods => setBudgetPeriods(budgetPeriods))
-            .catch(() => setBudgetPeriodsError(true));
+            .then(budgetPeriods => {
+                setBudgetPeriods(budgetPeriods);
+                setBudgetPeriod(findCurrentBudgetPeriod(budgetPeriods));
+                setBudgetPeriodsLoading(false);
+            })
+            .catch(() => {
+                setBudgetPeriodsError(true);
+                setBudgetPeriodsLoading(false);
+            });
     }, [])
 
     function getAccountNameById(id: string): string | undefined {
         return accounts.find(element => element.id === id)?.name;
+    }
+
+    function findCurrentBudgetPeriod(bps: BudgetPeriodModel[]) {
+        const date = new Date();
+        const dateString = date.getFullYear().toString() + "-" +
+            (date.getMonth() + 1).toString().padStart(2, "0") + "-" +
+            date.getDate().toString().padStart(2, "0");
+
+        return bps.find(bp => dateString >= bp.budgetStart && dateString <= bp.budgetEnd);
     }
 
     if(accountsError){
@@ -55,6 +73,7 @@ function App() {
                       budgetPeriod={budgetPeriod}
                       updateBudgetPeriod={updateBudgetPeriod}
                       accountsLoading={accountsLoading}
+                      budgetPeriodsLoading={budgetPeriodsLoading}
             />
         </div>
     );

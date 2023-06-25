@@ -4,6 +4,7 @@ import BudgetPeriodModel from "../../models/BudgetPeriodModel";
 export const Navbar: React.FC<{
     budgetPeriodsArray?: BudgetPeriodModel[],
     setBudgetPeriod: React.Dispatch<React.SetStateAction<BudgetPeriodModel | undefined>>,
+    budgetPeriodsError: boolean,
     currBudgetPeriod?: BudgetPeriodModel
 }> = (props) => {
     const [budgetPeriodString, setBudgetPeriodString] = useState("");
@@ -11,6 +12,14 @@ export const Navbar: React.FC<{
     useEffect(() => {
         setBudgetPeriodString(props.currBudgetPeriod ? budgetPeriodStringify(props.currBudgetPeriod) : "");
     }, [props.currBudgetPeriod])
+
+    useEffect(() => {
+        if(props.budgetPeriodsError) {
+            document.getElementById("budget-periods-dropdown")?.setAttribute("disabled", "");
+        }else{
+            document.getElementById("budget-periods-dropdown")?.removeAttribute("disabled");
+        }
+    }, [props.budgetPeriodsError])
 
     function budgetPeriodStringify(bp: BudgetPeriodModel){
         return(
@@ -46,8 +55,8 @@ export const Navbar: React.FC<{
                     </div>
                     <div className="dropstart navbar-nav">
                         <a className="nav-link active dropdown-toggle btn btn-link btn-outline-light text-black" role="button"
-                           data-bs-toggle="dropdown">
-                            {budgetPeriodString ? budgetPeriodString : "Budget Period"}
+                           data-bs-toggle="dropdown" id="budget-periods-dropdown">
+                            {budgetPeriodString ? budgetPeriodString : props.budgetPeriodsError ? "Can't Fetch Budget Periods" : "Budget Period"}
                         </a>
                         <ul className="dropdown-menu">
                             {

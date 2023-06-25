@@ -13,6 +13,7 @@ function App() {
     const [accountsError, setAccountsError] = useState(false);
     const [accountsErrorString, setAccountsErrorString] = useState("");
     const [budgetPeriods, setBudgetPeriods] = useState<BudgetPeriodModel[] | undefined>(undefined);
+    const [budgetPeriodsError, setBudgetPeriodsError] = useState(false);
     const [budgetPeriod, setBudgetPeriod] = useState<BudgetPeriodModel | undefined>(undefined);
 
     useEffect(() => {
@@ -27,7 +28,9 @@ function App() {
                 setAccountsErrorString(reason.toString());
             });
 
-        getBudgetPeriods().then(response => setBudgetPeriods(response)).catch(reason => console.log(reason));
+        getBudgetPeriods()
+            .then(budgetPeriods => setBudgetPeriods(budgetPeriods))
+            .catch(() => setBudgetPeriodsError(true));
     }, [])
 
     function getAccountNameById(id: string): string | undefined {
@@ -46,7 +49,7 @@ function App() {
     return (
         <div className="App">
             <Navbar budgetPeriodsArray={budgetPeriods} setBudgetPeriod={setBudgetPeriod}
-                    currBudgetPeriod={budgetPeriod}/>
+                    budgetPeriodsError={budgetPeriodsError} currBudgetPeriod={budgetPeriod}/>
             <HomePage getAccountNameById={getAccountNameById}
                       accountsArray={accounts}
                       budgetPeriod={budgetPeriod}

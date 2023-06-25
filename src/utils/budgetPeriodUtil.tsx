@@ -24,7 +24,6 @@ export async function getBudgetPeriods() {
                 })
             }
         })
-        .catch(reason => console.log(reason))
 
     return budgetPeriods;
 }
@@ -61,7 +60,6 @@ export async function updateBudgetPeriod(bp: BudgetPeriodModel): Promise<BudgetP
                 });
             }
         })
-        .catch(reason => console.log(reason));
 
     return budgetPeriods;
 }

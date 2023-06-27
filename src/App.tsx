@@ -6,6 +6,7 @@ import AccountModel from "./models/AccountModel";
 import BudgetPeriodModel from "./models/BudgetPeriodModel";
 import {getBudgetPeriods, updateBudgetPeriod} from "./utils/budgetPeriodUtil";
 import {getAccounts} from "./utils/accountUtil";
+import {ManageBudgetPeriods} from "./layouts/ManageBudgetPeriods/ManageBudgetPeriods";
 
 function App() {
     const [accounts, setAccounts] = useState<AccountModel[]>([]);
@@ -68,13 +69,14 @@ function App() {
         <div className="App">
             <Navbar budgetPeriodsArray={budgetPeriods} setBudgetPeriod={setBudgetPeriod}
                     budgetPeriodsError={budgetPeriodsError} currBudgetPeriod={budgetPeriod}/>
-            <HomePage getAccountNameById={getAccountNameById}
-                      accountsArray={accounts}
-                      budgetPeriod={budgetPeriod}
-                      updateBudgetPeriod={updateBudgetPeriod}
-                      accountsLoading={accountsLoading}
-                      budgetPeriodsLoading={budgetPeriodsLoading}
-            />
+            {/*<HomePage getAccountNameById={getAccountNameById}*/}
+            {/*          accountsArray={accounts}*/}
+            {/*          budgetPeriod={budgetPeriod}*/}
+            {/*          updateBudgetPeriod={updateBudgetPeriod}*/}
+            {/*          accountsLoading={accountsLoading}*/}
+            {/*          budgetPeriodsLoading={budgetPeriodsLoading}*/}
+            {/*/>*/}
+            <ManageBudgetPeriods />
         </div>
     );
 }

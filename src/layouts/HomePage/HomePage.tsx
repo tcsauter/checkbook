@@ -127,7 +127,7 @@ export const HomePage: React.FC<{
     }
 
     return (
-        <div className='container bg-black vh-100 bg-opacity-75'>
+        <div className='container bg-black min-vh-100 bg-opacity-75'>
 
             <AddNewExpenseCard accounts={props.accountsArray}
                                updateExpenses={addExpense}

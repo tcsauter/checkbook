@@ -1,13 +1,8 @@
 import React, {useEffect, useState} from "react";
 import ExpenseModel from "../../../models/ExpenseModel";
 import AccountModel from "../../../models/AccountModel";
+import {setInitialDateValue} from "../../../utils/dateUtils";
 
-function setInitialDateValue() {
-    const date = new Date();
-    return date.getFullYear().toString() + "-" +
-        (date.getMonth() + 1).toString().padStart(2, "0") + "-" +
-        date.getDate().toString().padStart(2, "0");
-}
 
 export const AddNewExpenseCard: React.FC<{
     accounts: AccountModel[],

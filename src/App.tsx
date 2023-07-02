@@ -4,7 +4,7 @@ import {HomePage} from "./layouts/HomePage/HomePage";
 import {Navbar} from "./layouts/NavbarAndFooter/Navbar";
 import AccountModel from "./models/AccountModel";
 import BudgetPeriodModel from "./models/BudgetPeriodModel";
-import {getBudgetPeriods, updateBudgetPeriod} from "./utils/budgetPeriodUtil";
+import {findCurrentBudgetPeriod, getBudgetPeriods, updateBudgetPeriod} from "./utils/budgetPeriodUtil";
 import {getAccounts} from "./utils/accountUtil";
 import {ManageBudgetPeriods} from "./layouts/ManageBudgetPeriods/ManageBudgetPeriods";
 
@@ -47,15 +47,6 @@ function App() {
         return accounts.find(element => element.id === id)?.name;
     }
 
-    function findCurrentBudgetPeriod(bps: BudgetPeriodModel[]) {
-        const date = new Date();
-        const dateString = date.getFullYear().toString() + "-" +
-            (date.getMonth() + 1).toString().padStart(2, "0") + "-" +
-            date.getDate().toString().padStart(2, "0");
-
-        return bps.find(bp => dateString >= bp.budgetStart && dateString <= bp.budgetEnd);
-    }
-
     if(accountsError){
         return(
             <div className="card">
@@ -76,7 +67,7 @@ function App() {
             {/*          accountsLoading={accountsLoading}*/}
             {/*          budgetPeriodsLoading={budgetPeriodsLoading}*/}
             {/*/>*/}
-            <ManageBudgetPeriods />
+            <ManageBudgetPeriods setBudgetPeriods={setBudgetPeriods} />
         </div>
     );
 }

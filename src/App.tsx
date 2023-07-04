@@ -59,10 +59,15 @@ function App() {
 
     return (
         <div className="App">
-            <Navbar setBudgetPeriod={setBudgetPeriod} budgetPeriodsError={budgetPeriodsError} />
+            <Navbar budgetPeriodsArray={budgetPeriods}
+                    setBudgetPeriod={setBudgetPeriod}
+                    budgetPeriodsError={budgetPeriodsError}
+                    currBudgetPeriod={budgetPeriod}
+            />
                 <Routes>
                     <Route path="/" element={<HomePage getAccountNameById={getAccountNameById}
                                                        accountsArray={accounts}
+                                                       budgetPeriod={budgetPeriod}
                                                        updateBudgetPeriod={updateBudgetPeriod}
                                                        accountsLoading={accountsLoading}
                                                        budgetPeriodsLoading={budgetPeriodsLoading}

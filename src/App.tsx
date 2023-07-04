@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import { Routes, Route } from "react-router-dom";
 import './App.css';
 import {HomePage} from "./layouts/HomePage/HomePage";
 import {Navbar} from "./layouts/NavbarAndFooter/Navbar";
@@ -58,16 +59,18 @@ function App() {
 
     return (
         <div className="App">
-            <Navbar budgetPeriodsArray={budgetPeriods} setBudgetPeriod={setBudgetPeriod}
-                    budgetPeriodsError={budgetPeriodsError} currBudgetPeriod={budgetPeriod}/>
-            {/*<HomePage getAccountNameById={getAccountNameById}*/}
-            {/*          accountsArray={accounts}*/}
-            {/*          budgetPeriod={budgetPeriod}*/}
-            {/*          updateBudgetPeriod={updateBudgetPeriod}*/}
-            {/*          accountsLoading={accountsLoading}*/}
-            {/*          budgetPeriodsLoading={budgetPeriodsLoading}*/}
-            {/*/>*/}
-            <ManageBudgetPeriods setBudgetPeriods={setBudgetPeriods} setBudgetPeriodsError={setBudgetPeriodsError}/>
+            <Navbar setBudgetPeriod={setBudgetPeriod} budgetPeriodsError={budgetPeriodsError} />
+                <Routes>
+                    <Route path="/" element={<HomePage getAccountNameById={getAccountNameById}
+                                                       accountsArray={accounts}
+                                                       updateBudgetPeriod={updateBudgetPeriod}
+                                                       accountsLoading={accountsLoading}
+                                                       budgetPeriodsLoading={budgetPeriodsLoading}
+                    />} />
+                    <Route path="/managebudgetperiods" element={<ManageBudgetPeriods setBudgetPeriods={setBudgetPeriods}
+                                                                                     setBudgetPeriodsError={setBudgetPeriodsError}
+                    />} />
+                </Routes>
         </div>
     );
 }

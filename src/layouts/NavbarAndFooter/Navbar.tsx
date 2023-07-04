@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import BudgetPeriodModel from "../../models/BudgetPeriodModel";
+import {Link} from "react-router-dom";
 
 export const Navbar: React.FC<{
     budgetPeriodsArray?: BudgetPeriodModel[],
@@ -8,6 +9,7 @@ export const Navbar: React.FC<{
     currBudgetPeriod?: BudgetPeriodModel
 }> = (props) => {
     const [budgetPeriodString, setBudgetPeriodString] = useState("");
+    const [activeNav, setActiveNav] = useState("Home")
 
     useEffect(() => {
         setBudgetPeriodString(props.currBudgetPeriod ? budgetPeriodStringify(props.currBudgetPeriod) : "");
@@ -50,8 +52,19 @@ export const Navbar: React.FC<{
                 </button>
                 <div className="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
                     <div className='navbar-nav'>
-                        <a className='nav-link active' aria-current='page' href='#'>Home</a>
-                        <a className='nav-link' href='#'>Bills</a>
+                        <Link to="/" className={activeNav === "Home" ? "nav-link active" : "nav-link"}
+                              aria-current="page"
+                              onClick={() => setActiveNav("Home")}
+                        >
+                            Home
+                        </Link>
+                        <Link to="/managebudgetperiods"
+                              className={activeNav === "Budget Periods" ? "nav-link active" : "nav-link"}
+                              aria-current="page"
+                              onClick={() => setActiveNav("Budget Periods")}
+                        >
+                            Budget Periods
+                        </Link>
                     </div>
                     <div className="dropstart navbar-nav">
                         <a className="nav-link active dropdown-toggle btn btn-link btn-outline-light text-black"

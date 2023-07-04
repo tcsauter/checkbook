@@ -48,8 +48,8 @@ function App() {
         return accounts.find(element => element.id === id)?.name;
     }
 
-    if(accountsError){
-        return(
+    if (accountsError) {
+        return (
             <div className="card">
                 <h1 className="card-header">!Error!</h1>
                 <p className="card-body">{accountsErrorString}</p>

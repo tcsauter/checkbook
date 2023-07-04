@@ -12,6 +12,14 @@ export const Navbar: React.FC<{
     const [activeNav, setActiveNav] = useState("Home")
 
     useEffect(() => {
+        setActiveNav(
+            document.URL.includes("managebudgetperiods") ?
+                "Budget Periods" :
+                "Home"
+        )
+    }, []);
+
+    useEffect(() => {
         setBudgetPeriodString(props.currBudgetPeriod ? budgetPeriodStringify(props.currBudgetPeriod) : "");
     }, [props.currBudgetPeriod])
 

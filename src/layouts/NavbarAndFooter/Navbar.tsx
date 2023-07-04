@@ -82,8 +82,9 @@ export const Navbar: React.FC<{
                                                         props.setBudgetPeriod(period);
                                                     }}
                                                 >
-                                                    <a className="dropdown-item nav-link text-black"
-                                                       href="#">{budgetPeriodStringify(period)}</a>
+                                                    <Link to="" className="dropdown-item nav-link text-black">
+                                                        {budgetPeriodStringify(period)}
+                                                    </Link>
                                                 </li>
                                             )
                                         }
@@ -102,7 +103,7 @@ export const Navbar: React.FC<{
                                             props.setBudgetPeriod(undefined);
                                         }}
                                     >
-                                        <a className="dropdown-item nav-link text-black">Clear</a>
+                                        <Link to="" className="dropdown-item nav-link text-black m-0">Clear</Link>
                                     </li>
                                 </>
                                 :

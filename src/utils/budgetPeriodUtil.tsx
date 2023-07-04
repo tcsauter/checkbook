@@ -4,6 +4,7 @@ import {stringifyDate} from "./dateUtils";
 const baseUri = "http://localhost:8080";
 const GET = "/get/budgetperiods";
 const POST = "/add/budgetperiod";
+const POSTBULK = "/bulkadd/budgetperiods"
 const PUT = "/update/budgetperiod/"
 
 async function handleReturnedArrayOfBps(response: Response): Promise<BudgetPeriodModel[]> {
@@ -51,6 +52,27 @@ export async function addBudgetPeriod(bp: BudgetPeriodModel): Promise<BudgetPeri
             budgetEnd: bp.budgetEnd,
             startingAmt: bp.startingAmt
         })
+    }).then(response => handleReturnedArrayOfBps(response));
+}
+
+export async function addBudgetPeriodBatch(bpArray: BudgetPeriodModel[]): Promise<BudgetPeriodModel[]> {
+    const objArray: object[] = [];
+    for(let x = 0; x < bpArray.length; x++) {
+        objArray.push({
+            _id: bpArray[x].id,
+            payDate: bpArray[x].payDate,
+            budgetStart: bpArray[x].budgetStart,
+            budgetEnd: bpArray[x].budgetEnd,
+            startingAmt: bpArray[x].startingAmt
+        })
+    }
+
+    return fetch(`${baseUri}${POSTBULK}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(objArray)
     }).then(response => handleReturnedArrayOfBps(response));
 }
 

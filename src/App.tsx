@@ -67,7 +67,7 @@ function App() {
             {/*          accountsLoading={accountsLoading}*/}
             {/*          budgetPeriodsLoading={budgetPeriodsLoading}*/}
             {/*/>*/}
-            <ManageBudgetPeriods setBudgetPeriods={setBudgetPeriods} />
+            <ManageBudgetPeriods setBudgetPeriods={setBudgetPeriods} setBudgetPeriodsError={setBudgetPeriodsError}/>
         </div>
     );
 }

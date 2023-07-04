@@ -14,22 +14,22 @@ export const Navbar: React.FC<{
     }, [props.currBudgetPeriod])
 
     useEffect(() => {
-        if(props.budgetPeriodsError) {
+        if (props.budgetPeriodsError) {
             document.getElementById("budget-periods-dropdown")?.setAttribute("disabled", "");
-        }else{
+        } else {
             document.getElementById("budget-periods-dropdown")?.removeAttribute("disabled");
         }
     }, [props.budgetPeriodsError])
 
-    function budgetPeriodStringify(bp: BudgetPeriodModel){
-        return(
+    function budgetPeriodStringify(bp: BudgetPeriodModel) {
+        return (
             new Date(bp.budgetStart).toLocaleDateString("en-US", {
                 timeZone: "UTC",
                 year: undefined,
                 month: "short",
                 day: "numeric"
             }) +
-                " to " +
+            " to " +
             new Date(bp.budgetEnd).toLocaleDateString("en-US", {
                 timeZone: "UTC",
                 year: "numeric",
@@ -54,7 +54,8 @@ export const Navbar: React.FC<{
                         <a className='nav-link' href='#'>Bills</a>
                     </div>
                     <div className="dropstart navbar-nav">
-                        <a className="nav-link active dropdown-toggle btn btn-link btn-outline-light text-black" role="button"
+                        <a className="nav-link active dropdown-toggle btn btn-link btn-outline-light text-black"
+                           role="button"
                            data-bs-toggle="dropdown" id="budget-periods-dropdown">
                             {budgetPeriodString ? budgetPeriodString : props.budgetPeriodsError ? "Can't Fetch Budget Periods" : "Budget Period"}
                         </a>

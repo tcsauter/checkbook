@@ -7,32 +7,33 @@ const PUT = "/update/expense/";
 const DELETE = "/delete/expense/";
 const CLEAR = "/clear/expenses";
 
-export const getExpenses = async (dateParams: string) => {
-    const expenses: ExpenseModel[] = []
-    await fetch(`${baseUri}${GET}${dateParams}`)
-        .then(async response => {
-            if (!response.ok) {
-                console.log(response.statusText);
-            }
+async function handleReturnedArrayOfExpenses(response: Response): Promise<ExpenseModel[]> {
+    const container: ExpenseModel[] = [];
+    if (!response.ok) {
+        console.log(response.statusText);
+    }
 
-            const responseJson = await response.json();
+    const responseJson = await response.json();
 
-            for (const key in responseJson) {
-                expenses.push({
-                    id: responseJson[key]._id,
-                    amount: responseJson[key].amount,
-                    accountId: responseJson[key].accountId,
-                    date: responseJson[key].date
-                });
-            }
-        })
+    for (const key in responseJson) {
+        container.push({
+            id: responseJson[key]._id,
+            amount: responseJson[key].amount,
+            accountId: responseJson[key].accountId,
+            date: responseJson[key].date
+        });
+    }
 
-    return expenses;
+    return container;
+}
+
+export async function getExpenses(dateParams: string) {
+    return fetch(`${baseUri}${GET}${dateParams}`)
+        .then(response => handleReturnedArrayOfExpenses(response));
 }
 
 export async function addNewExpense(newExpense: ExpenseModel, dateParams: string) {
-    const newArray: ExpenseModel[] = [];
-    await fetch(`${baseUri}${POST}${dateParams}`, {
+    return fetch(`${baseUri}${POST}${dateParams}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -44,29 +45,11 @@ export async function addNewExpense(newExpense: ExpenseModel, dateParams: string
             "date": newExpense.date
         })
     })
-        .then(async response => {
-            if (!response.ok) {
-                console.log(response.statusText);
-            }
-
-            const responseJson = await response.json();
-
-            for (const key in responseJson) {
-                newArray.push({
-                    id: responseJson[key]._id,
-                    amount: responseJson[key].amount,
-                    accountId: responseJson[key].accountId,
-                    date: responseJson[key].date
-                });
-            }
-        })
-
-    return newArray;
+        .then(async response => handleReturnedArrayOfExpenses(response))
 }
 
 export async function expenseUpdate(expense: ExpenseModel, dateParams: string){
-    const newArray: ExpenseModel[] = [];
-    await fetch(`${baseUri}${PUT}${expense.id}${dateParams}`, {
+    return fetch(`${baseUri}${PUT}${expense.id}${dateParams}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"
@@ -77,24 +60,7 @@ export async function expenseUpdate(expense: ExpenseModel, dateParams: string){
             "amount": expense.amount,
             "date": expense.date
         })
-    }).then(async response => {
-        if (!response.ok) {
-            console.log(response.statusText);
-        }
-
-        const responseJson = await response.json();
-
-        for (const key in responseJson) {
-            newArray.push({
-                id: responseJson[key]._id,
-                accountId: responseJson[key].accountId,
-                amount: responseJson[key].amount,
-                date: responseJson[key].date
-            })
-        }
-    })
-
-    return newArray;
+    }).then(async response => handleReturnedArrayOfExpenses(response));
 }
 
 export async function expenseDelete(expenseId: string, dateParams: string){

@@ -45,7 +45,7 @@ export async function addNewExpense(newExpense: ExpenseModel, dateParams: string
             "date": newExpense.date
         })
     })
-        .then(async response => handleReturnedArrayOfExpenses(response))
+        .then(response => handleReturnedArrayOfExpenses(response))
 }
 
 export async function expenseUpdate(expense: ExpenseModel, dateParams: string){
@@ -60,31 +60,13 @@ export async function expenseUpdate(expense: ExpenseModel, dateParams: string){
             "amount": expense.amount,
             "date": expense.date
         })
-    }).then(async response => handleReturnedArrayOfExpenses(response));
+    }).then(response => handleReturnedArrayOfExpenses(response));
 }
 
 export async function expenseDelete(expenseId: string, dateParams: string){
-    const newArray: ExpenseModel[] = [];
-    await fetch(`${baseUri}${DELETE}${expenseId}${dateParams}` , {
+    return fetch(`${baseUri}${DELETE}${expenseId}${dateParams}` , {
         method: "DELETE"
-    }).then(async response => {
-        if (!response.ok) {
-            console.log(response.statusText);
-        }
-
-        const responseJson = await response.json();
-
-        for (const key in responseJson) {
-            newArray.push({
-                id: responseJson[key]._id,
-                accountId: responseJson[key].accountId,
-                amount: responseJson[key].amount,
-                date: responseJson[key].date
-            })
-        }
-    })
-
-    return newArray;
+    }).then(response => handleReturnedArrayOfExpenses(response))
 }
 
 export async function expensesClear(){

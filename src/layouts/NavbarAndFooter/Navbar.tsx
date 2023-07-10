@@ -78,7 +78,11 @@ export const Navbar: React.FC<{
                         </Link>
                     </div>
                     <div className="dropstart navbar-nav">
-                        <a className="nav-link active dropdown-toggle btn btn-link btn-outline-light text-black"
+                        <a className={activeNav==="Budget Periods"
+                            ?
+                            "nav-link active btn btn-link btn-outline-light bg-light text-black disabled"
+                            :
+                            "nav-link active dropdown-toggle btn btn-link btn-outline-light text-black"}
                            role="button"
                            data-bs-toggle="dropdown" id="budget-periods-dropdown">
                             {budgetPeriodString ? budgetPeriodString : props.budgetPeriodsError ? "Can't Fetch Budget Periods" : "Budget Period"}

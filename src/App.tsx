@@ -5,7 +5,7 @@ import {HomePage} from "./layouts/HomePage/HomePage";
 import {Navbar} from "./layouts/NavbarAndFooter/Navbar";
 import AccountModel from "./models/AccountModel";
 import BudgetPeriodModel from "./models/BudgetPeriodModel";
-import {findCurrentBudgetPeriod, getBudgetPeriods, updateBudgetPeriod} from "./utils/budgetPeriodUtil";
+import {getBudgetPeriods, updateBudgetPeriod} from "./utils/budgetPeriodUtil";
 import {getAccounts} from "./utils/accountUtil";
 import {ManageBudgetPeriods} from "./layouts/ManageBudgetPeriods/ManageBudgetPeriods";
 
@@ -35,7 +35,7 @@ function App() {
         getBudgetPeriods()
             .then(budgetPeriods => {
                 setBudgetPeriods(budgetPeriods);
-                setBudgetPeriod(findCurrentBudgetPeriod(budgetPeriods));
+                // setBudgetPeriod(findCurrentBudgetPeriod(budgetPeriods));
                 setBudgetPeriodsLoading(false);
             })
             .catch(() => {

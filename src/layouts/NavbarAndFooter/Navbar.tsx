@@ -69,7 +69,10 @@ export const Navbar: React.FC<{
                         <Link to="/managebudgetperiods"
                               className={activeNav === "Budget Periods" ? "nav-link active" : "nav-link"}
                               aria-current="page"
-                              onClick={() => setActiveNav("Budget Periods")}
+                              onClick={() => {
+                                  setActiveNav("Budget Periods");
+                                  props.setBudgetPeriod(undefined); //todo: take this out once loading expenses on nav issue is resolved
+                              }}
                         >
                             Budget Periods
                         </Link>

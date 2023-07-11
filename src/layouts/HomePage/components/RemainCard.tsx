@@ -36,7 +36,7 @@ export const RemainCard: React.FC<{ input: RemainCardProps }> = (props) => {
                     </>
                     :
                     <>
-                        <p className={showEnterRemainAmt ? 'd-none card-text mt-2' : 'card-text mt-2'}
+                        <p className={showEnterRemainAmt ? 'd-none card-text mt-2' : 'card-text text-center mt-2'}
                            id='remain-amt-elem'
                            onClick={() => {
                                setShowEnterRemainAmt(true);

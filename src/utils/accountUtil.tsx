@@ -3,6 +3,13 @@ import AccountModel from "../models/AccountModel";
 const baseUri = "http://localhost:8080";
 const GET = "/get/accounts";
 
+//helper functions
+export function getAccountNameById(accounts: AccountModel[], id: string): string | undefined {
+    return accounts.find(element => element.id === id)?.name;
+}
+
+
+//data functions
 export async function getAccounts() {
     const accounts: AccountModel[] = [];
     await fetch(`${baseUri}${GET}`)

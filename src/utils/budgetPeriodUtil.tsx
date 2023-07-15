@@ -34,6 +34,24 @@ export function findCurrentBudgetPeriod(bps: BudgetPeriodModel[]) {
     return bps.find(bp => dateString >= bp.budgetStart && dateString <= bp.budgetEnd);
 }
 
+export function budgetPeriodStringify(bp: BudgetPeriodModel) {
+    return (
+        new Date(bp.budgetStart).toLocaleDateString("en-US", {
+            timeZone: "UTC",
+            year: undefined,
+            month: "short",
+            day: "numeric"
+        }) +
+        " to " +
+        new Date(bp.budgetEnd).toLocaleDateString("en-US", {
+            timeZone: "UTC",
+            year: "numeric",
+            month: "short",
+            day: "numeric"
+        })
+    );
+}
+
 export async function getBudgetPeriods(): Promise<BudgetPeriodModel[]> {
     return fetch(`${baseUri}${GET}`)
         .then(response => handleReturnedArrayOfBps(response));

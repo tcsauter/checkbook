@@ -1,15 +1,13 @@
 import React, {useEffect, useState} from "react";
 import BudgetPeriodModel from "../../models/BudgetPeriodModel";
-import {Link} from "react-router-dom";
+import {Link, useLoaderData} from "react-router-dom";
+import {budgetPeriodStringify} from "../../utils/budgetPeriodUtil";
 
-export const Navbar: React.FC<{
-    budgetPeriodsArray?: BudgetPeriodModel[],
-    setBudgetPeriod: React.Dispatch<React.SetStateAction<BudgetPeriodModel | undefined>>,
-    budgetPeriodsError: boolean,
-    currBudgetPeriod?: BudgetPeriodModel
-}> = (props) => {
+export const Navbar = () => {
     const [budgetPeriodString, setBudgetPeriodString] = useState("");
     const [activeNav, setActiveNav] = useState("Home")
+
+    const { budgetPeriods, budgetPeriod } = useLoaderData() as { budgetPeriods: BudgetPeriodModel[], budgetPeriod: BudgetPeriodModel | undefined };
 
     useEffect(() => {
         setActiveNav(
@@ -20,34 +18,8 @@ export const Navbar: React.FC<{
     }, []);
 
     useEffect(() => {
-        setBudgetPeriodString(props.currBudgetPeriod ? budgetPeriodStringify(props.currBudgetPeriod) : "");
-    }, [props.currBudgetPeriod])
-
-    useEffect(() => {
-        if (props.budgetPeriodsError) {
-            document.getElementById("budget-periods-dropdown")?.setAttribute("disabled", "");
-        } else {
-            document.getElementById("budget-periods-dropdown")?.removeAttribute("disabled");
-        }
-    }, [props.budgetPeriodsError])
-
-    function budgetPeriodStringify(bp: BudgetPeriodModel) {
-        return (
-            new Date(bp.budgetStart).toLocaleDateString("en-US", {
-                timeZone: "UTC",
-                year: undefined,
-                month: "short",
-                day: "numeric"
-            }) +
-            " to " +
-            new Date(bp.budgetEnd).toLocaleDateString("en-US", {
-                timeZone: "UTC",
-                year: "numeric",
-                month: "short",
-                day: "numeric"
-            })
-        );
-    }
+        setBudgetPeriodString(budgetPeriod ? budgetPeriodStringify(budgetPeriod) : "");
+    }, [budgetPeriod])
 
     return (
         <nav className={'navbar navbar-expand-md navbar-dark bg-black'}>
@@ -71,7 +43,6 @@ export const Navbar: React.FC<{
                               aria-current="page"
                               onClick={() => {
                                   setActiveNav("Budget Periods");
-                                  props.setBudgetPeriod(undefined); //todo: take this out once loading expenses on nav issue is resolved
                               }}
                         >
                             Budget Periods
@@ -85,16 +56,16 @@ export const Navbar: React.FC<{
                             "nav-link active dropdown-toggle btn btn-link btn-outline-light text-black"}
                            role="button"
                            data-bs-toggle="dropdown" id="budget-periods-dropdown">
-                            {budgetPeriodString ? budgetPeriodString : props.budgetPeriodsError ? "Can't Fetch Budget Periods" : "Budget Period"}
+                            {budgetPeriodString ? budgetPeriodString : "Budget Period"}
                         </a>
                         <ul className="dropdown-menu">
                             {
-                                props.budgetPeriodsArray ?
-                                    props.budgetPeriodsArray.map(period => {
+                                budgetPeriods ?
+                                    budgetPeriods.map(period => {
                                             return (
                                                 <li key={"nbdd" + period.id}
                                                     onClick={() => {
-                                                        props.setBudgetPeriod(period);
+                                                        // props.setBudgetPeriod(period);
                                                     }}
                                                 >
                                                     <Link to="" className="dropdown-item nav-link text-black">
@@ -115,7 +86,7 @@ export const Navbar: React.FC<{
                                     </li>
                                     <li key="nbddclear"
                                         onClick={() => {
-                                            props.setBudgetPeriod(undefined);
+                                            // props.setBudgetPeriod(undefined);
                                         }}
                                     >
                                         <Link to="" className="dropdown-item nav-link text-black m-0">Clear</Link>

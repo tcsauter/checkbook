@@ -1,14 +1,13 @@
 import React, {useEffect, useState} from "react";
-import ExpenseModel from "../../../models/ExpenseModel";
 import AccountModel from "../../../models/AccountModel";
 import {setInitialDateValue} from "../../../utils/dateUtils";
+import {Link, useLoaderData, useSubmit} from "react-router-dom";
 
 
-export const AddNewExpenseCard: React.FC<{
-    accounts: AccountModel[],
-    updateExpenses: (expense: ExpenseModel) => void,
-    accountsLoading: boolean
-}> = (props) => {
+export const AddNewExpenseCard = () => {
+    const { accounts } = useLoaderData() as { accounts: AccountModel[] };
+    const submit = useSubmit();
+
     const [inputAmt, setInputAmt] = useState('');
     const [inputAcct, setInputAcct] = useState('');
     const [inputDate, setInputDate] = useState('');
@@ -18,19 +17,19 @@ export const AddNewExpenseCard: React.FC<{
         setInputDate(setInitialDateValue);
     }, [])
 
-    function addExpense() {
-        const searchResult = props.accounts.map(acct => acct.name).findIndex(value => value === inputAcct);
+    function handleSubmit() {
+        const searchResult = accounts.map(acct => acct.name).findIndex(value => value === inputAcct);
         const canAcceptForm: boolean = searchResult > -1 &&
             inputAmt !== '' &&
             inputDate !== '' && new Date(inputDate).toString() !== 'Invalid Date'
 
         if (canAcceptForm) {
-            props.updateExpenses({
-                id: Date.now().toString(), //this creates a string representation of the current moment, which should ensure a unique id
-                amount: Number(inputAmt),
-                accountId: props.accounts[searchResult].id,
-                date: inputDate
-            });
+            const formData = new FormData();
+            formData.append("intent", "addExpense")
+            formData.append("newExpenseAmt", inputAmt);
+            formData.append("newExpenseAcct", accounts[searchResult].id);
+            formData.append("newExpenseDate", inputDate);
+            submit(formData, { method: "post" })
 
             setShowFormIncompleteMsg(false);
             setInputDate(setInitialDateValue());
@@ -61,13 +60,13 @@ export const AddNewExpenseCard: React.FC<{
 
                 <div className="col-lg-3 card-text dropdown">
                     <button className="form-control btn btn-outline-secondary dropdown-toggle text-start" type="button"
-                            data-bs-toggle="dropdown">{inputAcct ? inputAcct : props.accountsLoading ? "Loading..." : "Account"}</button>
+                            data-bs-toggle="dropdown" >{inputAcct ? inputAcct : "Account"}</button>
                     <ul className="dropdown-menu">
-                        {props.accounts.map(account => {
+                        {accounts.map(account => {
                             return (
                                 <li key={"ane" + account.id}
                                     onClick={() => setInputAcct(account.name)}>
-                                    <a className="dropdown-item" href="#">{account.name}</a>
+                                    <Link to="" className="dropdown-item" >{account.name}</Link>
                                 </li>
                             )
                         })}
@@ -82,7 +81,7 @@ export const AddNewExpenseCard: React.FC<{
                 <input type="button"
                        className='btn bg-black text-bg-primary col-11 col-lg-1 mt-3 mt-lg-0 me-lg-2'
                        value="Add"
-                       onClick={() => addExpense()}
+                       onClick={() => handleSubmit()}
                 />
                 <input type="button"
                        className='btn bg-black text-bg-primary col-11 col-lg-1 mt-1 mt-lg-0'

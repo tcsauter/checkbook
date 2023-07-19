@@ -1,15 +1,28 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {RemainCardProps} from "../../../models/props";
+import {useLoaderData, useParams, useSubmit} from "react-router-dom";
+import BudgetPeriodModel from "../../../models/BudgetPeriodModel";
 
 export const RemainCard: React.FC<{ input: RemainCardProps }> = (props) => {
+    const {budgetPeriods} = useLoaderData() as { budgetPeriods: BudgetPeriodModel[] };
+    const params = useParams();
+    const submit = useSubmit();
+
     const [initAmtEntryValue, setInitAmtEntryValue] = useState<string>('')
     const [showEnterRemainAmt, setShowEnterRemainAmt] = useState(false);
     const [showHintText, setShowHintText] = useState(false);
+    const [selectedBudgetPeriod, setSelectedBudgetPeriod] = useState<BudgetPeriodModel>();
+
+    useEffect(() => {
+        setSelectedBudgetPeriod(
+            budgetPeriods.find((bp) => bp.budgetStart === params.startDate)
+        );
+    }, [budgetPeriods, params])
 
     function takeInitAmtInput(): void {
         const entry = Number(initAmtEntryValue);
 
-        if (initAmtEntryValue === '' || initAmtEntryValue === props.input.budgetPeriod.startingAmt.toLocaleString("en-US")) {
+        if (initAmtEntryValue === '' || initAmtEntryValue === selectedBudgetPeriod?.startingAmt.toLocaleString("en-US")) {
             setShowEnterRemainAmt(false);
             setShowHintText(false);
         } else if (isNaN(entry)) {
@@ -18,8 +31,11 @@ export const RemainCard: React.FC<{ input: RemainCardProps }> = (props) => {
             setShowEnterRemainAmt(false);
             setShowHintText(false);
 
-            props.input.budgetPeriod.startingAmt = entry;
-            props.input.updateBudgetPeriod(props.input.budgetPeriod);
+            const formData = new FormData();
+            formData.append("intent", "updateBudgetPeriod");
+            formData.append("budgetPeriod", JSON.stringify(selectedBudgetPeriod, (key, value) => key === "startingAmt" ? entry : value));
+            submit(formData, {method: "put"});
+
             setInitAmtEntryValue('');
         }
     }
@@ -30,26 +46,26 @@ export const RemainCard: React.FC<{ input: RemainCardProps }> = (props) => {
                 <h5 className='card-title' id='remain-init-amt-label'>
                     {showEnterRemainAmt ? 'Enter Starting Amount' : 'Remaining Amount'}
                 </h5>
-                {props.input.stillLoading ?
-                    <>
-                        <p>Loading...</p>
-                    </>
-                    :
-                    <>
-                        <p className={showEnterRemainAmt ? 'd-none card-text mt-2' : 'card-text text-center mt-2'}
-                           id='remain-amt-elem'
-                           onClick={() => {
-                               setShowEnterRemainAmt(true);
-                               setInitAmtEntryValue(props.input.budgetPeriod.startingAmt.toLocaleString("en-US"));
-                           }}
-                        >
-                            {(props.input.budgetPeriod.startingAmt - props.input.totalSpent).toLocaleString('en-US', {
+                <>
+                    <p className={showEnterRemainAmt ? 'd-none card-text mt-2' : 'card-text text-center mt-2'}
+                       id='remain-amt-elem'
+                       onClick={() => {
+                           setShowEnterRemainAmt(true);
+                           if (selectedBudgetPeriod) {
+                               setInitAmtEntryValue(selectedBudgetPeriod.startingAmt.toLocaleString("en-US"));
+                           }
+                       }}
+                    >
+                        {selectedBudgetPeriod ?
+                            (selectedBudgetPeriod?.startingAmt - props.input.totalSpent).toLocaleString('en-US', {
                                 style: "currency",
                                 currency: "USD"
-                            })}
-                        </p>
-                    </>
-                }
+                            })
+                            :
+                            550
+                        }
+                    </p>
+                </>
                 <div className={showEnterRemainAmt ? 'input-group mb-3' : 'd-none input-group mb-3'}
                      id='init-amt-entry'
                 >

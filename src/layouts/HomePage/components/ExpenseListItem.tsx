@@ -1,12 +1,13 @@
 import React, {useState} from "react";
 import ExpenseModel from "../../../models/ExpenseModel";
+import {useSubmit} from "react-router-dom";
 
 export const ExpenseListItem: React.FC<{
     expense: ExpenseModel,
-    updateExpense: (newExpense: ExpenseModel) => Promise<void>,
-    deleteExpense: (expenseId: string) => Promise<void>,
     acctName: string | undefined
 }> = (props) => {
+    const submit = useSubmit();
+
     const [showAmtInput, setShowAmtInput] = useState(false);
     const [showAmtWarning, setShowAmtWarning] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
@@ -28,11 +29,20 @@ export const ExpenseListItem: React.FC<{
                 setShowAmtWarning(false);
                 setShowDelete(false);
 
-                props.expense.amount = amtInput;
-                props.updateExpense(props.expense);
+                const formData = new FormData();
+                formData.append("intent", "updateExpenseAmt");
+                formData.append("expense", JSON.stringify(props.expense, (key, value) => key === "amount" ? amtInput : value));
+                submit(formData, { method: "put" });
                 setAmtInputValue('');
             }
         }
+    }
+
+    function processExpenseDelete() {
+        const formData = new FormData();
+        formData.append("intent", "deleteExpense");
+        formData.append("id", props.expense.id);
+        submit(formData, { method: "delete" });
     }
 
     return (
@@ -85,7 +95,7 @@ export const ExpenseListItem: React.FC<{
                 <input type='button'
                        className={showDelete && !showAmtInput ? 'btn btn-outline-danger mb-2 mt-1' : 'd-none'}
                        value='Delete'
-                       onClick={() => props.deleteExpense(props.expense.id)}
+                       onClick={() => processExpenseDelete()}
                 />
             </div>
         </div>

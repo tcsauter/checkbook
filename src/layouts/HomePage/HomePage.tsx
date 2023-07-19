@@ -6,144 +6,107 @@ import ExpenseModel from "../../models/ExpenseModel";
 import {CreditBalanceSummaryCardProps} from "../../models/props";
 import {AddNewExpenseCard} from "./components/AddNewExpenseCard";
 import AccountModel from "../../models/AccountModel";
-import BudgetPeriodModel from "../../models/BudgetPeriodModel";
 import {addNewExpense, expenseDelete, expensesClear, expenseUpdate, getExpenses} from "../../utils/expenseUtil";
+import {defer, useLoaderData, useParams} from "react-router-dom";
+import BudgetPeriodModel from "../../models/BudgetPeriodModel";
+import {updateBudgetPeriod} from "../../utils/budgetPeriodUtil";
 
-export const HomePage: React.FC<{
-    getAccountNameById: (id: string) => string | undefined,
-    accountsArray: AccountModel[],
-    budgetPeriod?: BudgetPeriodModel,
-    updateBudgetPeriod: (bp: BudgetPeriodModel) => Promise<BudgetPeriodModel[]>,
-    accountsLoading: boolean,
-    budgetPeriodsLoading: boolean
-}> = (props) => {
-    const [expenseArray, setExpenseArray] = useState<ExpenseModel[]>([]);
-    const [expensesLoading, setExpensesLoading] = useState(true);
-    const [expensesError, setExpensesError] = useState(false);
-    const [expensesErrorString, setExpensesErrorString] = useState("");
+interface HomeParams {
+    params: {
+        startDate?: string,
+        endDate?: string
+    }
+}
+
+interface HomeData {
+    accounts: AccountModel[],
+    expenses: ExpenseModel[]
+}
+
+export async function loader({ params }: HomeParams) {
+    //get expenses
+    const expenses = getExpenses(params.startDate && params.endDate ?
+        `?startDate=${params.startDate}&endDate=${params.endDate}` : "");
+
+    return defer({ expenses });
+}
+
+export async function action({ params, request }: { params: any, request: any }) {
+    const formData = await request.formData();
+    const intent = formData.get("intent");
+    const dateParamString: string = params.startDate && params.endDate ? `?startDate=${params.startDate}&endDate=${params.endDate}` : "";
+
+    if(intent === "addExpense"){
+        const amt: number = Number(formData.get("newExpenseAmt"));
+        const acct: string = formData.get("newExpenseAcct");
+        const date: string = formData.get("newExpenseDate");
+
+        await addNewExpense({
+            id: Date.now().toString(),
+            amount: amt,
+            accountId: acct,
+            date: date
+        }, dateParamString);
+    }
+
+    if(intent === "updateBudgetPeriod") {
+        const bp: BudgetPeriodModel = JSON.parse(formData.get("budgetPeriod"));
+
+        await updateBudgetPeriod(bp);
+    }
+
+    if(intent === "updateExpenseAmt") {
+        const expense: ExpenseModel = JSON.parse(formData.get("expense"));
+
+        await expenseUpdate(expense, dateParamString);
+    }
+
+    if(intent === "deleteExpense") {
+        const id = formData.get("id");
+
+        await expenseDelete(id, dateParamString);
+    }
+
+    if(intent === "clearExpenses") {
+        await expensesClear();
+    }
+}
+
+export const HomePage = () => {
+    const params = useParams();
+    const { accounts, expenses } = useLoaderData() as HomeData;
+
     const [creditAccountSummaryArray, setCreditAccountSummaryArray] = useState<CreditBalanceSummaryCardProps[]>([]);
-    const [dateParamString, setDateParamString] = useState("");
-    const [pageLoading, setPageLoading] = useState(false);
 
     useEffect(() => {
-        setPageLoading(props.accountsLoading || props.budgetPeriodsLoading || expensesLoading);
-    }, [props.accountsLoading, props.budgetPeriodsLoading, expensesLoading])
-
-    useEffect(() => {
-        setCreditAccountSummaryArray(props.accountsArray.filter(account => account.type === "Credit")
+        setCreditAccountSummaryArray(accounts.filter(account => account.type === "Credit")
             .map((account) => {
-                const expensesCopy: ExpenseModel[] = expenseArray.slice();
+                const expensesCopy: ExpenseModel[] = expenses.slice();
                 let totalAmt: number = 0;
                 expensesCopy.filter((expense) => expense.accountId === account.id)
                     .map((expense) => totalAmt += expense.amount);
                 return ({accountName: account.name, amount: totalAmt});
             }))
-    }, [props.accountsArray, expenseArray])
-
-    useEffect(() => {
-        setDateParamString(
-            props.budgetPeriod ?
-                "?startDate=" + props.budgetPeriod.budgetStart + "&endDate=" + props.budgetPeriod.budgetEnd : ""
-        )
-    }, [props.budgetPeriod])
-
-    useEffect(() => {
-        setExpensesLoading(true);
-        getExpenses(dateParamString)
-            .then(expenses => {
-                setExpenseArray(expenses);
-                setExpensesLoading(false);
-            }).catch(reason => {
-            setExpensesError(true);
-            setExpensesErrorString(reason.toString())
-        });
-    }, [dateParamString])
+    }, [accounts, expenses])
 
     function calculateSpent(): number {
         let totalAmount: number = 0;
-        expenseArray.map(value => totalAmount += value.amount);
+        expenses.map(value => totalAmount += value.amount);
         return totalAmount;
-    }
-
-    function addExpense(expense: ExpenseModel) {
-        setExpensesLoading(true);
-        addNewExpense(expense, dateParamString)
-            .then(expenses => {
-                setExpenseArray(expenses);
-                setExpensesLoading(false);
-            }).catch(reason => {
-            setExpensesError(true);
-            setExpensesErrorString(reason.toString());
-        });
-    }
-
-    async function updateExpense(expense: ExpenseModel) {
-        setExpensesLoading(true);
-        expenseUpdate(expense, dateParamString)
-            .then(expenses => {
-                setExpenseArray(expenses);
-                setExpensesLoading(false);
-            }).catch(reason => {
-            setExpensesError(true);
-            setExpensesErrorString(reason.toString());
-        });
-    }
-
-    async function deleteExpense(expenseId: string) {
-        setExpensesLoading(true);
-        expenseDelete(expenseId, dateParamString)
-            .then(expenses => {
-                setExpenseArray(expenses);
-                setExpensesLoading(false);
-            }).catch(reason => {
-            setExpensesError(true);
-            setExpensesErrorString(reason.toString());
-        });
-    }
-
-    async function clearExpenses() {
-        setExpensesLoading(true);
-        expensesClear()
-            .then(success => {
-                if (success) {
-                    setExpenseArray([]);
-                    setExpensesLoading(false);
-                } else {
-                    setExpensesLoading(false);
-                }
-            }).catch(reason => {
-                setExpensesError(true);
-                setExpensesErrorString(reason.toString());
-        })
-    }
-
-    if (expensesError) {
-        return (
-            <div className="card">
-                <h1 className="card-header">!Error!</h1>
-                <p className="card-body">{expensesErrorString}</p>
-            </div>
-        )
     }
 
     return (
         <div className='container bg-black min-vh-100 bg-opacity-75'>
 
-            <AddNewExpenseCard accounts={props.accountsArray}
-                               updateExpenses={addExpense}
-                               accountsLoading={props.accountsLoading}
-            />
+            <AddNewExpenseCard />
 
             {/*desktop*/}
             <div className='d-none d-md-flex justify-content-evenly'>
                 <div className='me-3 mt-3'>
-                    {props.budgetPeriod ?
+                    {params.startDate && params.endDate ?
                         <RemainCard
                             input={{
-                                budgetPeriod: props.budgetPeriod,
-                                updateBudgetPeriod: props.updateBudgetPeriod,
-                                totalSpent: calculateSpent(),
-                                stillLoading: expensesLoading
+                                totalSpent: calculateSpent()
                             }}
                         />
                         :
@@ -151,26 +114,19 @@ export const HomePage: React.FC<{
                     }
                     <CreditBalanceSummaryCard
                         creditAccountSummaryArray={creditAccountSummaryArray}
-                        stillLoading={pageLoading}
                     />
                 </div>
                 <div className='w-75 mt-3'>
-                    <DetailsCard expenseArray={expenseArray} getAccountNameById={props.getAccountNameById}
-                                 updateExpense={updateExpense} accountsArray={props.accountsArray}
-                                 deleteExpense={deleteExpense} clearExpenses={clearExpenses}
-                                 stillLoading={pageLoading}/>
+                    <DetailsCard />
                 </div>
             </div>
 
             {/*mobile*/}
             <div className='d-md-none'>
-                {props.budgetPeriod ?
+                {params.startDate && params.endDate ?
                     <RemainCard
                         input={{
-                            budgetPeriod: props.budgetPeriod,
-                            updateBudgetPeriod: props.updateBudgetPeriod,
                             totalSpent: calculateSpent(),
-                            stillLoading: expensesLoading
                         }}
                     />
                     :
@@ -178,12 +134,8 @@ export const HomePage: React.FC<{
                 }
                 <CreditBalanceSummaryCard
                     creditAccountSummaryArray={creditAccountSummaryArray}
-                    stillLoading={pageLoading}
                 />
-                <DetailsCard expenseArray={expenseArray} getAccountNameById={props.getAccountNameById}
-                             updateExpense={updateExpense} accountsArray={props.accountsArray}
-                             deleteExpense={deleteExpense} clearExpenses={clearExpenses}
-                             stillLoading={pageLoading}/>
+                <DetailsCard />
             </div>
         </div>
     );

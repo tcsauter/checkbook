@@ -2,18 +2,22 @@ import React, {useState} from "react";
 import {ExpenseListItem} from "./ExpenseListItem";
 import ExpenseModel from "../../../models/ExpenseModel";
 import AccountModel from "../../../models/AccountModel";
+import {useLoaderData, useSubmit} from "react-router-dom";
+import {getAccountNameById} from "../../../utils/accountUtil";
 
-export const DetailsCard: React.FC<{
-    expenseArray: ExpenseModel[],
-    accountsArray: AccountModel[],
-    getAccountNameById: (id: string) => string | undefined,
-    updateExpense: (expense: ExpenseModel) => Promise<void>,
-    deleteExpense: (expenseId: string) => Promise<void>,
-    clearExpenses: () => void,
-    stillLoading: boolean
-}> = (props) => {
+export const DetailsCard = () => {
+    const {expenses, accounts} = useLoaderData() as { expenses: ExpenseModel[], accounts: AccountModel[] };
+    const submit = useSubmit();
+
     const [acctFilter, setAcctFilter] = useState('');
     const [clearBtnClickedOnce, setClearBtnClickedOnce] = useState(false);
+
+    function handleClearExpenses() {
+        const formData = new FormData();
+        formData.append("intent", "clearExpenses");
+
+        submit(formData, { method: "delete" });
+    }
 
     return (
         <div className='card bg-light text-muted shadow' id='details-card'>
@@ -38,7 +42,7 @@ export const DetailsCard: React.FC<{
                         <li key="dchr-1">
                             <hr className="dropdown-divider ms-3 me-5"/>
                         </li>
-                        {props.accountsArray.map(account => {
+                        {accounts.map(account => {
                             return (
                                 <li key={"dc" + account.id}
                                     onClick={() => setAcctFilter(account.name)}
@@ -64,46 +68,36 @@ export const DetailsCard: React.FC<{
                         }
                     </ul>
                 </div>
-                {props.stillLoading ?
-                    <>
-                        <p>Loading...</p>
-                    </>
-                    :
-                    <>
-                        <ul className='list-group'>
-                            {props.expenseArray.filter((expense: ExpenseModel) => {
-                                if (acctFilter !== '') {
-                                    //get acct object for expense
-                                    const acct = props.accountsArray[props.accountsArray.findIndex(acct => acct.id === expense.accountId)];
+                <ul className='list-group'>
+                    {expenses.filter((expense: ExpenseModel) => {
+                        if (acctFilter !== '') {
+                            //get acct object for expense
+                            const acct = accounts[accounts.findIndex(acct => acct.id === expense.accountId)];
 
-                                    if (acctFilter === 'All Credit Accounts') {
-                                        return acct.type === 'Credit';
-                                    } else if (acctFilter === 'All Cash Accounts') {
-                                        return acct.type === 'Cash';
-                                    } else {
-                                        return acctFilter === acct.name;
-                                    }
-                                } else {
-                                    return true;
-                                }
-                            })
-                                .map((expense: ExpenseModel) => {
-                                    return (<ExpenseListItem expense={expense}
-                                                             updateExpense={props.updateExpense}
-                                                             deleteExpense={props.deleteExpense}
-                                                             acctName={props.getAccountNameById(expense.accountId)}
-                                                             key={expense.id}
-                                    />);
-                                })}
-                        </ul>
-                    </>
-                }
+                            if (acctFilter === 'All Credit Accounts') {
+                                return acct.type === 'Credit';
+                            } else if (acctFilter === 'All Cash Accounts') {
+                                return acct.type === 'Cash';
+                            } else {
+                                return acctFilter === acct.name;
+                            }
+                        } else {
+                            return true;
+                        }
+                    })
+                        .map((expense: ExpenseModel) => {
+                            return (<ExpenseListItem expense={expense}
+                                                     acctName={getAccountNameById(accounts, expense.accountId)}
+                                                     key={expense.id}
+                            />);
+                        })}
+                </ul>
                 <input type="button"
                        value={clearBtnClickedOnce ? "Confirm Clear" : "Clear Expenses"}
                        className={clearBtnClickedOnce ? "btn btn-danger mt-3" : "btn btn-outline-warning mt-3"}
-                       onClick={() => {
+                       onClick={async () => {
                            if (clearBtnClickedOnce) {
-                               props.clearExpenses();
+                               handleClearExpenses();
                                setClearBtnClickedOnce(false);
                            } else {
                                setClearBtnClickedOnce(true);

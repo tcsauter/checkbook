@@ -2,11 +2,12 @@ import React, {useState} from "react";
 import {ExpenseListItem} from "./ExpenseListItem";
 import ExpenseModel from "../../../models/ExpenseModel";
 import AccountModel from "../../../models/AccountModel";
-import {useLoaderData, useSubmit} from "react-router-dom";
+import {useLoaderData, useRouteLoaderData, useSubmit} from "react-router-dom";
 import {getAccountNameById} from "../../../utils/accountUtil";
 
 export const DetailsCard = () => {
-    const {expenses, accounts} = useLoaderData() as { expenses: ExpenseModel[], accounts: AccountModel[] };
+    const { expenses} = useLoaderData() as { expenses: ExpenseModel[] };
+    const { accounts } = useRouteLoaderData("root") as { accounts: AccountModel[] };
     const submit = useSubmit();
 
     const [acctFilter, setAcctFilter] = useState('');

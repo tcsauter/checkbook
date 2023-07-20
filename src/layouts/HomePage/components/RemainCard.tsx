@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {RemainCardProps} from "../../../models/props";
-import {useLoaderData, useParams, useSubmit} from "react-router-dom";
+import {useParams, useRouteLoaderData, useSubmit} from "react-router-dom";
 import BudgetPeriodModel from "../../../models/BudgetPeriodModel";
 
 export const RemainCard: React.FC<{ input: RemainCardProps }> = (props) => {
-    const {budgetPeriods} = useLoaderData() as { budgetPeriods: BudgetPeriodModel[] };
+    const {budgetPeriods} = useRouteLoaderData("root") as { budgetPeriods: BudgetPeriodModel[] };
     const params = useParams();
     const submit = useSubmit();
 

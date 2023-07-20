@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from "react";
 import AccountModel from "../../../models/AccountModel";
 import {setInitialDateValue} from "../../../utils/dateUtils";
-import {Link, useLoaderData, useSubmit} from "react-router-dom";
+import {Link, useRouteLoaderData, useSubmit} from "react-router-dom";
 
 
 export const AddNewExpenseCard = () => {
-    const { accounts } = useLoaderData() as { accounts: AccountModel[] };
+    const { accounts } = useRouteLoaderData("root") as { accounts: AccountModel[] };
     const submit = useSubmit();
 
     const [inputAmt, setInputAmt] = useState('');

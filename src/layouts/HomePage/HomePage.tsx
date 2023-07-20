@@ -7,7 +7,7 @@ import {CreditBalanceSummaryCardProps} from "../../models/props";
 import {AddNewExpenseCard} from "./components/AddNewExpenseCard";
 import AccountModel from "../../models/AccountModel";
 import {addNewExpense, expenseDelete, expensesClear, expenseUpdate, getExpenses} from "../../utils/expenseUtil";
-import {defer, useLoaderData, useParams} from "react-router-dom";
+import {useLoaderData, useParams, useRouteLoaderData} from "react-router-dom";
 import BudgetPeriodModel from "../../models/BudgetPeriodModel";
 import {updateBudgetPeriod} from "../../utils/budgetPeriodUtil";
 
@@ -18,17 +18,12 @@ interface HomeParams {
     }
 }
 
-interface HomeData {
-    accounts: AccountModel[],
-    expenses: ExpenseModel[]
-}
-
 export async function loader({ params }: HomeParams) {
     //get expenses
-    const expenses = getExpenses(params.startDate && params.endDate ?
+    const expenses = await getExpenses(params.startDate && params.endDate ?
         `?startDate=${params.startDate}&endDate=${params.endDate}` : "");
 
-    return defer({ expenses });
+    return { expenses };
 }
 
 export async function action({ params, request }: { params: any, request: any }) {
@@ -74,7 +69,8 @@ export async function action({ params, request }: { params: any, request: any })
 
 export const HomePage = () => {
     const params = useParams();
-    const { accounts, expenses } = useLoaderData() as HomeData;
+    const { expenses } = useLoaderData() as { expenses: ExpenseModel[] };
+    const { accounts } = useRouteLoaderData("root") as { accounts: AccountModel[] };
 
     const [creditAccountSummaryArray, setCreditAccountSummaryArray] = useState<CreditBalanceSummaryCardProps[]>([]);
 

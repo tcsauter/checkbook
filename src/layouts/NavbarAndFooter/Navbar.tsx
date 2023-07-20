@@ -65,10 +65,10 @@ export const Navbar = () => {
                                             return (
                                                 <li key={"nbdd" + period.id}
                                                     onClick={() => {
-                                                        // props.setBudgetPeriod(period);
+                                                        setBudgetPeriodString(budgetPeriodStringify(period));
                                                     }}
                                                 >
-                                                    <Link to="" className="dropdown-item nav-link text-black">
+                                                    <Link to={`/expenses/${period.budgetStart}/${period.budgetEnd}`} className="dropdown-item nav-link text-black">
                                                         {budgetPeriodStringify(period)}
                                                     </Link>
                                                 </li>
@@ -86,10 +86,10 @@ export const Navbar = () => {
                                     </li>
                                     <li key="nbddclear"
                                         onClick={() => {
-                                            // props.setBudgetPeriod(undefined);
+                                            setBudgetPeriodString("");
                                         }}
                                     >
-                                        <Link to="" className="dropdown-item nav-link text-black m-0">Clear</Link>
+                                        <Link to="/expenses" className="dropdown-item nav-link text-black m-0">Clear</Link>
                                     </li>
                                 </>
                                 :

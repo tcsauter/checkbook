@@ -2,11 +2,30 @@ import React, {useState} from "react";
 import BudgetPeriodModel from "../../models/BudgetPeriodModel";
 import {calculateDateReturnString} from "../../utils/dateUtils";
 import {addBudgetPeriod, addBudgetPeriodBatch} from "../../utils/budgetPeriodUtil";
+import {useSubmit} from "react-router-dom";
 
-export const ManageBudgetPeriods: React.FC<{
-    setBudgetPeriods: React.Dispatch<React.SetStateAction<BudgetPeriodModel[] | undefined>>,
-    setBudgetPeriodsError: React.Dispatch<React.SetStateAction<boolean>>
-}> = (props) => {
+export async function action({ request }: { request: any }) {
+    const formData = await request.formData();
+    const intent = formData.get("intent");
+
+    if(intent === "addOne") {
+        const bp = JSON.parse(formData.get("budgetPeriod"));
+
+        await addBudgetPeriod(bp);
+        return null; //return null because we don't need this data right now, since the loader re-fetches
+    }
+
+    if(intent === "addMany") {
+        const bps = JSON.parse(formData.get("budgetPeriods"));
+
+        await addBudgetPeriodBatch(bps);
+        return null; //return null because we don't need this data right now, since the loader re-fetches
+    }
+}
+
+export const ManageBudgetPeriods = () => {
+    const submit = useSubmit();
+
     const [inputPayDate, setInputPayDate] = useState("");
     const [budgetStartOption, setBudgetStartOption] = useState("opt1");
     const [inputDaysBefore, setInputDaysBefore] = useState(0);
@@ -33,6 +52,8 @@ export const ManageBudgetPeriods: React.FC<{
         setFormValidationError(!formIsValidated);
 
         if(formIsValidated) {
+            const formData = new FormData();
+
             //normalize numeric data
             if(inputDaysBefore) {
                 setInputDaysBefore(Math.floor(Math.abs(inputDaysBefore)));
@@ -41,13 +62,19 @@ export const ManageBudgetPeriods: React.FC<{
 
             //invoke appropriate routine to build budget period object(s) and add to db
             if(howManyOption === "opt4"){
-                addBudgetPeriod(buildSingleBudgetPeriodFromInput())
-                    .then(response => props.setBudgetPeriods(response))
-                    .catch(() => props.setBudgetPeriodsError(true));
+                formData.append("intent", "addOne")
+
+                const bp = buildSingleBudgetPeriodFromInput();
+                formData.append("budgetPeriod", JSON.stringify(bp));
+
+                submit(formData, { method: "post" });
             }else{
-                addBudgetPeriodBatch(buildGroupOfBudgetPeriodsFromInput())
-                    .then(response => props.setBudgetPeriods(response))
-                    .catch(() => props.setBudgetPeriodsError(true));
+                formData.append("intent", "addMany");
+
+                const bps = buildGroupOfBudgetPeriodsFromInput();
+                formData.append("budgetPeriods", JSON.stringify(bps));
+
+                submit(formData, { method: "post" });
             }
 
             //clear fields

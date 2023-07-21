@@ -1,4 +1,4 @@
-import { Outlet, defer } from "react-router-dom";
+import {Outlet} from "react-router-dom";
 import './App.css';
 import {Navbar} from "./layouts/NavbarAndFooter/Navbar";
 import AccountModel from "./models/AccountModel";
@@ -9,16 +9,15 @@ import {getAccounts} from "./utils/accountUtil";
 export async function loader() {
     //get budget periods
     const budgetPeriods: BudgetPeriodModel[] = await getBudgetPeriods();
-    const budgetPeriod: BudgetPeriodModel | undefined = findCurrentBudgetPeriod(budgetPeriods);
+    const currentBudgetPeriod: BudgetPeriodModel | undefined = findCurrentBudgetPeriod(budgetPeriods);
 
     //get accounts
-    const accounts: Promise<AccountModel[]> = getAccounts();
+    const accounts: AccountModel[] = await getAccounts();
 
-    return defer({ budgetPeriods, budgetPeriod, accounts });
+    return { budgetPeriods, currentBudgetPeriod, accounts };
 }
 
 function App() {
-
     return (
         <div className="App">
             <Navbar />

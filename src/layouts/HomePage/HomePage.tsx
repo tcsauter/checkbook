@@ -42,28 +42,38 @@ export async function action({ params, request }: { params: any, request: any })
             accountId: acct,
             date: date
         }, dateParamString);
+
+        return null; //returning null because response isn't necessary, since loader re-fetches data
     }
 
     if(intent === "updateBudgetPeriod") {
         const bp: BudgetPeriodModel = JSON.parse(formData.get("budgetPeriod"));
 
         await updateBudgetPeriod(bp);
+
+        return null; //returning null because response isn't necessary, since loader re-fetches data
     }
 
     if(intent === "updateExpenseAmt") {
         const expense: ExpenseModel = JSON.parse(formData.get("expense"));
 
         await expenseUpdate(expense, dateParamString);
+
+        return null; //returning null because response isn't necessary, since loader re-fetches data
     }
 
     if(intent === "deleteExpense") {
         const id = formData.get("id");
 
         await expenseDelete(id, dateParamString);
+
+        return null; //returning null because response isn't necessary, since loader re-fetches data
     }
 
     if(intent === "clearExpenses") {
         await expensesClear();
+
+        return null; //returning null because response isn't necessary, since loader re-fetches data
     }
 }
 

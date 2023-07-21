@@ -24,7 +24,7 @@ export const Navbar = () => {
         setSelectedBudgetPeriod(currentBudgetPeriod);
         setBudgetPeriodString(currentBudgetPeriod ? budgetPeriodStringify(currentBudgetPeriod) : "");
         navigate(currentBudgetPeriod ? `/expenses/${currentBudgetPeriod.budgetStart}/${currentBudgetPeriod.budgetEnd}` : "/expenses");
-    }, [currentBudgetPeriod])
+    }, [navigate, currentBudgetPeriod])
 
     return (
         <nav className={'navbar navbar-expand-md navbar-dark bg-black'}>

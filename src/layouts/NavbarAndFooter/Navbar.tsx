@@ -4,7 +4,9 @@ import {Link, useLoaderData, useNavigate} from "react-router-dom";
 import {budgetPeriodStringify} from "../../utils/budgetPeriodUtil";
 
 export const Navbar = () => {
-    const { budgetPeriods, currentBudgetPeriod } = useLoaderData() as
+    //todo: move management of selected budget period to HomePage loader/action
+
+    const {budgetPeriods, currentBudgetPeriod} = useLoaderData() as
         { budgetPeriods: BudgetPeriodModel[], currentBudgetPeriod: BudgetPeriodModel | undefined };
     const navigate = useNavigate();
 
@@ -14,9 +16,11 @@ export const Navbar = () => {
 
     useEffect(() => {
         setActiveNav(
-            document.URL.includes("managebudgetperiods") ?
-                "Budget Periods" :
-                "Home"
+            document.URL.includes("manageaccounts") ?
+                "Accounts" :
+                document.URL.includes("managebudgetperiods") ?
+                    "Budget Periods" :
+                    "Home"
         )
     }, []);
 
@@ -37,12 +41,20 @@ export const Navbar = () => {
                 </button>
                 <div className="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
                     <div className='navbar-nav'>
-                        <Link to={selectedBudgetPeriod ? `/expenses/${selectedBudgetPeriod.budgetStart}/${selectedBudgetPeriod.budgetEnd}` : "/expenses"}
-                              className={activeNav === "Home" ? "nav-link active" : "nav-link"}
-                              aria-current="page"
-                              onClick={() => setActiveNav("Home")}
+                        <Link
+                            to={selectedBudgetPeriod ? `/expenses/${selectedBudgetPeriod.budgetStart}/${selectedBudgetPeriod.budgetEnd}` : "/expenses"}
+                            className={activeNav === "Home" ? "nav-link active" : "nav-link"}
+                            aria-current="page"
+                            onClick={() => setActiveNav("Home")}
                         >
                             Home
+                        </Link>
+                        <Link to="/manageaccounts"
+                              className={activeNav === "Accounts" ? "nav-link active" : "nav-link"}
+                              aria-current="page"
+                              onClick={() => setActiveNav("Accounts")}
+                        >
+                            Accounts
                         </Link>
                         <Link to="/managebudgetperiods"
                               className={activeNav === "Budget Periods" ? "nav-link active" : "nav-link"}
@@ -55,7 +67,7 @@ export const Navbar = () => {
                         </Link>
                     </div>
                     <div className="dropstart navbar-nav">
-                        <a className={activeNav==="Budget Periods"
+                        <a className={activeNav === "Budget Periods"
                             ?
                             "nav-link active btn btn-link btn-outline-light bg-light text-black disabled"
                             :
@@ -76,7 +88,8 @@ export const Navbar = () => {
                                                         setActiveNav("Home");
                                                     }}
                                                 >
-                                                    <Link to={`/expenses/${period.budgetStart}/${period.budgetEnd}`} className="dropdown-item nav-link text-black">
+                                                    <Link to={`/expenses/${period.budgetStart}/${period.budgetEnd}`}
+                                                          className="dropdown-item nav-link text-black">
                                                         {budgetPeriodStringify(period)}
                                                     </Link>
                                                 </li>
@@ -99,7 +112,8 @@ export const Navbar = () => {
                                             setActiveNav("Home");
                                         }}
                                     >
-                                        <Link to="/expenses" className="dropdown-item nav-link text-black m-0">Clear</Link>
+                                        <Link to="/expenses"
+                                              className="dropdown-item nav-link text-black m-0">Clear</Link>
                                     </li>
                                 </>
                                 :

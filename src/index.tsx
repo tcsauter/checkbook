@@ -5,13 +5,29 @@ import './index.css';
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import App, { loader as appLoader } from './App';
 import {ErrorPage} from "./layouts/ErrorPage/ErrorPage";
+import {HomePage, loader as homeLoader, action as homeAction} from "./layouts/HomePage/HomePage";
+import {ManageBudgetPeriods, action as mbpAction} from "./layouts/ManageBudgetPeriods/ManageBudgetPeriods";
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <App />,
+        id: "root",
         errorElement: <ErrorPage />,
-        loader: appLoader
+        loader: appLoader,
+        children: [
+            {
+                path: "/expenses/:startDate?/:endDate?",
+                element: <HomePage />,
+                loader: homeLoader,
+                action: homeAction
+            },
+            {
+                path: "/managebudgetperiods",
+                element: <ManageBudgetPeriods />,
+                action: mbpAction
+            }
+        ]
     }
 ])
 

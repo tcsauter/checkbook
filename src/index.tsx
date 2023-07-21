@@ -7,6 +7,7 @@ import App, { loader as appLoader } from './App';
 import {ErrorPage} from "./layouts/ErrorPage/ErrorPage";
 import {HomePage, loader as homeLoader, action as homeAction} from "./layouts/HomePage/HomePage";
 import {ManageBudgetPeriods, action as mbpAction} from "./layouts/ManageBudgetPeriods/ManageBudgetPeriods";
+import {ManageAccounts, action as maAction} from "./layouts/ManageAccounts/ManageAccounts";
 
 const router = createBrowserRouter([
     {
@@ -26,6 +27,11 @@ const router = createBrowserRouter([
                 path: "/managebudgetperiods",
                 element: <ManageBudgetPeriods />,
                 action: mbpAction
+            },
+            {
+                path: "/manageaccounts",
+                element: <ManageAccounts />,
+                action: maAction
             }
         ]
     }

@@ -1,13 +1,16 @@
 import React, {useEffect, useState} from "react";
 import BudgetPeriodModel from "../../models/BudgetPeriodModel";
-import {Link, useLoaderData} from "react-router-dom";
+import {Link, useLoaderData, useNavigate} from "react-router-dom";
 import {budgetPeriodStringify} from "../../utils/budgetPeriodUtil";
 
 export const Navbar = () => {
+    const { budgetPeriods, currentBudgetPeriod } = useLoaderData() as
+        { budgetPeriods: BudgetPeriodModel[], currentBudgetPeriod: BudgetPeriodModel | undefined };
+    const navigate = useNavigate();
+
+    const [selectedBudgetPeriod, setSelectedBudgetPeriod] = useState<BudgetPeriodModel>();
     const [budgetPeriodString, setBudgetPeriodString] = useState("");
     const [activeNav, setActiveNav] = useState("Home")
-
-    const { budgetPeriods, budgetPeriod } = useLoaderData() as { budgetPeriods: BudgetPeriodModel[], budgetPeriod: BudgetPeriodModel | undefined };
 
     useEffect(() => {
         setActiveNav(
@@ -18,8 +21,10 @@ export const Navbar = () => {
     }, []);
 
     useEffect(() => {
-        setBudgetPeriodString(budgetPeriod ? budgetPeriodStringify(budgetPeriod) : "");
-    }, [budgetPeriod])
+        setSelectedBudgetPeriod(currentBudgetPeriod);
+        setBudgetPeriodString(currentBudgetPeriod ? budgetPeriodStringify(currentBudgetPeriod) : "");
+        navigate(currentBudgetPeriod ? `/expenses/${currentBudgetPeriod.budgetStart}/${currentBudgetPeriod.budgetEnd}` : "/expenses");
+    }, [currentBudgetPeriod])
 
     return (
         <nav className={'navbar navbar-expand-md navbar-dark bg-black'}>
@@ -32,7 +37,8 @@ export const Navbar = () => {
                 </button>
                 <div className="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
                     <div className='navbar-nav'>
-                        <Link to="/" className={activeNav === "Home" ? "nav-link active" : "nav-link"}
+                        <Link to={selectedBudgetPeriod ? `/expenses/${selectedBudgetPeriod.budgetStart}/${selectedBudgetPeriod.budgetEnd}` : "/expenses"}
+                              className={activeNav === "Home" ? "nav-link active" : "nav-link"}
                               aria-current="page"
                               onClick={() => setActiveNav("Home")}
                         >
@@ -65,7 +71,9 @@ export const Navbar = () => {
                                             return (
                                                 <li key={"nbdd" + period.id}
                                                     onClick={() => {
+                                                        setSelectedBudgetPeriod(period);
                                                         setBudgetPeriodString(budgetPeriodStringify(period));
+                                                        setActiveNav("Home");
                                                     }}
                                                 >
                                                     <Link to={`/expenses/${period.budgetStart}/${period.budgetEnd}`} className="dropdown-item nav-link text-black">
@@ -86,7 +94,9 @@ export const Navbar = () => {
                                     </li>
                                     <li key="nbddclear"
                                         onClick={() => {
+                                            setSelectedBudgetPeriod(undefined);
                                             setBudgetPeriodString("");
+                                            setActiveNav("Home");
                                         }}
                                     >
                                         <Link to="/expenses" className="dropdown-item nav-link text-black m-0">Clear</Link>

@@ -27,6 +27,7 @@ export const Navbar = () => {
     useEffect(() => {
         setSelectedBudgetPeriod(currentBudgetPeriod);
         setBudgetPeriodString(currentBudgetPeriod ? budgetPeriodStringify(currentBudgetPeriod) : "");
+        setActiveNav("Home");
         navigate(currentBudgetPeriod ? `/expenses/${currentBudgetPeriod.budgetStart}/${currentBudgetPeriod.budgetEnd}` : "/expenses");
     }, [navigate, currentBudgetPeriod])
 

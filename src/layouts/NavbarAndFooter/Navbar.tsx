@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import BudgetPeriodModel from "../../models/BudgetPeriodModel";
-import {Link, useLoaderData, useNavigate} from "react-router-dom";
+import {Link, useLoaderData} from "react-router-dom";
 import {budgetPeriodStringify} from "../../utils/budgetPeriodUtil";
 
 export const Navbar = () => {
@@ -8,7 +8,6 @@ export const Navbar = () => {
 
     const {budgetPeriods, currentBudgetPeriod} = useLoaderData() as
         { budgetPeriods: BudgetPeriodModel[], currentBudgetPeriod: BudgetPeriodModel | undefined };
-    const navigate = useNavigate();
 
     const [selectedBudgetPeriod, setSelectedBudgetPeriod] = useState<BudgetPeriodModel>();
     const [budgetPeriodString, setBudgetPeriodString] = useState("");
@@ -23,13 +22,6 @@ export const Navbar = () => {
                     "Home"
         )
     }, []);
-
-    useEffect(() => {
-        setSelectedBudgetPeriod(currentBudgetPeriod);
-        setBudgetPeriodString(currentBudgetPeriod ? budgetPeriodStringify(currentBudgetPeriod) : "");
-        setActiveNav("Home");
-        navigate(currentBudgetPeriod ? `/expenses/${currentBudgetPeriod.budgetStart}/${currentBudgetPeriod.budgetEnd}` : "/expenses");
-    }, [navigate, currentBudgetPeriod])
 
     return (
         <nav className={'navbar navbar-expand-md navbar-dark bg-black'}>
@@ -78,6 +70,25 @@ export const Navbar = () => {
                             {budgetPeriodString ? budgetPeriodString : "Budget Period"}
                         </a>
                         <ul className="dropdown-menu">
+                            {currentBudgetPeriod && currentBudgetPeriod !== selectedBudgetPeriod ?
+                                <>
+                                    <li key="nbddcurrentbp"
+                                        onClick={() => {
+                                            setSelectedBudgetPeriod(currentBudgetPeriod);
+                                            setBudgetPeriodString(budgetPeriodStringify(currentBudgetPeriod));
+                                            setActiveNav("Home");
+                                        }}
+                                    >
+                                        <Link to={`/${currentBudgetPeriod.budgetStart}/${currentBudgetPeriod.budgetEnd}`}
+                                              className="dropdown-item nav-link text-black m-0">Current Budget Period</Link>
+                                    </li>
+                                    <li key="nbddhr-2">
+                                        <hr className="dropdown-divider ms-3 me-3"/>
+                                    </li>
+                                </>
+                                :
+                                <></>}
+
                             {
                                 budgetPeriods ?
                                     budgetPeriods.map(period => {

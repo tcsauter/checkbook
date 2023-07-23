@@ -31,22 +31,30 @@ export const ManageAccounts = () => {
     const [inputName, setInputName] = useState("");
     const [inputType, setInputType] = useState("Cash");
     const [inputLastFour, setInputLastFour] = useState("");
+    const [formValidationError, setFormValidationError] = useState(false);
 
     function handleSubmit() {
-        const id = Date.now().toString();
+        const formIsValid = inputName !== "";
 
-        const formData = new FormData();
-        formData.append("intent", "addAccount");
-        formData.append("id", id);
-        formData.append("name", inputName);
-        formData.append("type", inputType);
-        if(inputLastFour) formData.append("lastFour", inputLastFour);
+        if(formIsValid) {
+            setFormValidationError(false);
+            const id = Date.now().toString();
 
-        submit(formData, { method: "post" });
+            const formData = new FormData();
+            formData.append("intent", "addAccount");
+            formData.append("id", id);
+            formData.append("name", inputName);
+            formData.append("type", inputType);
+            if (inputLastFour) formData.append("lastFour", inputLastFour);
 
-        setInputName("");
-        setInputType("Cash");
-        setInputLastFour("");
+            submit(formData, {method: "post"});
+
+            setInputName("");
+            setInputType("Cash");
+            setInputLastFour("");
+        } else {
+            setFormValidationError(true);
+        }
     }
 
     return (
@@ -99,6 +107,7 @@ export const ManageAccounts = () => {
                             />
                         </div>
                     </form>
+                    <small className={formValidationError ? "text-danger" : "d-none text-danger"}>Account name must be provided.</small>
                 </div>
             </div>
         </div>

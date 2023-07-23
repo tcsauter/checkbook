@@ -18,7 +18,7 @@ const router = createBrowserRouter([
         loader: appLoader,
         children: [
             {
-                path: "/expenses/:startDate?/:endDate?",
+                path: "/:startDate?/:endDate?",
                 element: <HomePage />,
                 loader: homeLoader,
                 action: homeAction

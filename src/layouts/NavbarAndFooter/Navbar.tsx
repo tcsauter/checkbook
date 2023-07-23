@@ -35,7 +35,7 @@ export const Navbar = () => {
                 <div className="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
                     <div className='navbar-nav'>
                         <Link
-                            to={selectedBudgetPeriod ? `/expenses/${selectedBudgetPeriod.budgetStart}/${selectedBudgetPeriod.budgetEnd}` : "/expenses"}
+                            to={selectedBudgetPeriod ? `/${selectedBudgetPeriod.budgetStart}/${selectedBudgetPeriod.budgetEnd}` : ""}
                             className={activeNav === "Home" ? "nav-link active" : "nav-link"}
                             aria-current="page"
                             onClick={() => setActiveNav("Home")}
@@ -100,7 +100,7 @@ export const Navbar = () => {
                                                         setActiveNav("Home");
                                                     }}
                                                 >
-                                                    <Link to={`/expenses/${period.budgetStart}/${period.budgetEnd}`}
+                                                    <Link to={`/${period.budgetStart}/${period.budgetEnd}`}
                                                           className="dropdown-item nav-link text-black">
                                                         {budgetPeriodStringify(period)}
                                                     </Link>
@@ -124,7 +124,7 @@ export const Navbar = () => {
                                             setActiveNav("Home");
                                         }}
                                     >
-                                        <Link to="/expenses"
+                                        <Link to=""
                                               className="dropdown-item nav-link text-black m-0">Clear</Link>
                                     </li>
                                 </>

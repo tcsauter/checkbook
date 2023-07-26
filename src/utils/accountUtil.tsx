@@ -3,6 +3,7 @@ import AccountModel from "../models/AccountModel";
 const baseUri = "http://localhost:8080";
 const GET = "/get/accounts";
 const POST = "/add/account"
+const DELETE = "/delete/account"
 
 //helper functions
 export function getAccountNameById(accounts: AccountModel[], id: string): string | undefined {
@@ -47,6 +48,33 @@ export async function addAccount(account: AccountModel) {
             type: account.type,
             lastFour: account.lastFour
         })
+    }).then(async (response) => {
+        if (!response.ok) {
+            console.log(response.statusText);
+        }
+
+        const responseJson = await response.json();
+
+        for (const key in responseJson) {
+            accounts.push({
+                id: responseJson[key]._id,
+                name: responseJson[key].name,
+                type: responseJson[key].type,
+                lastFour: responseJson[key].lastFour
+            })
+        }
+    })
+
+    return accounts;
+}
+
+export async function deleteAccount(acctId: string) {
+    const accounts: AccountModel[] = [];
+    fetch (`${baseUri}${DELETE}/${acctId}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        }
     }).then(async (response) => {
         if (!response.ok) {
             console.log(response.statusText);

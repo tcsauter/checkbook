@@ -5,6 +5,7 @@ const GET = "/get/expenses";
 const POST = "/add/expense";
 const PUT = "/update/expense/";
 const DELETE = "/delete/expense/";
+const DELETEBYACCT = "/delete/expenses/"
 const CLEAR = "/clear/expenses";
 
 async function handleReturnedArrayOfExpenses(response: Response): Promise<ExpenseModel[]> {
@@ -65,6 +66,12 @@ export async function expenseUpdate(expense: ExpenseModel, dateParams: string){
 
 export async function expenseDelete(expenseId: string, dateParams: string){
     return fetch(`${baseUri}${DELETE}${expenseId}${dateParams}` , {
+        method: "DELETE"
+    }).then(response => handleReturnedArrayOfExpenses(response))
+}
+
+export async function expenseDeleteByAcct(accountId: string, dateParams: string) {
+    return fetch(`${baseUri}${DELETEBYACCT}${accountId}${dateParams}`, {
         method: "DELETE"
     }).then(response => handleReturnedArrayOfExpenses(response))
 }

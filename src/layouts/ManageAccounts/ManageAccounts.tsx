@@ -3,6 +3,7 @@ import AccountModel from "../../models/AccountModel";
 import {addAccount, deleteAccount, updateAccount} from "../../utils/accountUtil";
 import {AddNewAccountCard} from "./components/AddNewAccountCard";
 import {AccountInfoBlock} from "./components/AccountInfoBlock";
+import {expenseDeleteByAcct} from "../../utils/expenseUtil";
 
 export async function action({request}: { request: any }) {
     const formData = await request.formData();
@@ -28,6 +29,8 @@ export async function action({request}: { request: any }) {
         const id = formData.get("id");
 
         await deleteAccount(id);
+
+        await expenseDeleteByAcct(id, "");
 
         return null;
     }

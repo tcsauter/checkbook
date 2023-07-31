@@ -6,6 +6,7 @@ const GET = "/get/budgetperiods";
 const POST = "/add/budgetperiod";
 const POSTBULK = "/bulkadd/budgetperiods"
 const PUT = "/update/budgetperiod/"
+const DELETE = "/delete/budgetperiod/"
 
 async function handleReturnedArrayOfBps(response: Response): Promise<BudgetPeriodModel[]> {
     const container: BudgetPeriodModel[] = [];
@@ -107,5 +108,11 @@ export async function updateBudgetPeriod(bp: BudgetPeriodModel): Promise<BudgetP
             budgetEnd: bp.budgetEnd,
             startingAmt: bp.startingAmt
         })
+    }).then(response => handleReturnedArrayOfBps(response));
+}
+
+export async function deleteBudgetPeriod(bpId: string) {
+    return fetch(`${baseUri}${DELETE}${bpId}`, {
+        method: "DELETE"
     }).then(response => handleReturnedArrayOfBps(response));
 }

@@ -52,7 +52,7 @@ export async function action({request}: { request: any }) {
     }
 }
 
-export const ManageAccounts = () => {
+export const AccountsPage = () => {
     const {accounts} = useRouteLoaderData("root") as { accounts: AccountModel[] };
 
     return (

@@ -29,7 +29,7 @@ export async function action({request}: { request: any }) {
     }
 }
 
-export const ManageBudgetPeriods = () => {
+export const BudgetPeriodsPage = () => {
     return (
         <div className="container bg-black min-vh-100 bg-opacity-75">
             <AddNewBudgetPeriodCard/>

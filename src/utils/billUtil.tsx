@@ -23,7 +23,8 @@ async function handleReturnedArrayOfBills(response: Response): Promise<BillModel
             due: responseJson[key].due,
             isPaidInInstallments: responseJson[key].isPaidInInstallments,
             paidSoFar: responseJson[key].paidSoFar,
-            isPaidFromBudget: responseJson[key].isPaidFromBudget
+            isPaidFromBudget: responseJson[key].isPaidFromBudget,
+            comment: responseJson[key].comment
         });
     }
 
@@ -39,7 +40,8 @@ function convertBillToDbObj(bill: BillModel) {
         due: bill.due,
         isPaidInInstallments: bill.isPaidInInstallments,
         paidSoFar: bill.paidSoFar,
-        isPaidFromBudget: bill.isPaidFromBudget
+        isPaidFromBudget: bill.isPaidFromBudget,
+        comment: bill.comment
     }
 }
 

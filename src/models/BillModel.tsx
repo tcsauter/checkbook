@@ -7,6 +7,7 @@ class BillModel {
     isPaidInInstallments: boolean;
     paidSoFar: number;
     isPaidFromBudget: boolean;
+    comment: string;
 
     constructor(
         id: string,
@@ -16,7 +17,8 @@ class BillModel {
         due: string,
         isPaidInInstallments: boolean,
         paidSoFar: number,
-        isPaidFromBudget: boolean
+        isPaidFromBudget: boolean,
+        comment: string
     ) {
         this.id = id;
         this.description = description;
@@ -26,6 +28,7 @@ class BillModel {
         this.isPaidInInstallments = isPaidInInstallments;
         this.paidSoFar = paidSoFar;
         this.isPaidFromBudget = isPaidFromBudget;
+        this.comment = comment;
     }
 }
 

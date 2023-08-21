@@ -21,9 +21,9 @@ async function handleReturnedArrayOfBills(response: Response): Promise<BillModel
             amount: responseJson[key].amount,
             frequency: responseJson[key].frequency,
             due: responseJson[key].due,
-            isPaidInInstallments: responseJson[key].isPaidInInstallments,
+            isPaidInInstallments: responseJson[key].paidInInstallments,
             paidSoFar: responseJson[key].paidSoFar,
-            isPaidFromBudget: responseJson[key].isPaidFromBudget,
+            isPaidFromBudget: responseJson[key].paidFromBudget,
             comment: responseJson[key].comment
         });
     }

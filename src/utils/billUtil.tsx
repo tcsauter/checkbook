@@ -65,7 +65,7 @@ export async function updateBill(bill: BillModel) {
     return fetch(`${baseUri}${PUT}/${bill.id}`, {
         method: "PUT",
         headers: {
-            "Content-Type": "applicattion/json"
+            "Content-Type": "application/json"
         },
         body: JSON.stringify(convertBillToDbObj(bill))
     })

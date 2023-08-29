@@ -81,19 +81,21 @@ export const BillAccordionItem: React.FC<{ bill: BillModel }> = (props) => {
                                        setPaidSoFarInput(event.currentTarget.value);
                                    }}
                                    onBlur={() => {
-                                       //add remaining amount to comment if some amount has been paid
-                                       props.bill.comment = (props.bill.comment.includes("Remain:") ?
-                                               props.bill.comment.replace(`Remain: $${props.bill.amount - props.bill.paidSoFar}`,
-                                                    (paidSoFarInput ? `Remain: $${props.bill.amount - Number(paidSoFarInput)}` : "")
-                                               )
-                                               :
-                                               commentInput + (commentInput === "" ? "" : " ") +
-                                               (paidSoFarInput ? `Remain: $${props.bill.amount - Number(paidSoFarInput)}` : "")
-                                       )
-                                       setCommentInput(props.bill.comment);
+                                       if (fieldChanged) {
+                                           //add remaining amount to comment if some amount has been paid
+                                           props.bill.comment = (props.bill.comment.includes("Remain:") ?
+                                                   props.bill.comment.replace(`Remain: $${props.bill.amount - props.bill.paidSoFar}`,
+                                                       (paidSoFarInput ? `Remain: $${props.bill.amount - Number(paidSoFarInput)}` : "")
+                                                   )
+                                                   :
+                                                   commentInput + (" ") +
+                                                   (paidSoFarInput ? `Remain: $${props.bill.amount - Number(paidSoFarInput)}` : "")
+                                           ).trim();
+                                           setCommentInput(props.bill.comment);
 
-                                       props.bill.paidSoFar = paidSoFarInput ? Number(paidSoFarInput) : 0;
-                                       acceptUpdates();
+                                           props.bill.paidSoFar = paidSoFarInput ? Number(paidSoFarInput) : 0;
+                                           acceptUpdates();
+                                       }
                                    }}
                             />
                         </span>

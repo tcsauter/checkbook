@@ -33,15 +33,15 @@ async function handleReturnedArrayOfBills(response: Response): Promise<BillModel
 
 function convertBillToDbObj(bill: BillModel) {
     return {
-        _id: bill.id,
-        description: bill.description,
-        amount: bill.amount,
-        frequency: bill.frequency,
-        due: bill.due,
-        isPaidInInstallments: bill.isPaidInInstallments,
-        paidSoFar: bill.paidSoFar,
-        isPaidFromBudget: bill.isPaidFromBudget,
-        comment: bill.comment
+        "_id": bill.id,
+        "description": bill.description,
+        "amount": bill.amount,
+        "frequency": bill.frequency,
+        "due": bill.due,
+        "paidInInstallments": bill.isPaidInInstallments,
+        "paidSoFar": bill.paidSoFar,
+        "paidFromBudget": bill.isPaidFromBudget,
+        "comment": bill.comment
     }
 }
 

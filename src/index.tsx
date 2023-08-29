@@ -8,6 +8,7 @@ import {ErrorPage} from "./layouts/ErrorPage/ErrorPage";
 import {HomePage, loader as homeLoader, action as homeAction} from "./layouts/HomePage/HomePage";
 import {BudgetPeriodsPage, action as mbpAction} from "./layouts/BudgetPeriodsPage/BudgetPeriodsPage";
 import {AccountsPage, action as maAction} from "./layouts/AccountsPage/AccountsPage";
+import {BillsPage, action as billsAction} from "./layouts/BillsPage/BillsPage";
 
 const router = createBrowserRouter([
     {
@@ -32,6 +33,11 @@ const router = createBrowserRouter([
                 path: "/manageaccounts",
                 element: <AccountsPage />,
                 action: maAction
+            },
+            {
+                path:"/managebills",
+                element: <BillsPage />,
+                action: billsAction
             }
         ]
     }

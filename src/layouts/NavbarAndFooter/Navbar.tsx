@@ -19,7 +19,9 @@ export const Navbar = () => {
                 "Accounts" :
                 document.URL.includes("managebudgetperiods") ?
                     "Budget Periods" :
-                    "Home"
+                    document.URL.includes("managebills") ?
+                        "Bills" :
+                        "Home"
         )
     }, []);
 
@@ -41,6 +43,13 @@ export const Navbar = () => {
                             onClick={() => setActiveNav("Home")}
                         >
                             Home
+                        </Link>
+                        <Link to="/managebills"
+                              className={activeNav === "Bills" ? "nav-link active" : "nav-link"}
+                              aria-current="page"
+                              onClick={() => setActiveNav("Bills")}
+                        >
+                            Bills
                         </Link>
                         <Link to="/manageaccounts"
                               className={activeNav === "Accounts" ? "nav-link active" : "nav-link"}
@@ -79,8 +88,10 @@ export const Navbar = () => {
                                             setActiveNav("Home");
                                         }}
                                     >
-                                        <Link to={`/${currentBudgetPeriod.budgetStart}/${currentBudgetPeriod.budgetEnd}`}
-                                              className="dropdown-item nav-link text-black m-0">Current Budget Period</Link>
+                                        <Link
+                                            to={`/${currentBudgetPeriod.budgetStart}/${currentBudgetPeriod.budgetEnd}`}
+                                            className="dropdown-item nav-link text-black m-0">Current Budget
+                                            Period</Link>
                                     </li>
                                     <li key="nbddhr-2">
                                         <hr className="dropdown-divider ms-3 me-3"/>

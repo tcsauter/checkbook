@@ -3,8 +3,6 @@ import BillModel from "../../../models/BillModel";
 import {useSubmit} from "react-router-dom";
 
 export const BillAccordionItem: React.FC<{ bill: BillModel }> = (props) => {
-    //todo: resolve extra spaces that build up in comment
-
     const submit = useSubmit();
 
     const [paidSoFarInput, setPaidSoFarInput] = useState(props.bill.paidSoFar ? props.bill.paidSoFar.toString() : "");
@@ -115,6 +113,19 @@ export const BillAccordionItem: React.FC<{ bill: BillModel }> = (props) => {
                                }}
                         />
                     </span>
+                    <div>
+                        <button type="button" className="btn btn-outline-danger" tabIndex={-1}
+                                onClick={() => {
+                                    const formData = new FormData();
+                                    formData.append("intent", "delete");
+                                    formData.append("billId", props.bill.id);
+
+                                    submit(formData, { method: "delete" });
+                                }}
+                        >
+                            Delete
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

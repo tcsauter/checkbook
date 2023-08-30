@@ -1,7 +1,7 @@
 import {useRouteLoaderData} from "react-router-dom";
 import BillModel from "../../models/BillModel";
 import {BillAccordionItem} from "./components/BillAccordionItem";
-import {updateBill} from "../../utils/billUtil";
+import {deleteBill, updateBill} from "../../utils/billUtil";
 import {ChevronDoubleDown, ChevronDoubleUp} from "react-bootstrap-icons";
 import {useState} from "react";
 
@@ -13,6 +13,11 @@ export async function action({request}: { request: any }) {
         const bill = JSON.parse(formData.get("bill"));
 
         await updateBill(bill);
+        return null;
+    }
+
+    if (intent === "delete") {
+        await deleteBill(formData.get("billId"));
         return null;
     }
 }

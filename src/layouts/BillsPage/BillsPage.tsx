@@ -25,9 +25,7 @@ export const BillsPage = () => {
     return (
         <div className="container bg-black min-vh-100 bg-opacity-75">
             <div className="card text-muted">
-                <div className="card-title">
-                    <h1>Manage Bills</h1>
-                </div>
+                <h5 className="card-title mt-3">Manage Bills</h5>
                 <div className="row">
                     <div className="col-11"></div>
                     <div className="col-1 p-0">
@@ -44,8 +42,6 @@ export const BillsPage = () => {
                                                onClick={() => setToggle(!toggle)}
                             />
                         }
-
-
 
 
                     </div>

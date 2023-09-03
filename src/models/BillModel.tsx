@@ -33,3 +33,4 @@ class BillModel {
 }
 
 export default BillModel;
+export const frequencyList: string[] = ["Bi-Weekly", "Monthly", "Quarterly", "Yearly"];
